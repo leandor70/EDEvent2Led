@@ -220,6 +220,12 @@ EDEvent2Led/
 
 This software is distributed as a compiled binary. The source code is not publicly available at this time.
 
+ED:Event2Led is **freeware**: free to use for personal, non-commercial purposes (streaming or recording your gameplay is fine, including on monetized channels).
+
+You may **not** sell it, use it commercially, or redistribute it anywhere other than the [official release page](https://github.com/leandor70/EDEvent2Led/releases).
+
+See the [LICENSE](LICENSE) file for the full terms.
+
 ---
 
 *Made with ❤️ for the Elite Dangerous community*

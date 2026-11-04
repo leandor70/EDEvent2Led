@@ -1,0 +1,81 @@
+ED:Event2Led - Freeware License
+
+Copyright (c) 2026 Stefano Indraccolo. All rights reserved.
+
+This license applies to the ED:Event2Led application, in the form of the
+executable and the files distributed with it (the "Software").
+
+1. GRANT OF LICENSE
+
+   You are granted a free, non-exclusive, non-transferable, revocable license
+   to download, install and use the Software on any number of your own
+   computers, for personal, non-commercial purposes.
+
+   Using the Software while creating content (for example streaming or
+   recording videos of your gameplay, including on monetized channels) is
+   permitted. What is not permitted is exploiting the Software itself
+   commercially, as described in section 2.
+
+2. RESTRICTIONS
+
+   You may NOT:
+
+   a) sell, resell, rent, lease, sublicense or otherwise charge money for the
+      Software, or include it in any product or service that is sold or
+      otherwise monetized in its own right (for example paid bundles,
+      subscriptions, paid download sites, or donation-gated downloads);
+
+   b) use the Software to provide a commercial service to third parties;
+
+   c) redistribute, mirror, re-upload or republish the Software, in whole or
+      in part, in original or modified form, on any website, file host,
+      repository, package manager, installer bundle or physical medium.
+
+   The only authorized source for obtaining the Software is the official
+   release page:
+
+       https://github.com/leandor70/EDEvent2Led/releases
+
+   You may share a link to that page, but not the files themselves.
+
+3. OWNERSHIP
+
+   The Software is licensed, not sold. The author retains all rights, title
+   and interest in the Software. No rights are granted except those expressly
+   stated in this license.
+
+4. THIRD-PARTY COMPONENTS
+
+   The Software includes third-party open-source components (for example
+   Python, Eel, gevent, NumPy and others). Those components remain under their
+   own licenses, which are not changed by this license.
+
+5. NO AFFILIATION
+
+   ED:Event2Led is an independent fan project. It is not affiliated with,
+   endorsed by or sponsored by Frontier Developments plc, the OpenRGB project,
+   or any hardware manufacturer. "Elite Dangerous" is a trademark of Frontier
+   Developments plc.
+
+6. NO WARRANTY
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. YOU USE THE SOFTWARE,
+   INCLUDING ITS CONTROL OF RGB HARDWARE, AT YOUR OWN RISK.
+
+7. LIMITATION OF LIABILITY
+
+   IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+   DEALINGS IN THE SOFTWARE.
+
+8. TERMINATION
+
+   This license terminates automatically if you breach any of its terms. Upon
+   termination you must stop using the Software and delete all copies.
+
+9. GOVERNING LAW
+
+   This license is governed by the laws of Italy.
