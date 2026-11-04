@@ -5,7 +5,7 @@
 ED:Event2Led monitors the game's journal files and synchronizes your RGB hardware with in-game events — FSD jumps, combat alerts, docking, heat warnings, and much more.
 
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue)
-![Version](https://img.shields.io/badge/version-v1.0-brightgreen)
+![Version](https://img.shields.io/github/v/release/leandor70/EDEvent2Led?label=version&color=brightgreen)
 ![OpenRGB](https://img.shields.io/badge/requires-OpenRGB-orange)
 
 ![Dashboard](screenshots/01_dashboard.png)
@@ -14,7 +14,7 @@ ED:Event2Led monitors the game's journal files and synchronizes your RGB hardwar
 
 ## 📥 Download
 
-👉 **[Latest Release — v1.0](../../releases/latest)**
+👉 **[Download the latest release](../../releases/latest)**
 
 Extract the zip, double-click `EDEvent2Led.exe`. No installer needed.
 
@@ -92,7 +92,7 @@ Interface available in: 🇮🇹 Italian · 🇬🇧 English · 🇩🇪 German 
 
 ## 🚀 Quick Start
 
-1. **Download** `ED-Event2Led-v1.0-win64.zip` from [Releases](../../releases/latest)
+1. **Download** `ED-Event2Led-v<version>-win64.zip` from [Releases](../../releases/latest)
 2. **Extract** to any folder (e.g. `C:\Games\EDEvent2Led\`)
 3. **Start OpenRGB** and enable the SDK Server
 4. **Double-click** `EDEvent2Led.exe`
@@ -210,7 +210,7 @@ EDEvent2Led/
 ## 🔄 Updating
 
 1. Download the new release zip
-2. Extract to a **new folder** (e.g. `EDEvent2Led-v1.1\`)
+2. Extract to a **new folder** (e.g. `EDEvent2Led-new\`)
 3. Copy your `config\` folder from the old installation into the new folder
 4. Launch the new `EDEvent2Led.exe`
 
