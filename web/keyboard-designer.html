@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ED:Event2Led Keyboard Designer</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="css/tailwind.min.css" rel="stylesheet">
+<link href="css/fonts.css" rel="stylesheet">
+<link href="css/sci-fi-theme.css" rel="stylesheet">
+<style>
+    /* ========================================
+       FADE TRANSITIONS - Universal Solution
+       ======================================== */
+    body {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        background-color: #000; /* Black base for fade */
+    }
+</style>
+
+<style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            src: url('fonts/MaterialSymbolsOutlined.woff2') format('woff2');
+            font-display: block;
+        }
+</style>
+<style >
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow: auto;
+        }
+        /* ========================================
+           CSS GRID KEYBOARD LAYOUT - Elite Dangerous Theme
+           Based on https://codepen.io/chalda/pen/JrxOpE
+           Grid: 90 columns × 8px = 720px total width
+           1u keycap = 4 columns = 32px
+           ======================================== */
+        .keyboard-container {
+            display: inline-block;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+        }
+
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(90, 8px);
+            grid-gap: 2px;
+            padding: 16px 7px 7px 7px;
+            background: linear-gradient(135deg, rgba(20, 22, 26, 0.95) 0%, rgba(10, 12, 14, 0.98) 100%);
+            border: 1px solid rgba(255, 102, 0, 0.3);
+            border-radius: 4px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5), inset 0 0 20px rgba(255, 102, 0, 0.05);
+        }
+
+        /* Standard 1u key */
+        .keyboard__key {
+            display: flex;
+            grid-column: span 4;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 35px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 3px;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+
+        /* Keycap text — uses data-key-text by default */
+        .keyboard__key::before {
+            content: attr(data-key-text);
+            z-index: 1;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: currentColor;   /* inherits from parent so JS _contrastColor() works */
+            white-space: nowrap;
+        }
+        /* Numpad keys: data-label holds the clean display text (no num_ prefix) */
+        .keyboard__key[data-key-text^="num_"]::before {
+            content: attr(data-label);
+        }
+        /* Default text color for uncolored keys */
+        .keyboard__key {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Keycap 3D effect */
+        .keyboard__key::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            right: 4px;
+            bottom: 3px;
+            left: 4px;
+            display: block;
+            width: auto;
+            height: calc(35px - 6px);
+            background: inherit;
+            filter: brightness(110%);
+            border-radius: 2px;
+            pointer-events: none;
+        }
+
+        /* Hover effect */
+        .keyboard__key:hover:not(.keyboard__key--hidden) {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Pressed state */
+        .keyboard__key.pressed {
+            transform: scale(0.95);
+            filter: brightness(0.85);
+        }
+
+        /* Keycap sizes */
+        .keyboard__key--1-25u { grid-column: span 5; }    /* Ctrl, Alt, Meta */
+        .keyboard__key--1-5u { grid-column: span 6; }     /* Tab, Backslash */
+        .keyboard__key--1-75u { grid-column: span 7; }    /* Capslock */
+        .keyboard__key--2u { grid-column: span 8; }       /* Backspace, Numpad 0 */
+        .keyboard__key--2-25u { grid-column: span 9; }    /* Enter, Shift left */
+        .keyboard__key--2-75u { grid-column: span 11; }   /* Shift right */
+        .keyboard__key--6-25u { grid-column: span 25; }   /* Space */
+        .keyboard__key--half { grid-column: span 2; }     /* 0.5u spacer */
+        .keyboard__key--quarter { grid-column: span 1; }  
+        /* Double height keys (Numpad + and Enter) */
+        .keyboard__key--doubleheight {
+            margin-top: -37px;
+            height: 72px;
+        }
+        .keyboard__key--doubleheight::after {
+            height: 65px;
+        }
+
+        /* Modifier keys (darker) */
+        .keyboard__key--modifier {
+            background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%);
+        }
+        .keyboard__key--modifier::before {
+            font-size: 8px;
+        }
+
+        /* ESC key (red accent) */
+        .keyboard__key--escape {
+            background: linear-gradient(180deg, rgba(255, 0, 0, 0.3) 0%, rgba(200, 0, 0, 0.2) 100%);
+            border-color: rgba(255, 0, 0, 0.4);
+        }
+
+        /* Enter key (orange accent) */
+        .keyboard__key--enter {
+            background: linear-gradient(180deg, rgba(255, 102, 0, 0.3) 0%, rgba(255, 102, 0, 0.15) 100%);
+            border-color: var(--primary-accent);
+        }
+
+        /* Hidden keys (spacers) */
+        .keyboard__key--hidden {
+            visibility: hidden;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        /* Small text for long labels */
+        .keyboard__key--small-text::before {
+            white-space: normal;
+            font-size: 7px;
+            letter-spacing: 0px;
+            text-align: center;
+            padding: 0 4px;
+            line-height: 1.1;
+        }
+
+        /* Icon keys (arrows, symbols) */
+        .keyboard__key--icon::before {
+            font-size: 16px;
+        }
+
+        /* LED indicators */
+        .keyboard__led {
+            display: flex;
+            grid-column: span 4;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            height: 35px;
+        }
+
+        .keyboard__led::before {
+            content: ' ';
+            width: 8px;
+            height: 8px;
+            position: absolute;
+            top: 8px;
+            display: block;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .keyboard__led.active::before {
+            background-color: var(--primary-accent);
+            box-shadow: 0 0 10px var(--primary-accent), 0 0 20px var(--primary-accent);
+        }
+
+        .keyboard__led::after {
+            content: attr(data-led-text);
+            z-index: 1;
+            position: absolute;
+            bottom: 0px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.5);
+            white-space: nowrap;
+        }
+
+        /* First key (ESC) special spacing */
+        .keyboard__key:first-child {
+            margin-bottom: 8px;
+        }
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            -webkit-font-feature-settings: 'liga';
+        }
+
+        /* ========================================
+           SCI-FI FORM CONTROLS - Elite Dangerous Theme
+           ======================================== */
+        select,
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="password"],
+        textarea {
+            background-color: rgba(0, 0, 0, 0.6) !important;
+            border: 1px solid rgba(255, 102, 0, 0.15) !important;
+            color: #e0e0e0 !important;
+            padding: 10px 12px !important;
+            border-radius: 4px !important;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+            font-family: 'Rajdhani', sans-serif !important;
+        }
+
+        select:hover,
+        input[type="text"]:hover,
+        input[type="number"]:hover,
+        input[type="email"]:hover,
+        input[type="password"]:hover,
+        textarea:hover {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            border-color: rgba(255, 102, 0, 0.3) !important;
+        }
+
+        select:focus,
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        textarea:focus {
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            border-color: #FF6600 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2) !important;
+        }
+
+        /* Placeholder text styling */
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(255, 102, 0, 0.4);
+            font-style: italic;
+        }
+
+        /* Disabled state */
+        select:disabled,
+        input:disabled,
+        textarea:disabled {
+            background-color: rgba(0, 0, 0, 0.3) !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
+            color: #666666 !important;
+            cursor: not-allowed !important;
+        }
+
+        /* Grid lines overlay (toggled via JS) */
+        .keyboard--grid .keyboard__key:not(.keyboard__key--hidden) {
+            outline: 1px solid rgba(255, 102, 0, 0.25);
+            outline-offset: -1px;
+        }
+
+        /* Selected key highlight */
+        .keyboard__key--selected {
+            border-color: var(--primary-accent) !important;
+            box-shadow: 0 0 14px rgba(255, 102, 0, 0.6) !important;
+            transform: translateY(-2px) !important;
+            z-index: 2;
+        }
+
+        /* Live preview active state for the button */
+        #btn-live-preview.active,
+        #btn-toggle-preview.active {
+            background: rgba(255, 102, 0, 0.25);
+            border-color: var(--primary-accent);
+            color: var(--primary-accent);
+        }
+
+        /* ── Category colors panel ──────────────────────────────── */
+        .cat-group-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .cat-swatch-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .cat-swatch-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+        .cat-swatch-btn {
+            width: 32px;
+            height: 22px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            position: relative;
+        }
+        .cat-swatch-btn:hover {
+            transform: scale(1.12);
+        }
+        .cat-swatch-label {
+            font-size: 9px;
+            font-family: 'Rajdhani', sans-serif;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        /* ── Key tooltip ─────────────────────────────────────────── */
+        #key-tooltip {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            display: none;
+            min-width: 170px;
+            max-width: 260px;
+
+            /* Glassmorphism — lower opacity so blur is visible */
+            background: rgba(16, 20, 32, 0.76);
+            backdrop-filter: blur(22px) saturate(1.4);
+            -webkit-backdrop-filter: blur(22px) saturate(1.4);
+            border: 1px solid rgba(255, 102, 0, 0.38);
+            border-radius: 8px;
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.55),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+            padding: 10px 12px;
+        }
+        /* Sci-fi corner accents */
+        #key-tooltip::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px;
+            width: 8px; height: 8px;
+            border-top: 2px solid var(--primary-accent);
+            border-left: 2px solid var(--primary-accent);
+            border-radius: 2px 0 0 0;
+        }
+        #key-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; right: -1px;
+            width: 8px; height: 8px;
+            border-bottom: 2px solid var(--primary-accent);
+            border-right: 2px solid var(--primary-accent);
+            border-radius: 0 0 2px 0;
+        }
+        .kt-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding-bottom: 7px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .kt-key-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .kt-led-idx {
+            font-size: 10px;
+            font-family: 'Rajdhani', monospace;
+            color: var(--primary-accent);
+            opacity: 0.8;
+            white-space: nowrap;
+        }
+        .kt-no-data {
+            font-size: 11px;
+            color: rgba(255,255,255,0.3);
+            font-style: italic;
+        }
+        .kt-mode-block {
+            margin-bottom: 6px;
+        }
+        .kt-mode-label {
+            font-size: 9px;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+        .kt-action {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 2px;
+        }
+        .kt-cat-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .kt-func {
+            font-size: 11px;
+            color: rgba(255,255,255,0.82);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            flex: 1;
+        }
+        .kt-cat-label {
+            font-size: 9px;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .kt-color-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            padding-top: 7px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .kt-color-swatch {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.2);
+            flex-shrink: 0;
+        }
+        .kt-color-hex {
+            font-size: 10px;
+            font-family: monospace;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Global scrollbar styling - applies to ALL scrollbars */
+        *::-webkit-scrollbar { width: 6px; }
+        *::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        *::-webkit-scrollbar-thumb {
+            background: rgba(255, 102, 0, 0.3);
+            border-radius: 3px;
+        }
+        *::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 102, 0, 0.5);
+        }
+
+        /* Specific overrides - Webkit browsers */
+        aside::-webkit-scrollbar,
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 6px;
+        }
+        aside::-webkit-scrollbar-track,
+        .overflow-y-auto::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        aside::-webkit-scrollbar-thumb,
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background: rgba(255, 102, 0, 0.3);
+            border-radius: 3px;
+        }
+        aside::-webkit-scrollbar-thumb:hover,
+        .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 102, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="h-screen w-full relative flex">
+<div class="fixed inset-0 z-0">
+<img data-i18n-attr="alt:alt_text.background_image" alt="Spiral Galaxy Background" class="w-full h-full object-cover opacity-25" src="images/backgrounds/spiral-galaxy.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-b from-[#05070a]/40 via-[#05070a]/70 to-[#05070a]"></div>
+</div>
+<!-- Navigation Component (loaded dynamically) -->
+<div id="sidebar-nav" data-active-page="keyboard-designer"></div>
+<main class="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
+<header class="w-full pt-12 pb-8 flex flex-col items-center">
+<div class="flex items-center gap-4 mb-2">
+<div class="h-px w-24 bg-gradient-to-r from-transparent to-[var(--primary-accent)] opacity-50"></div>
+<h1 class="orbitron text-4xl font-bold tracking-[0.3em] text-white" data-i18n="pages.keyboard_designer.title">
+                KEYBOARD DESIGNER
+            </h1>
+<div class="h-px w-24 bg-gradient-to-l from-transparent to-[var(--primary-accent)] opacity-50"></div>
+</div>
+<p class="text-sm text-white/50 tracking-wider" data-i18n="keyboard_designer_sections.subtitle">Load keybindings → color keys by category &nbsp;·&nbsp; Click a key → assign color &nbsp;·&nbsp; Save to P1 / P2 / P3</p>
+</header>
+<div class="flex-1 px-4 pb-6 overflow-y-auto flex gap-4 min-w-0">
+<!-- Keyboard Matrix (Left 75%) -->
+<div class="flex-1">
+<div class="sci-fi-border carbon-pattern p-4">
+<div class="flex items-center justify-between mb-6">
+<div>
+<div class="orbitron text-xl font-bold tracking-widest uppercase" data-i18n="sections.keyboard_designer.layout_title">Generic 105-Key Layout</div>
+<p class="text-xs text-white/40 mt-1" data-i18n="sections.keyboard_designer.layout_description">105 Keys · Full Size · ANSI + Numpad</p>
+</div>
+<div class="flex gap-2 items-center">
+<button id="btn-live-preview" class="btn-sci-fi px-4 py-2 flex items-center gap-2">
+    <span id="live-preview-dot" class="w-2 h-2 rounded-full bg-white/20 flex-shrink-0"></span>
+    <span id="icon-live-preview" class="material-symbols-outlined text-[var(--primary-accent)]">visibility</span>
+    <span id="label-live-preview" class="orbitron text-sm tracking-[0.2em] font-bold" data-i18n="keyboard_designer_sections.live_preview">LIVE PREVIEW</span>
+</button>
+</div>
+</div>
+
+<!-- Keyboard Matrix Grid - CSS Grid Layout (90 columns) -->
+<div class="keyboard-container">
+    <div class="keyboard" id="105-keyboard">
+        <!-- Start Row 0 -->
+        <div class="keyboard__key keyboard__key--modifier" data-key-text="esc"></div>
+        <div class="keyboard__key keyboard__key--hidden"></div>
+        <div class="keyboard__key" data-key-text="f1"></div>
+        <div class="keyboard__key" data-key-text="f2"></div>
+        <div class="keyboard__key" data-key-text="f3"></div>
+        <div class="keyboard__key" data-key-text="f4"></div>
+        <div class="keyboard__key keyboard__key--half keyboard__key--hidden"></div>
+        <div class="keyboard__key" data-key-text="f5"></div>
+        <div class="keyboard__key" data-key-text="f6"></div>
+        <div class="keyboard__key" data-key-text="f7"></div>
+        <div class="keyboard__key" data-key-text="f8"></div>
+        <div class="keyboard__key keyboard__key--half keyboard__key--hidden"></div>
+        <div class="keyboard__key" data-key-text="f9"></div>
+        <div class="keyboard__key" data-key-text="f10"></div>
+        <div class="keyboard__key" data-key-text="f11"></div>
+        <div class="keyboard__key" data-key-text="f12"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--small-text" data-key-text="print screen"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--small-text" data-key-text="scroll lock"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--small-text" data-key-text="pause"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__led active" data-led-text="⇭"></div>
+        <div class="keyboard__led" data-led-text="⇪"></div>
+        <div class="keyboard__led" data-led-text="⇳"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--hidden"></div>
+        <!-- End Row 0 -->
+
+        <!-- Start Row 1 -->
+        <div class="keyboard__key" data-key-text="`"></div>
+        <div class="keyboard__key" data-key-text="1"></div>
+        <div class="keyboard__key" data-key-text="2"></div>
+        <div class="keyboard__key" data-key-text="3"></div>
+        <div class="keyboard__key" data-key-text="4"></div>
+        <div class="keyboard__key" data-key-text="5"></div>
+        <div class="keyboard__key" data-key-text="6"></div>
+        <div class="keyboard__key" data-key-text="7"></div>
+        <div class="keyboard__key" data-key-text="8"></div>
+        <div class="keyboard__key" data-key-text="9"></div>
+        <div class="keyboard__key" data-key-text="0"></div>
+        <div class="keyboard__key" data-key-text="-"></div>
+        <div class="keyboard__key" data-key-text="="></div>
+        <div class="keyboard__key keyboard__key--2u keyboard__key--modifier" data-key-text="backspace"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--modifier" data-key-text="ins"></div>
+        <div class="keyboard__key keyboard__key--modifier" data-key-text="home"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--small-text" data-key-text="page up"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--small-text" data-key-text="num lock"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--icon" data-key-text="÷"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--icon" data-key-text="×"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--icon" data-key-text="num_-" data-label="-"></div>
+        <!-- End Row 1 -->
+
+        <!-- Start Row 2 -->
+        <div class="keyboard__key keyboard__key--1-5u keyboard__key--modifier" data-key-text="tab"></div>
+        <div class="keyboard__key" data-key-text="q"></div>
+        <div class="keyboard__key" data-key-text="w"></div>
+        <div class="keyboard__key" data-key-text="e"></div>
+        <div class="keyboard__key" data-key-text="r"></div>
+        <div class="keyboard__key" data-key-text="t"></div>
+        <div class="keyboard__key" data-key-text="y"></div>
+        <div class="keyboard__key" data-key-text="u"></div>
+        <div class="keyboard__key" data-key-text="i"></div>
+        <div class="keyboard__key" data-key-text="o"></div>
+        <div class="keyboard__key" data-key-text="p"></div>
+        <div class="keyboard__key" data-key-text="["></div>
+        <div class="keyboard__key" data-key-text="]"></div>
+        <div class="keyboard__key keyboard__key--1-5u keyboard__key--modifier" data-key-text="\"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--modifier" data-key-text="del"></div>
+        <div class="keyboard__key keyboard__key--modifier" data-key-text="end"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--small-text" data-key-text="page down"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key" data-key-text="num_7" data-label="7"></div>
+        <div class="keyboard__key" data-key-text="num_8" data-label="8"></div>
+        <div class="keyboard__key" data-key-text="num_9" data-label="9"></div>
+        <!-- End Row 2 -->
+
+        <!-- Start Row 3 -->
+        <div class="keyboard__key keyboard__key--1-75u keyboard__key--modifier" data-key-text="capslock"></div>
+        <div class="keyboard__key" data-key-text="a"></div>
+        <div class="keyboard__key" data-key-text="s"></div>
+        <div class="keyboard__key" data-key-text="d"></div>
+        <div class="keyboard__key" data-key-text="f"></div>
+        <div class="keyboard__key" data-key-text="g"></div>
+        <div class="keyboard__key" data-key-text="h"></div>
+        <div class="keyboard__key" data-key-text="j"></div>
+        <div class="keyboard__key" data-key-text="k"></div>
+        <div class="keyboard__key" data-key-text="l"></div>
+        <div class="keyboard__key" data-key-text=";"></div>
+        <div class="keyboard__key" data-key-text="'"></div>
+        <div class="keyboard__key keyboard__key--2-25u keyboard__key--modifier" data-key-text="enter"></div>
+        <div class="keyboard__key keyboard__key--2-25u keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key" data-key-text="num_4" data-label="4"></div>
+        <div class="keyboard__key" data-key-text="num_5" data-label="5"></div>
+        <div class="keyboard__key" data-key-text="num_6" data-label="6"></div>
+        <div class="keyboard__key keyboard__key--doubleheight keyboard__key--modifier keyboard__key--icon" data-key-text="num_+" data-label="+"></div>
+        <!-- End Row 3 -->
+
+        <!-- Start Row 4 -->
+        <div class="keyboard__key keyboard__key--2-25u keyboard__key--modifier" data-key-text="shift"></div>
+        <div class="keyboard__key" data-key-text="z"></div>
+        <div class="keyboard__key" data-key-text="x"></div>
+        <div class="keyboard__key" data-key-text="c"></div>
+        <div class="keyboard__key" data-key-text="v"></div>
+        <div class="keyboard__key" data-key-text="b"></div>
+        <div class="keyboard__key" data-key-text="n"></div>
+        <div class="keyboard__key" data-key-text="m"></div>
+        <div class="keyboard__key" data-key-text=","></div>
+        <div class="keyboard__key" data-key-text="."></div>
+        <div class="keyboard__key" data-key-text="/"></div>
+        <div class="keyboard__key keyboard__key--2-75u keyboard__key--modifier" data-key-text="shift"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--icon" data-key-text="↑"></div>
+        <div class="keyboard__key keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key" data-key-text="num_1" data-label="1"></div>
+        <div class="keyboard__key" data-key-text="num_2" data-label="2"></div>
+        <div class="keyboard__key" data-key-text="num_3" data-label="3"></div>
+        <!-- End Row 4 -->
+
+        <!-- Start Row 5 -->
+        <div class="keyboard__key keyboard__key--1-25u keyboard__key--modifier" data-key-text="ctrl"></div>
+        <div class="keyboard__key keyboard__key--1-25u keyboard__key--modifier" data-key-text="win"></div>
+        <div class="keyboard__key keyboard__key--1-25u keyboard__key--modifier" data-key-text="alt"></div>
+        <div class="keyboard__key keyboard__key--6-25u" data-key-text=" "></div>
+        <div class="keyboard__key keyboard__key--1-25u keyboard__key--modifier" data-key-text="alt"></div>
+        <div class="keyboard__key keyboard__key--1-25u keyboard__key--modifier" data-key-text="win"></div>
+        <div class="keyboard__key keyboard__key--1-25u keyboard__key--modifier" data-key-text="menu"></div>
+        <div class="keyboard__key keyboard__key--1-25u keyboard__key--modifier" data-key-text="ctrl"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--icon" data-key-text="←"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--icon" data-key-text="↓"></div>
+        <div class="keyboard__key keyboard__key--modifier keyboard__key--icon" data-key-text="→"></div>
+        <div class="keyboard__key keyboard__key--quarter keyboard__key--hidden"></div>
+        <div class="keyboard__key keyboard__key--2u" data-key-text="num_0" data-label="0"></div>
+        <div class="keyboard__key" data-key-text="num_." data-label="."></div>
+        <div class="keyboard__key keyboard__key--doubleheight keyboard__key--modifier" data-key-text="num_enter" data-label="enter"></div>
+        <!-- End Row 5 -->
+    </div>
+</div>
+
+<!-- Legend -->
+<div class="mt-4 flex items-center justify-between text-[11px]">
+    <div class="flex items-center gap-4">
+        <div class="flex items-center gap-1.5">
+            <div class="w-3.5 h-3.5 border border-white/15 rounded"></div>
+            <span class="text-white/35" data-i18n="keyboard_designer_sections.legend_no_led">No LED</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+            <div class="w-3.5 h-3.5 bg-gradient-to-r from-red-500 via-green-500 to-blue-500 rounded"></div>
+            <span class="text-white/35" data-i18n="keyboard_designer_sections.legend_led_visible">LED index visible (Live Preview off)</span>
+        </div>
+    </div>
+    <div id="led-count-label" class="text-white/30 italic">—</div>
+</div>
+</div>
+
+<!-- ── Category Colors Panel ──────────────────────────────────────────── -->
+<div id="cat-colors-panel" class="sci-fi-border carbon-pattern p-4 hidden">
+    <div class="flex items-center justify-between mb-4">
+        <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase" data-i18n="keyboard_designer_sections.category_colors_title">
+            Category Colors
+        </div>
+        <div class="flex gap-2">
+            <button id="btn-reset-cat-colors"
+                class="btn-sci-fi px-3 py-1.5 text-[10px] orbitron tracking-wider flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm text-white/50">refresh</span>
+                <span data-i18n="keyboard_designer_sections.category_colors_reset">Reset</span>
+            </button>
+            <button id="btn-reapply-cat-colors"
+                class="btn-sci-fi px-3 py-1.5 text-[10px] orbitron tracking-wider flex items-center gap-1.5"
+                style="border-color:rgba(34,197,94,0.4); color:#22c55e;">
+                <span class="material-symbols-outlined text-sm" style="color:#22c55e;">keyboard</span>
+                <span data-i18n="keyboard_designer_sections.category_colors_reapply">Re-Apply</span>
+            </button>
+        </div>
+    </div>
+    <div id="cat-colors-body" class="flex gap-6 flex-wrap"></div>
+</div>
+
+</div>
+
+<!-- Info Panel (Right sidebar) -->
+<aside class="w-64 flex-shrink-0 flex flex-col gap-3 overflow-y-auto overflow-x-hidden" style="scrollbar-width:thin; scrollbar-color:rgba(255,102,0,0.3) transparent;">
+
+<!-- ① KEYBIND PROFILE — first, most-used for first-time setup -->
+<div class="sci-fi-border carbon-pattern p-4">
+    <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-3" data-i18n="keyboard_designer_sections.keybind_profile_title">Keybind Profile</div>
+    <div id="profile-status" class="text-[11px] text-white/40 mb-3 truncate" data-i18n="keyboard_designer_sections.keybind_profile_no_profile">No profile loaded</div>
+    <div class="flex gap-2 mb-2">
+        <input id="bindings-path-input" type="text"
+               data-i18n-attr="placeholder:keyboard_designer_sections.keybind_profile_placeholder,title:keyboard_designer_sections.keybind_profile_path_title"
+               placeholder="Auto-detect or browse..."
+               title="Path to .binds file"
+               class="flex-1 min-w-0 text-[11px] bg-black/40 rounded px-2 py-1.5
+                      text-white/70 placeholder-white/20 border border-white/10
+                      focus:outline-none focus:border-[var(--primary-accent)] truncate"/>
+        <button id="btn-browse-bindings"
+                data-i18n-attr="title:keyboard_designer_sections.keybind_profile_browse_title"
+                title="Browse"
+                class="btn-sci-fi px-2.5 py-1.5 flex items-center flex-shrink-0">
+            <span class="material-symbols-outlined text-[var(--primary-accent)] text-base">folder_open</span>
+        </button>
+    </div>
+    <button id="btn-load-bindings"
+            class="w-full btn-sci-fi py-2 flex items-center justify-center gap-2 text-xs mb-3">
+        <span class="material-symbols-outlined text-[var(--primary-accent)] text-sm">download</span>
+        <span class="orbitron tracking-wider" data-i18n="keyboard_designer_sections.load_keybindings">LOAD KEYBINDINGS</span>
+    </button>
+    <div id="profile-mode-selector" class="hidden flex gap-1 mb-3">
+        <button class="mode-btn active" data-mode="ship" data-i18n="keyboard_designer_sections.mode_ship"
+                style="flex:1;padding:4px;font-size:10px;font-weight:700;text-transform:uppercase;
+                       letter-spacing:.1em;border-radius:4px;cursor:pointer;
+                       border:1px solid rgba(255,102,0,0.4);background:rgba(255,102,0,0.15);
+                       color:#FF6600;font-family:'Rajdhani',sans-serif;transition:all .2s;">Ship</button>
+        <button class="mode-btn" data-mode="srv" data-i18n="keyboard_designer_sections.mode_srv"
+                style="flex:1;padding:4px;font-size:10px;font-weight:700;text-transform:uppercase;
+                       letter-spacing:.1em;border-radius:4px;cursor:pointer;
+                       border:1px solid rgba(255,255,255,0.12);background:transparent;
+                       color:rgba(255,255,255,0.4);font-family:'Rajdhani',sans-serif;transition:all .2s;">SRV</button>
+        <button class="mode-btn" data-mode="onfoot" data-i18n="keyboard_designer_sections.mode_onfoot"
+                style="flex:1;padding:4px;font-size:10px;font-weight:700;text-transform:uppercase;
+                       letter-spacing:.1em;border-radius:4px;cursor:pointer;
+                       border:1px solid rgba(255,255,255,0.12);background:transparent;
+                       color:rgba(255,255,255,0.4);font-family:'Rajdhani',sans-serif;transition:all .2s;">On Foot</button>
+    </div>
+    <div id="profile-legend" class="hidden space-y-1.5 mb-3"></div>
+    <div id="profile-keybind-list-wrap" class="hidden mb-3">
+        <div class="flex items-center justify-between mb-1.5">
+            <span class="text-[10px] uppercase tracking-widest text-white/35" data-i18n="keyboard_designer_sections.bindings_label">Bindings</span>
+            <input id="profile-search" type="text"
+                   data-i18n-attr="placeholder:keyboard_designer_sections.bindings_filter_placeholder"
+                   placeholder="Filter..."
+                   class="text-[10px] bg-black/40 border border-white/10 rounded px-2 py-0.5
+                          text-white/70 placeholder-white/20 focus:outline-none
+                          focus:border-[var(--primary-accent)] w-20"/>
+        </div>
+        <div id="profile-keybind-list"
+             style="max-height:160px;overflow-y:auto;scrollbar-width:thin;
+                    scrollbar-color:rgba(255,102,0,0.3) transparent;"></div>
+    </div>
+    <div id="profile-actions" class="hidden space-y-2">
+        <button id="btn-apply-profile"
+                class="w-full btn-sci-fi py-2 flex items-center justify-center gap-2 text-xs"
+                style="border-color:rgba(34,197,94,0.4);color:#22c55e;">
+            <span class="material-symbols-outlined text-sm" style="color:#22c55e;">keyboard</span>
+            <span class="orbitron tracking-wider" data-i18n="keyboard_designer_sections.apply_to_keyboard">APPLY TO KEYBOARD</span>
+        </button>
+        <button id="btn-clear-profile"
+                class="w-full btn-sci-fi py-2 flex items-center justify-center gap-2 text-xs"
+                style="border-color:rgba(239,68,68,0.3);color:rgba(248,113,113,0.7);">
+            <span class="material-symbols-outlined text-sm" style="color:rgba(248,113,113,0.7);">clear</span>
+            <span data-i18n="keyboard_designer_sections.clear_profile">Clear Profile</span>
+        </button>
+    </div>
+    <div id="profile-stats" class="hidden mt-3 pt-3 border-t border-white/10 text-[10px] text-white/40"></div>
+</div>
+
+<!-- ② COLOR PRESETS -->
+<div class="sci-fi-border carbon-pattern p-4">
+    <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-1" data-i18n="keyboard_designer_sections.color_presets_title">Color Presets</div>
+    <div class="text-[10px] text-white/25 mb-3" data-i18n="keyboard_designer_sections.color_presets_hint">Click label to select · ↓ to load from disk</div>
+    <div class="flex gap-2 mb-2">
+        <!-- Split button: label = select slot, ↓ = load from disk -->
+        <div class="preset-slot flex-1 flex sci-fi-border overflow-hidden rounded" data-preset="1"
+             style="border-radius:4px;">
+            <button class="preset-select-btn flex-1 py-2 text-xs orbitron tracking-wider
+                           hover:bg-white/5 transition-colors"
+                    data-preset="1">P1</button>
+            <button class="preset-load-btn group px-2 py-2 border-l border-white/10
+                           hover:bg-[var(--primary-accent)]/20 hover:border-[var(--primary-accent)]/30
+                           transition-all flex items-center"
+                    data-preset="1" data-i18n-attr="title:keyboard_designer_sections.load_preset_from_disk" title="Load preset from disk">
+                <span class="material-symbols-outlined text-[13px] text-white/35
+                             group-hover:text-[var(--primary-accent)] transition-colors">folder_open</span>
+            </button>
+        </div>
+        <div class="preset-slot flex-1 flex sci-fi-border overflow-hidden rounded" data-preset="2"
+             style="border-radius:4px;">
+            <button class="preset-select-btn flex-1 py-2 text-xs orbitron tracking-wider
+                           hover:bg-white/5 transition-colors"
+                    data-preset="2">P2</button>
+            <button class="preset-load-btn group px-2 py-2 border-l border-white/10
+                           hover:bg-[var(--primary-accent)]/20 hover:border-[var(--primary-accent)]/30
+                           transition-all flex items-center"
+                    data-preset="2" data-i18n-attr="title:keyboard_designer_sections.load_preset_from_disk" title="Load preset from disk">
+                <span class="material-symbols-outlined text-[13px] text-white/35
+                             group-hover:text-[var(--primary-accent)] transition-colors">folder_open</span>
+            </button>
+        </div>
+        <div class="preset-slot flex-1 flex sci-fi-border overflow-hidden rounded" data-preset="3"
+             style="border-radius:4px;">
+            <button class="preset-select-btn flex-1 py-2 text-xs orbitron tracking-wider
+                           hover:bg-white/5 transition-colors"
+                    data-preset="3">P3</button>
+            <button class="preset-load-btn group px-2 py-2 border-l border-white/10
+                           hover:bg-[var(--primary-accent)]/20 hover:border-[var(--primary-accent)]/30
+                           transition-all flex items-center"
+                    data-preset="3" data-i18n-attr="title:keyboard_designer_sections.load_preset_from_disk" title="Load preset from disk">
+                <span class="material-symbols-outlined text-[13px] text-white/35
+                             group-hover:text-[var(--primary-accent)] transition-colors">folder_open</span>
+            </button>
+        </div>
+    </div>
+    <button id="btn-save-preset" class="w-full btn-sci-fi py-2 flex items-center justify-center gap-2 text-xs">
+        <span class="material-symbols-outlined text-sm text-[var(--primary-accent)]">save</span>
+        <span class="orbitron tracking-wider" data-i18n="keyboard_designer_sections.save_preset">SAVE PRESET</span>
+    </button>
+    <div id="preset-status" class="text-[11px] text-white/30 mt-2 text-center" data-i18n="keyboard_designer_sections.preset_no_selection">No preset selected</div>
+</div>
+
+<!-- ③ SELECTED KEY — compact, context-driven -->
+<div class="sci-fi-border carbon-pattern p-4">
+    <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-3" data-i18n="keyboard_designer_sections.selected_key_title">Selected Key</div>
+    <div id="selected-key-placeholder" class="flex items-center gap-2 text-white/30">
+        <span class="material-symbols-outlined text-base">touch_app</span>
+        <span class="text-xs italic" data-i18n="keyboard_designer_sections.selected_key_hint">Click a key on the keyboard</span>
+    </div>
+    <div id="selected-key-info" class="hidden">
+        <div class="flex items-center justify-between mb-3">
+            <div>
+                <span id="info-key-label" class="orbitron text-lg font-bold text-white">—</span>
+                <span class="text-white/30 text-xs ml-2">LED <span id="info-led-index" class="text-[var(--primary-accent)]">—</span></span>
+                <span class="text-white/20 text-xs ml-1">@ <span id="info-matrix-pos" class="text-white/40">—</span></span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="text-white/50 text-xs" data-i18n="keyboard_designer_sections.selected_key_color_label">Color:</span>
+            <button id="key-color-btn"
+                    data-i18n-attr="title:keyboard_designer_sections.selected_key_color_title"
+                    title="Click to change color"
+                    style="width:40px;height:26px;background:#FF6600;
+                           border:2px solid rgba(255,102,0,0.5);border-radius:4px;
+                           cursor:pointer;transition:border-color 0.2s;"
+                    onmouseenter="this.style.borderColor='#FF6600'"
+                    onmouseleave="this.style.borderColor='rgba(255,102,0,0.5)'"></button>
+            <span id="info-color-hex" class="text-white/50 text-[11px] font-mono flex-1">—</span>
+            <button id="key-color-clear-btn"
+                    data-i18n-attr="title:keyboard_designer_sections.selected_key_clear_title"
+                    title="Clear color (restore default)"
+                    class="flex items-center justify-center w-6 h-6 rounded border border-white/15
+                           hover:border-white/40 hover:bg-white/10 transition-all"
+                    style="color:rgba(255,255,255,0.35);">
+                <span class="material-symbols-outlined" style="font-size:13px;">block</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ④ QUICK ACTIONS -->
+<div class="sci-fi-border carbon-pattern p-4">
+    <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-3" data-i18n="keyboard_designer_sections.quick_actions_title">Quick Actions</div>
+    <div class="space-y-2">
+        <button id="btn-toggle-preview" class="w-full btn-sci-fi py-2 flex items-center gap-2 text-xs">
+            <span id="icon-live-preview-sb" class="material-symbols-outlined text-sm text-[var(--primary-accent)]">visibility</span>
+            <span id="label-live-preview-sb" class="flex-1 text-left" data-i18n="keyboard_designer_sections.toggle_live_preview">Toggle Live Preview</span>
+            <span id="live-preview-dot-sb" class="w-2 h-2 rounded-full bg-white/20 flex-shrink-0"></span>
+        </button>
+        <button id="btn-test-gradient" class="w-full btn-sci-fi py-2 flex items-center gap-2 text-xs">
+            <span class="material-symbols-outlined text-sm text-[var(--primary-accent)]">colorize</span>
+            <span data-i18n="keyboard_designer_sections.test_gradient">Test Gradient</span>
+        </button>
+        <button id="btn-show-grid" class="w-full btn-sci-fi py-2 flex items-center gap-2 text-xs">
+            <span id="icon-grid" class="material-symbols-outlined text-sm text-[var(--primary-accent)]">grid_on</span>
+            <span id="label-grid" data-i18n="keyboard_designer_sections.show_grid_lines">Show Grid Lines</span>
+        </button>
+        <button id="btn-clear-all" class="w-full btn-sci-fi py-2 flex items-center gap-2 text-xs"
+                style="border-color:rgba(239,68,68,0.25);color:rgba(248,113,113,0.7);">
+            <span class="material-symbols-outlined text-sm" style="color:rgba(248,113,113,0.7);">ink_eraser</span>
+            <span data-i18n="keyboard_designer_sections.clear_all_colors">Clear All Colors</span>
+        </button>
+        <button id="btn-export-json" class="w-full btn-sci-fi py-2 flex items-center gap-2 text-xs">
+            <span class="material-symbols-outlined text-sm text-[var(--primary-accent)]">download</span>
+            <span data-i18n="keyboard_designer_sections.export_matrix_json">Export Matrix JSON</span>
+        </button>
+    </div>
+</div>
+
+<!-- ⑤ MATRIX INFO — collapsible, developer data, closed by default -->
+<div class="sci-fi-border carbon-pattern p-4">
+    <button id="btn-toggle-matrix-info"
+            class="w-full flex items-center justify-between group">
+        <span class="orbitron text-xs tracking-[0.2em] text-white/40 uppercase" data-i18n="keyboard_designer_sections.device_info_title">Device Info</span>
+        <span id="matrix-info-chevron"
+              class="material-symbols-outlined text-sm text-white/25 group-hover:text-white/50 transition-colors">
+            expand_more
+        </span>
+    </button>
+    <div id="matrix-info-body" class="hidden mt-3 space-y-2">
+        <div class="flex justify-between text-xs">
+            <span class="text-white/40" data-i18n="keyboard_designer_sections.device_info_device">Device:</span>
+            <span id="matrix-device-name" class="text-[var(--primary-accent)] text-right truncate max-w-[130px]">—</span>
+        </div>
+        <div class="flex justify-between text-xs">
+            <span class="text-white/40" data-i18n="keyboard_designer_sections.device_info_total_keys">Total Keys:</span>
+            <span class="text-white/70 font-bold">105</span>
+        </div>
+        <div class="flex justify-between text-xs">
+            <span class="text-white/40" data-i18n="keyboard_designer_sections.device_info_layout">Layout:</span>
+            <span class="text-white/70" data-i18n="keyboard_designer_sections.device_info_layout_value">ANSI Full + Numpad</span>
+        </div>
+        <div class="flex justify-between text-xs">
+            <span class="text-white/40" data-i18n="keyboard_designer_sections.device_info_grid">Grid:</span>
+            <span class="text-white/40" data-i18n="keyboard_designer_sections.device_info_grid_value">90 cols × 8px</span>
+        </div>
+        <div class="flex justify-between text-xs">
+            <span class="text-white/40" data-i18n="keyboard_designer_sections.device_info_led_indicators">LED Indicators:</span>
+            <span class="text-white/40" data-i18n="keyboard_designer_sections.device_info_led_indicators_value">3 (NumLk / CapsLk / ScrLk)</span>
+        </div>
+    </div>
+</div>
+
+</aside>
+
+</div>
+</main>
+
+
+
+
+<script>
+    // ========================================
+    // FADE TRANSITIONS - Click to Black → Navigate → Fade from Black
+    // ========================================
+
+    // NOTE: Fade-in is triggered by keyboard-designer.js after i18n initialization
+    // Fallback: show after 2.5s even if keyboard-designer.js doesn't trigger it
+    setTimeout(function() {
+        if (!document.body.classList.contains('loaded')) {
+            console.warn('[Fade] Fallback: forcing fade-in after timeout');
+            document.body.classList.add('loaded');
+        }
+    }, 2500);
+
+    // Intercept navigation links for fade to black
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set keyboard shortcut context
+        if (typeof setShortcutContext === 'function') setShortcutContext('keyboard-designer');
+
+        const links = document.querySelectorAll('a[href]');
+
+        links.forEach(link => {
+            // Skip external links, anchors, javascript:, and absolute URLs
+            const href = link.getAttribute('href');
+            if (!href ||
+                href.startsWith('#') ||
+                href.startsWith('javascript:') ||
+                href.startsWith('http://') ||
+                href.startsWith('https://') ||
+                href.includes('://')) {
+                return;
+            }
+
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetUrl = this.href;
+
+                // Restore keyboard to fully-lit state before leaving
+                if (typeof _restoreKeyboardOnExit === 'function') _restoreKeyboardOnExit();
+
+                // Disable all links during transition
+                document.body.style.pointerEvents = 'none';
+
+                // Fade to black
+                document.body.classList.remove('loaded');
+                document.body.classList.add('fade-out');
+
+                // Navigate after fade completes (300ms)
+                setTimeout(function() {
+                    window.location.href = targetUrl;
+                }, 300);
+            });
+        });
+    });
+
+// ── Global Wrappers for Keyboard Shortcuts ──────────────────────────────────
+// This function allows Ctrl+S to trigger the save preset button
+window.saveKeyboardColors = () => document.getElementById('btn-save-preset')?.click();
+</script>
+
+<!-- Eel Bridge (auto-generated by Eel) -->
+<script src="/eel.js"></script>
+
+<!-- Common Utilities -->
+<script src="js/common.js"></script>
+<script src="js/glass-select.js"></script>
+
+<!-- i18n (Internationalization) -->
+<script src="js/i18n.js"></script>
+<script>
+// Initialize i18n before other modules
+(async function() {
+    if (typeof eel !== 'undefined') {
+        try {
+            const settings = await eel.get_settings()();
+            const lang = settings?.language || 'en';
+            await i18n.init(lang);
+            i18n.apply();
+            console.log('[i18n] Translations applied for language:', lang);
+        } catch (error) {
+            console.error('[i18n] Failed to initialize translations:', error);
+            // Fallback to English if error
+            await i18n.init('en');
+            i18n.apply();
+        }
+    }
+})();
+</script>
+
+<!-- Color Picker (shared, reusable modal) -->
+<script src="js/color-picker.js"></script>
+
+<!-- Keyboard Designer Logic -->
+<script src="js/keyboard-designer.js"></script>
+
+<!-- Manual Viewer (in-app browser) -->
+<script src="js/manual-viewer.js"></script>
+
+<!-- Load Navigation Component -->
+<script src="js/load-navigation.js"></script>
+
+<!-- Key tooltip (single element, reused for all keys) -->
+<div id="key-tooltip"></div>
+<script src="js/keyboard-shortcuts.js"></script>
+</body></html>

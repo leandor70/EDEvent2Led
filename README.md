@@ -7,6 +7,7 @@ ED:Event2Led monitors the game's journal files and synchronizes your RGB hardwar
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue)
 ![Version](https://img.shields.io/github/v/release/leandor70/EDEvent2Led?label=version&color=brightgreen)
 ![OpenRGB](https://img.shields.io/badge/requires-OpenRGB-orange)
+![License](https://img.shields.io/badge/license-PolyForm%20Noncommercial-green)
 
 ![Dashboard](screenshots/01_dashboard.png)
 
@@ -216,15 +217,24 @@ EDEvent2Led/
 
 ---
 
+## 💻 Source Code
+
+The full source code is in this repository. To run it from source or build the
+Windows package yourself, see [DEVELOPMENT.md](DEVELOPMENT.md). Bug reports and
+ideas are welcome as issues; pull requests are not accepted (see [NOTICE.md](NOTICE.md)).
+
 ## 📄 License
 
-This software is distributed as a compiled binary. The source code is not publicly available at this time.
+The source code is public, but ED:Event2Led is **source-available, not open source**.
+It is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE): you can
+read, run, modify and share it for any noncommercial purpose; commercial use is not
+allowed. Streaming or recording your gameplay is fine, including on monetized channels.
 
-ED:Event2Led is **freeware**: free to use for personal, non-commercial purposes (streaming or recording your gameplay is fine, including on monetized channels).
+- [NOTICE.md](NOTICE.md) — the name and logo, official builds, contributions
+- [THIRD-PARTY.md](THIRD-PARTY.md) — licenses of the fonts, icons and libraries used
 
-You may **not** sell it, use it commercially, or redistribute it anywhere other than the [official release page](https://github.com/leandor70/EDEvent2Led/releases).
-
-See the [LICENSE](LICENSE) file for the full terms.
+Releases up to 1.3.0 were distributed under a freeware license, which still governs
+those downloads.
 
 ---
 

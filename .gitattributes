@@ -1,0 +1,14 @@
+# Auto-detect text files and normalize line endings to LF in the repo
+* text=auto eol=lf
+
+# Windows batch files keep CRLF
+*.bat text eol=crlf
+
+# Binary files — no conversion
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary
+*.pdf binary
+*.xlsx binary
+*.json5 binary

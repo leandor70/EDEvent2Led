@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ED:Event2Led - Events</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="css/tailwind.min.css" rel="stylesheet">
+<link href="css/fonts.css" rel="stylesheet">
+<link href="css/sci-fi-theme.css" rel="stylesheet">
+<link href="css/sci-fi-forms.css" rel="stylesheet">
+<style>
+/* ── Layout ─────────────────────────────────── */
+body { overflow: hidden; }
+
+/* ── Scrollbars ─────────────────────────────── */
+*::-webkit-scrollbar { width: 6px; height: 4px; }
+*::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 3px; }
+*::-webkit-scrollbar-thumb { background: rgba(255,102,0,0.3); border-radius: 3px; }
+*::-webkit-scrollbar-thumb:hover { background: rgba(255,102,0,0.5); }
+
+/* ── Category filter ────────────────────────── */
+.category-filter:not(.active) {
+    background-color: transparent !important;
+    color: rgba(255,255,255,0.6) !important;
+}
+.category-filter.active {
+    background-color: var(--primary-accent) !important;
+    color: white !important;
+    border-color: transparent !important;
+}
+
+/* ── Mapping filter (3-way) ─────────────────── */
+.mapping-filter {
+    background-color: transparent;
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.15s;
+    cursor: pointer;
+}
+.mapping-filter:hover:not(.active) { background-color: rgba(255,255,255,0.05); }
+.mapping-filter.active {
+    background-color: var(--primary-accent) !important;
+    color: white !important;
+    border-color: transparent !important;
+}
+
+/* ── Event list rows ────────────────────────── */
+.event-row {
+    transition: background 0.1s;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    cursor: pointer;
+    border-left: 2px solid transparent;
+}
+.event-row:hover { background: rgba(255,255,255,0.04); }
+.event-row.selected {
+    background: rgba(255,102,0,0.10) !important;
+    border-left-color: var(--primary-accent);
+}
+
+/* ── Category filter scrollable row (no scrollbar) */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Dirty indicator pulse ───────────────────── */
+@keyframes pulse-amber { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+#dirty-dot { animation: pulse-amber 1.5s ease-in-out infinite; }
+
+/* ── Effect editor module: preset buttons ────── */
+.preset-btn {
+    background: rgba(255,102,0,0.05);
+    border: 1px solid rgba(255,102,0,0.2);
+    color: rgba(255,255,255,0.6);
+    transition: all 0.2s;
+}
+.preset-btn:hover {
+    background: rgba(255,102,0,0.15);
+    border-color: var(--primary-accent);
+    color: white;
+}
+.preset-btn.active {
+    background: var(--primary-accent);
+    border-color: var(--primary-accent);
+    color: white;
+}
+.dir-btn:not(.active) { color: rgba(255,255,255,0.4); }
+
+/* ── Template modal ─────────────────────────── */
+.overlay-modal { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; }
+.overlay-modal.hidden { display: none; }
+.overlay-modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); }
+.overlay-modal-box {
+    position: relative; z-index: 10001;
+    width: 90%; max-width: 640px; max-height: 78vh;
+    background: rgba(5,7,10,0.97);
+    border: 1px solid rgba(255,102,0,0.3); border-radius: 12px;
+    display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+}
+.template-card {
+    padding: 10px 12px; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer; transition: all 0.15s;
+}
+.template-card:hover {
+    background: rgba(255,102,0,0.08);
+    border-color: rgba(255,102,0,0.3);
+}
+
+/* ── Step cards (effect-editor-module renders these) */
+#steps-container .step-card {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,102,0,0.15);
+    border-radius: 8px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+#steps-container .step-card:hover {
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 20px rgba(255,102,0,0.2);
+}
+
+/* ── Timeline duration labels ──────────────────── */
+#timeline-duration-row { user-select: none; }
+</style>
+</head>
+<body class="h-screen w-full relative flex overflow-hidden">
+
+<!-- Background -->
+<div class="fixed inset-0 z-0">
+  <img alt="Spiral Galaxy Background" class="w-full h-full object-cover opacity-25" src="images/backgrounds/spiral-galaxy.jpg"/>
+  <div class="absolute inset-0 bg-gradient-to-b from-[#05070a]/40 via-[#05070a]/70 to-[#05070a]"></div>
+</div>
+
+<!-- Sidebar Navigation -->
+<div id="sidebar-nav" data-active-page="events"></div>
+
+<!-- ── Main Split-Pane ────────────────────────────────────────────── -->
+<main class="relative z-10 flex-1 flex h-full overflow-hidden">
+
+  <!-- ── LEFT PANEL: Event List (420px) ─────────────────────────── -->
+  <div class="w-[320px] flex-shrink-0 flex flex-col border-r border-white/10 overflow-hidden bg-black/20">
+
+    <!-- Header -->
+    <div class="px-4 pt-5 pb-3 border-b border-white/10 flex-shrink-0">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-[var(--primary-accent)] opacity-30"></div>
+        <h1 class="orbitron text-base font-bold tracking-[0.2em] text-white" data-i18n="pages.event_mapping.title">EVENT MAPPING</h1>
+        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-[var(--primary-accent)] opacity-30"></div>
+      </div>
+
+      <!-- Search -->
+      <input id="search-input" type="text"
+        placeholder="Search events..."
+        class="w-full bg-black/60 border border-[var(--primary-accent)]/30 text-white rounded
+               px-3 py-2 text-sm focus:ring-1 focus:ring-[var(--primary-accent)] outline-none mb-2"/>
+
+      <!-- Mapping filter -->
+      <div class="flex gap-1 mb-2">
+        <button class="mapping-filter active flex-1 py-1.5 text-xs uppercase tracking-wider rounded" data-filter="all" data-i18n="sections.event_mapping.filter_all">All</button>
+        <button class="mapping-filter flex-1 py-1.5 text-xs uppercase tracking-wider rounded" data-filter="mapped" data-i18n="events_page.filter_mapped_btn">Mapped</button>
+        <button class="mapping-filter flex-1 py-1.5 text-xs uppercase tracking-wider rounded" data-filter="unmapped" data-i18n="events_page.filter_unmapped_btn">Unmapped</button>
+      </div>
+
+      <!-- Category filters (wrapping, 2 rows) -->
+      <div class="flex flex-wrap gap-1 mb-2">
+        <button class="category-filter active px-2 py-1 text-xs uppercase tracking-wider bg-[var(--primary-accent)] text-white rounded" data-category="all" data-i18n="categories.all">All</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Startup" data-i18n="categories.startup">Startup</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Travel" data-i18n="categories.travel">Travel</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Combat" data-i18n="categories.combat">Combat</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Exploration" data-i18n="categories.exploration">Explore</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Trade" data-i18n="categories.trade">Trade</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Station Services" data-i18n="categories.station">Station</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Powerplay" data-i18n="categories.powerplay">Power</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Squadrons" data-i18n="categories.squadrons">Squads</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Fleet Carriers" data-i18n="categories.fleet">Fleet</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Odyssey" data-i18n="categories.odyssey">Odyssey</button>
+        <button class="category-filter px-2 py-1 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-category="Other Events" data-i18n="categories.other">Other</button>
+      </div>
+
+      <!-- Importance slider -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs uppercase tracking-wider text-white/55 shrink-0" data-i18n="events_page.importance_label">Min Priority</span>
+        <input type="range" id="importance-filter" min="0" max="5" value="0" step="1"
+               class="flex-1 cursor-pointer accent-[var(--primary-accent)]"/>
+        <span id="importance-filter-label" class="text-xs font-mono text-[var(--primary-accent)] w-6 text-center" data-i18n="events_page.importance_all">All</span>
+      </div>
+    </div>
+
+    <!-- Event List -->
+    <div id="events-list" class="flex-1 overflow-y-auto mt-2">
+      <!-- Populated by events.js -->
+    </div>
+
+    <!-- Footer stats + deassign -->
+    <div class="px-4 py-2 border-t border-white/10 flex-shrink-0 flex items-center justify-between bg-black/10">
+      <span class="text-xs text-white/40">
+        <span id="count-mapped" class="text-[var(--primary-accent)] font-bold">0</span>
+        mapped /
+        <span id="count-total" class="text-white">0</span> total
+      </span>
+      <button id="btn-deassign-filtered"
+        title="Deassign effects from filtered events"
+        class="flex items-center gap-1 px-2 py-1 rounded border border-amber-500/30 text-amber-400/70
+               text-xs uppercase tracking-wider hover:bg-amber-500/10 transition-colors">
+        <span class="material-symbols-outlined" style="font-size:12px;">link_off</span>
+        Deassign
+      </button>
+    </div>
+
+  </div><!-- end left panel -->
+
+  <!-- ── RIGHT PANEL: Effect Editor ─────────────────────────────── -->
+  <div class="flex-1 flex flex-col overflow-hidden">
+
+    <!-- Editor Header: event name + priority + enabled -->
+    <div id="editor-header" class="px-6 py-4 border-b border-white/10 flex-shrink-0 flex items-center justify-between">
+      <div>
+        <div class="text-xs text-white/55 uppercase tracking-wider mb-1" data-i18n="events_page.selected_event_label">Selected Event</div>
+        <h2 id="editor-event-name" class="orbitron text-xl text-white">—</h2>
+        <div id="editor-event-desc" class="text-xs text-white/50 mt-0.5 hidden"></div>
+      </div>
+      <div id="editor-controls" class="hidden flex items-center gap-5">
+        <!-- Priority -->
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-white/55 uppercase tracking-wider" data-i18n="events_page.priority_label">Priority</span>
+          <input type="range" id="editor-priority" min="1" max="10" value="5" step="1"
+                 class="w-24 accent-[var(--primary-accent)] cursor-pointer"/>
+          <span id="editor-priority-value" class="orbitron text-[var(--primary-accent)] font-bold text-sm w-5 text-right">5</span>
+        </div>
+        <!-- Enabled toggle -->
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-white/55 uppercase tracking-wider" data-i18n="events_page.active_label">Active</span>
+          <label class="glass-toggle-container" title="Enable/disable this mapping">
+            <input type="checkbox" id="editor-enabled" class="glass-toggle-input" checked>
+            <div class="glass-toggle-track"><div class="glass-toggle-thumb"></div></div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PANEL: No event selected ─────────────────────────────── -->
+    <div id="empty-effect-panel" class="flex-1 flex flex-col items-center justify-center text-center px-8">
+      <span class="material-symbols-outlined text-7xl text-white/8 mb-5">bolt</span>
+      <p class="text-white/25 text-sm uppercase tracking-wider mb-1" data-i18n="events_page.select_event_hint">Select an event</p>
+      <p class="text-white/15 text-xs" data-i18n="events_page.select_event_desc">Click any event in the left panel to view or edit its effect</p>
+    </div>
+
+    <!-- ── PANEL: No effect assigned ────────────────────────────── -->
+    <div id="no-effect-panel" class="hidden flex-1 flex flex-col items-center justify-center text-center px-8">
+      <span class="material-symbols-outlined text-6xl text-white/10 mb-4">add_circle</span>
+      <h3 class="text-lg text-white/40 mb-2">No Effect Assigned</h3>
+      <p class="text-sm text-white/25 mb-6" data-i18n="events_page.no_effect_assigned">This event triggers no RGB lighting effect</p>
+      <div class="flex gap-3">
+        <button onclick="createNewEffect()"
+          class="flex items-center gap-2 px-5 py-2.5 bg-[var(--primary-accent)] text-white rounded
+                 text-sm hover:bg-[var(--primary-accent)]/80 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:16px;">add</span>
+          Create Effect
+        </button>
+        <button onclick="setEffectKeyboardDefault()"
+          class="flex items-center gap-2 px-5 py-2.5 rounded border border-[var(--primary-accent)]/30
+                 text-[var(--primary-accent)]/70 text-sm hover:bg-[var(--primary-accent)]/10 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:16px;">keyboard</span>
+          Keyboard Default
+        </button>
+      </div>
+    </div>
+
+    <!-- ── PANEL: Keyboard Default ───────────────────────────────── -->
+    <div id="keyboard-default-panel" class="hidden flex-1 flex flex-col items-center justify-center px-8">
+      <span class="material-symbols-outlined text-6xl text-[var(--primary-accent)]/40 mb-4">keyboard</span>
+      <h3 class="text-lg text-white/70 mb-2" data-i18n="events_page.keyboard_default_preset">Keyboard Default Preset</h3>
+      <p class="text-sm text-white/40 mb-6 text-center max-w-sm">
+        This event restores the keyboard to the active color preset<br>
+        (configured in Keyboard Designer)
+      </p>
+      <div class="flex gap-3">
+        <button onclick="setEffectNull()"
+          class="px-4 py-2 rounded border border-white/20 text-white/50 text-sm hover:bg-white/5 transition-colors">
+          Remove (set None)
+        </button>
+        <button onclick="createNewEffect()"
+          class="flex items-center gap-2 px-4 py-2 rounded border border-[var(--primary-accent)]/30
+                 text-[var(--primary-accent)]/70 text-sm hover:bg-[var(--primary-accent)]/10 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:15px;">add</span>
+          Create Custom Effect
+        </button>
+      </div>
+    </div>
+
+    <!-- ── PANEL: Effect Step Editor ─────────────────────────────── -->
+    <div id="effect-editor-content" class="hidden flex-1 flex flex-col overflow-hidden">
+
+      <!-- Editor content wrapper (scrollable) -->
+      <div class="flex-1 overflow-y-auto">
+        <div class="sci-fi-border carbon-pattern p-5 min-h-full flex flex-col gap-5">
+
+          <!-- Effect name -->
+          <div>
+            <input id="editor-effect-name" type="text"
+              class="bg-transparent border-b-2 border-[var(--primary-accent)] text-xl orbitron font-bold
+                     text-white w-full pb-2 focus:outline-none"
+              placeholder="Unnamed effect"/>
+          </div>
+
+          <!-- Color Timeline section -->
+          <div>
+            <div class="orbitron text-sm tracking-widest text-[var(--primary-accent)] uppercase mb-3" data-i18n="sections.effect_editor.color_timeline">Color Timeline</div>
+            <div class="sci-fi-border rounded-lg overflow-hidden">
+              <canvas id="colorTimeline" class="w-full" height="120" style="display:block;"></canvas>
+            </div>
+            <div id="timeline-duration-row" class="flex justify-between items-center mt-2 px-1">
+              <span class="text-xs text-white/40 uppercase">0ms</span>
+              <span id="totalDuration" class="text-[12px] orbitron font-bold text-[var(--primary-accent)]" data-i18n="sections.effect_editor.total_duration" data-i18n-vars='{"duration":"0ms"}'>Total: 0ms</span>
+              <span id="endTime" class="text-xs text-white/40 uppercase">0ms</span>
+            </div>
+          </div>
+
+          <!-- Effect Steps section -->
+          <div class="flex-1 flex flex-col">
+            <div class="orbitron text-sm tracking-widest text-[var(--primary-accent)] uppercase mb-3" data-i18n="sections.effect_editor.effect_steps">Effect Steps</div>
+            <div id="steps-container" class="flex-1 space-y-3"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Action Bar (shown when event selected) ─────────────────── -->
+    <div id="editor-actions" class="hidden px-4 py-3 border-t border-white/10 flex-shrink-0 flex items-center gap-2 bg-black/20">
+      <!-- Step actions (visible when editor is active) -->
+      <div id="step-actions" class="hidden flex items-center gap-2">
+        <button onclick="addEditorStep()"
+          class="flex items-center gap-1 px-4 py-1.5 rounded border border-[var(--primary-accent)]/60
+                 bg-[var(--primary-accent)]/10 text-[var(--primary-accent)] font-semibold
+                 text-xs uppercase tracking-wider hover:bg-[var(--primary-accent)]/20 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:14px;">add</span>
+          Step
+        </button>
+        <button id="btn-add-keyboard" onclick="addKeyboardStep()"
+          class="flex items-center gap-1 px-3 py-1.5 rounded border border-violet-500/30 text-violet-400/65
+                 text-xs uppercase tracking-wider hover:bg-violet-500/10 transition-colors"
+          title="Add Keyboard Default as final step">
+          <span class="material-symbols-outlined" style="font-size:13px;">keyboard_return</span>
+          Keyboard
+        </button>
+        <button onclick="testCurrentEffect()"
+          class="flex items-center gap-1 px-3 py-1.5 rounded border border-blue-500/30 text-blue-400/65
+                 text-xs uppercase tracking-wider hover:bg-blue-500/10 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:13px;">play_arrow</span>
+          Test
+        </button>
+        <button onclick="stopEffect()"
+          class="flex items-center gap-1 px-3 py-1.5 rounded border border-white/12 text-white/35
+                 text-xs uppercase tracking-wider hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:13px;">stop</span>
+          Stop
+        </button>
+      </div>
+
+      <!-- Right side: template / none / revert / save -->
+      <div class="ml-auto flex items-center gap-2">
+        <button id="btn-import-template" onclick="openTemplateModal()"
+          class="flex items-center gap-1 px-3 py-1.5 rounded border border-violet-500/30 text-violet-400/65
+                 text-xs uppercase tracking-wider hover:bg-violet-500/10 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:13px;">download</span>
+          Copy from
+        </button>
+        <button id="btn-set-none" onclick="setEffectNull()"
+          class="flex items-center gap-1 px-3 py-1.5 rounded border border-white/12 text-white/30
+                 text-xs uppercase tracking-wider hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:13px;">block</span>
+          None
+        </button>
+        <button id="btn-revert" onclick="revertEffect()"
+          class="flex items-center gap-1 px-3 py-1.5 rounded border border-amber-500/30 text-amber-400/65
+                 text-xs uppercase tracking-wider hover:bg-amber-500/10 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:13px;">undo</span>
+          Revert
+        </button>
+        <button id="btn-save-effect" onclick="saveCurrentEffect()"
+          class="relative flex items-center gap-1 px-4 py-1.5 rounded bg-[var(--primary-accent)]
+                 text-white text-xs uppercase tracking-wider hover:bg-[var(--primary-accent)]/80 transition-colors">
+          <span class="material-symbols-outlined" style="font-size:13px;">save</span>
+          Save
+          <span id="dirty-dot" class="hidden absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-400"></span>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- end right panel -->
+
+</main>
+
+<!-- ── Copy from Library Modal ────────────────────────────────────── -->
+<div id="template-modal" class="overlay-modal hidden">
+  <div class="overlay-modal-bg" id="template-modal-bg"></div>
+  <div class="overlay-modal-box">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-[rgba(255,102,0,0.2)] flex-shrink-0">
+      <h2 class="orbitron text-base text-white tracking-wider" data-i18n="events_page.copy_from_library">Copy from Library</h2>
+      <button onclick="closeTemplateModal()"
+        class="p-1.5 rounded border border-[var(--primary-accent)]/30 text-[var(--primary-accent)] hover:bg-[var(--primary-accent)]/10 transition-colors">
+        <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+      </button>
+    </div>
+    <div class="px-4 py-3 border-b border-white/8 flex-shrink-0">
+      <input type="text" id="template-search" placeholder="Search effects..."
+        class="w-full bg-black/60 border border-white/20 text-white rounded px-3 py-2 text-sm
+               focus:outline-none focus:border-[var(--primary-accent)]/50 transition-colors"/>
+    </div>
+    <div id="template-list" class="flex-1 overflow-y-auto p-4 space-y-2"></div>
+    <div class="px-5 py-3 border-t border-white/8 text-xs text-white/45 text-center flex-shrink-0">
+      Copying from library replaces the current effect steps
+    </div>
+  </div>
+</div>
+
+<!-- ── Deassign Confirm Modal ─────────────────────────────────────── -->
+<div id="deassign-confirm-modal" class="overlay-modal hidden">
+  <div id="deassign-modal-overlay" class="overlay-modal-bg"></div>
+  <div class="overlay-modal-box" style="max-width:520px;">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-[rgba(255,102,0,0.2)] flex-shrink-0">
+      <div>
+        <div class="text-xs text-white/40 uppercase tracking-wider mb-1" data-i18n="events_page.deassign_active_filters">Confirm deassign</div>
+        <h2 class="orbitron text-lg" style="color:rgba(248,113,113,0.9);" data-i18n="events_page.deassign_modal_header">Deassign Effects</h2>
+      </div>
+    </div>
+    <div class="px-6 py-4 border-b border-white/8 flex-shrink-0">
+      <div class="text-xs text-white/40 uppercase tracking-wider mb-2" data-i18n="events_page.deassign_active_filters">Active Filters</div>
+      <div id="deassign-filter-desc" class="text-sm text-white/70"></div>
+    </div>
+    <div class="px-6 py-4 overflow-y-auto flex-1" style="max-height:260px;">
+      <div class="text-xs text-white/40 uppercase tracking-wider mb-2">
+        <span id="deassign-count" class="text-2xl font-bold text-white mr-2">0</span>
+        events will be deassigned
+      </div>
+      <div id="deassign-event-list" class="text-sm space-y-1"></div>
+    </div>
+    <div class="flex items-center justify-between px-6 py-4 border-t border-white/10 flex-shrink-0">
+      <button id="btn-deassign-cancel"
+        class="px-4 py-2 rounded text-sm border border-white/20 text-white/60 hover:bg-white/5 transition-colors">
+        Cancel
+      </button>
+      <button id="btn-deassign-confirm"
+        class="px-6 py-2 rounded text-sm uppercase tracking-wider font-semibold"
+        style="background:rgba(245,158,11,0.8);color:black;"
+        onmouseover="this.style.background='rgba(245,158,11,1)'"
+        onmouseout="this.style.background='rgba(245,158,11,0.8)'">
+        Deassign
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Scripts ───────────────────────────────────────────────────── -->
+<script>
+// Fade transitions
+setTimeout(function() {
+    if (!document.body.classList.contains('loaded')) document.body.classList.add('loaded');
+}, 2500);
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof setShortcutContext === 'function') setShortcutContext('events');
+    document.querySelectorAll('a[href]').forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('javascript:') || href.includes('://')) return;
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.style.pointerEvents = 'none';
+            document.body.classList.remove('loaded');
+            document.body.classList.add('fade-out');
+            setTimeout(() => { window.location.href = this.href; }, 300);
+        });
+    });
+});
+</script>
+
+<script src="/eel.js"></script>
+<script src="js/common.js"></script>
+<script src="js/glass-select.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/color-picker.js"></script>
+<script>
+(async function() {
+    if (typeof eel !== 'undefined') {
+        try {
+            const settings = await eel.get_settings()();
+            const lang = settings?.language || 'en';
+            await i18n.init(lang);
+            i18n.apply();
+        } catch (error) {
+            await i18n.init('en');
+            i18n.apply();
+        }
+    }
+})();
+</script>
+<script src="js/effect-editor-module.js"></script>
+<script src="js/events.js"></script>
+<script src="js/manual-viewer.js"></script>
+<script src="js/load-navigation.js"></script>
+<script src="js/keyboard-shortcuts.js"></script>
+</body></html>

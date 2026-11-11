@@ -1,0 +1,133 @@
+{
+  "app": {
+    "name": "ED:EVENT2LED",
+    "tagline": "Translating Elite Dangerous Logs to Immersive LED Lighting",
+    "version": "v1.2.4",
+    "build": "Build 2024.10.27",
+    "status": "All systems nominal."
+  },
+  "navigation": {
+    "title": "Navigation",
+    "home": "Home",
+    "configuration": "Configuration",
+    "effects_editor": "Effects Editor",
+    "events": "Events",
+    "test": "Test",
+    "log": "Log",
+    "keyboard_designer": "Keyboard Designer",
+    "system_status": "System Status",
+    "core_online": "Core Online"
+  },
+  "pages": {
+    "configuration": {
+      "title": "CONFIGURATION",
+      "subtitle": "System Setup"
+    },
+    "effects_editor": {
+      "title": "EFFECTS EDITOR",
+      "subtitle": "Design Multi-Step Lighting Sequences"
+    },
+    "events": {
+      "title": "EVENTS",
+      "subtitle": "Game Event Mapping"
+    }
+  },
+  "sections": {
+    "system_settings": {
+      "title": "System Settings",
+      "language_label": "Language Selection",
+      "theme_label": "Theme Colors",
+      "theme_elite": "Elite",
+      "theme_violet": "Violet",
+      "theme_cyan": "Cyan",
+      "theme_matrix": "Matrix"
+    },
+    "openrgb": {
+      "title": "OpenRGB Connection",
+      "host_label": "Server IP:",
+      "port_label": "Server Port:",
+      "status_connected": "Status: Connected",
+      "status_disconnected": "Status: Disconnected",
+      "device_count": "{{count}} device(s)"
+    },
+    "game_integration": {
+      "title": "Game Integration",
+      "journal_path_label": "Journal Path:",
+      "browse_label": "Browse Directory:",
+      "status_verified": "Status: Verified",
+      "status_not_verified": "Status: Not Verified",
+      "file_count": "{{count}} file(s)"
+    },
+    "effects_library": {
+      "title": "Effects Library",
+      "search_placeholder": "Search effects...",
+      "filter_all": "All",
+      "filter_1d": "1D",
+      "filter_2d": "2D",
+      "steps_count": "{{count}} STEPS"
+    },
+    "effect_editor": {
+      "title": "Effect Editor",
+      "name_label": "Effect Name",
+      "topology_label": "Topology:",
+      "post_behavior_label": "Post-Behavior:",
+      "color_timeline": "Color Timeline",
+      "total_duration": "Total: {{duration}}",
+      "effect_steps": "Effect Steps"
+    },
+    "step_editor": {
+      "color_label": "Color",
+      "colors_label": "Colors",
+      "duration_label": "Duration",
+      "speed_label": "Speed",
+      "direction_label": "Direction"
+    }
+  },
+  "buttons": {
+    "save": "SAVE",
+    "test": "TEST",
+    "test_connection": "TEST CONNECTION",
+    "browse_directory": "BROWSE DIRECTORY",
+    "verify_path": "VERIFY PATH",
+    "new_effect": "NEW EFFECT",
+    "clone_effect": "CLONE EFFECT",
+    "add_step": "ADD STEP",
+    "test_full_effect": "TEST FULL EFFECT",
+    "stop": "STOP",
+    "duplicate": "Duplicate",
+    "delete": "Delete",
+    "play": "Play"
+  },
+  "languages": {
+    "en": "English (United States)",
+    "it": "Italiano",
+    "de": "Deutsch",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "effect_types": {
+    "static_transition": "Static Transition",
+    "breath": "Breath",
+    "color_cycle": "Color Cycle",
+    "wave": "Wave",
+    "ripple": "Ripple",
+    "explosion": "Explosion",
+    "gradient": "Gradient",
+    "pulse": "Pulse"
+  },
+  "post_behaviors": {
+    "turn_off": "Turn Off",
+    "static_color": "Static Color",
+    "loop_effect": "Loop Effect"
+  },
+  "notifications": {
+    "settings_loaded": "Settings loaded",
+    "settings_saved": "Settings saved successfully!",
+    "openrgb_connected": "OpenRGB OK! {{count}} device(s) found",
+    "openrgb_failed": "Connection failed",
+    "path_verified": "Path verified! Found {{count}} journal file(s)",
+    "path_invalid": "Invalid path",
+    "effect_saved": "Effect saved successfully",
+    "effect_deleted": "Effect deleted"
+  }
+}

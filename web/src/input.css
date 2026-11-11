@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles that were in inline <style> tags */
+@layer base {
+  :root {
+    --primary-accent: #FF6600;
+    --bg-dark: #05070a;
+    --panel-bg: rgba(18, 20, 24, 0.9);
+    --border-color: rgba(255, 102, 0, 0.3);
+    --text-main: #e0e0e0;
+  }
+}
+
+@layer components {
+  .sci-fi-border {
+    @apply border border-[rgba(255,102,0,0.3)] relative;
+    background: linear-gradient(135deg, rgba(20, 22, 26, 0.95) 0%, rgba(10, 12, 14, 0.98) 100%);
+    box-shadow: 0 0 15px rgba(0,0,0,0.5), inset 0 0 20px rgba(255, 102, 0, 0.05);
+  }
+
+  .sci-fi-border::before {
+    content: '';
+    @apply absolute -top-px -left-px w-[10px] h-[10px];
+    border-top: 2px solid var(--primary-accent);
+    border-left: 2px solid var(--primary-accent);
+  }
+
+  .sci-fi-border::after {
+    content: '';
+    @apply absolute -bottom-px -right-px w-[10px] h-[10px];
+    border-bottom: 2px solid var(--primary-accent);
+    border-right: 2px solid var(--primary-accent);
+  }
+
+  .carbon-pattern {
+    background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.02) 1px, transparent 0);
+    background-size: 4px 4px;
+  }
+
+  .glow-orange {
+    box-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+  }
+
+  .btn-sci-fi {
+    background: linear-gradient(180deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 102, 0, 0.05) 100%);
+    @apply border border-[rgba(255,102,0,0.3)] transition-all duration-200;
+  }
+
+  .btn-sci-fi:hover {
+    background: rgba(255, 102, 0, 0.2);
+    border-color: var(--primary-accent);
+  }
+
+  .sidebar-item {
+    @apply transition-all duration-300 ease-in-out relative;
+  }
+
+  .sidebar-item.active {
+    color: var(--primary-accent);
+    background: linear-gradient(90deg, rgba(255, 102, 0, 0.15) 0%, transparent 100%);
+  }
+
+  .sidebar-item.active::before {
+    content: '';
+    @apply absolute left-0 top-[20%] bottom-[20%] w-[3px];
+    background-color: var(--primary-accent);
+    box-shadow: 0 0 8px var(--primary-accent);
+  }
+
+  .sidebar-item:hover:not(.active) {
+    @apply bg-white/5 text-white;
+  }
+
+  .main-panel-section {
+    @apply pt-10 pb-10 px-6;
+  }
+
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    @apply overflow-hidden inline-flex items-center justify-center;
+    @apply w-[1em] h-[1em] leading-none;
+    font-size: 0;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    color: transparent;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    opacity: 0;
+    animation: fadeInIcon 0.3s ease-in 0.5s forwards;
+  }
+
+  .material-symbols-outlined::before {
+    font-size: inherit;
+    color: currentColor;
+  }
+}
+
+@layer utilities {
+  .orbitron {
+    font-family: 'Orbitron', sans-serif;
+  }
+}
+
+/* Animations */
+@keyframes fadeInIcon {
+  from {
+    opacity: 0;
+    color: transparent;
+  }
+  to {
+    opacity: 1;
+    color: inherit;
+  }
+}
+
+/* Loading screen */
+body {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+body.loaded {
+  opacity: 1;
+}
+
+/* Material Symbols font-face */
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 100 700;
+  src: url('../fonts/MaterialSymbolsOutlined.woff2') format('woff2');
+  font-display: block;
+}

@@ -1,0 +1,133 @@
+{
+  "app": {
+    "name": "ED:EVENT2LED",
+    "tagline": "Traducción de registros de Elite Dangerous a iluminación LED inmersiva",
+    "version": "v1.2.4",
+    "build": "Build 2024.10.27",
+    "status": "Todos los sistemas nominales."
+  },
+  "navigation": {
+    "title": "Navegación",
+    "home": "Inicio",
+    "configuration": "Configuración",
+    "effects_editor": "Editor de Efectos",
+    "events": "Eventos",
+    "test": "Prueba",
+    "log": "Registro",
+    "keyboard_designer": "Diseñador de Teclado",
+    "system_status": "Estado del Sistema",
+    "core_online": "Núcleo En Línea"
+  },
+  "pages": {
+    "configuration": {
+      "title": "CONFIGURACIÓN",
+      "subtitle": "Configuración del Sistema"
+    },
+    "effects_editor": {
+      "title": "EDITOR DE EFECTOS",
+      "subtitle": "Diseñar secuencias de iluminación de múltiples pasos"
+    },
+    "events": {
+      "title": "EVENTOS",
+      "subtitle": "Mapeo de eventos del juego"
+    }
+  },
+  "sections": {
+    "system_settings": {
+      "title": "Configuración del Sistema",
+      "language_label": "Selección de Idioma",
+      "theme_label": "Colores del Tema",
+      "theme_elite": "Elite",
+      "theme_violet": "Violeta",
+      "theme_cyan": "Cian",
+      "theme_matrix": "Matrix"
+    },
+    "openrgb": {
+      "title": "Conexión OpenRGB",
+      "host_label": "IP del Servidor:",
+      "port_label": "Puerto del Servidor:",
+      "status_connected": "Estado: Conectado",
+      "status_disconnected": "Estado: Desconectado",
+      "device_count": "{{count}} dispositivo(s)"
+    },
+    "game_integration": {
+      "title": "Integración del Juego",
+      "journal_path_label": "Ruta del Diario:",
+      "browse_label": "Examinar Directorio:",
+      "status_verified": "Estado: Verificado",
+      "status_not_verified": "Estado: No Verificado",
+      "file_count": "{{count}} archivo(s)"
+    },
+    "effects_library": {
+      "title": "Biblioteca de Efectos",
+      "search_placeholder": "Buscar efectos...",
+      "filter_all": "Todos",
+      "filter_1d": "1D",
+      "filter_2d": "2D",
+      "steps_count": "{{count}} PASOS"
+    },
+    "effect_editor": {
+      "title": "Editor de Efecto",
+      "name_label": "Nombre del Efecto",
+      "topology_label": "Topología:",
+      "post_behavior_label": "Comportamiento Final:",
+      "color_timeline": "Línea de Tiempo de Color",
+      "total_duration": "Total: {{duration}}",
+      "effect_steps": "Pasos del Efecto"
+    },
+    "step_editor": {
+      "color_label": "Color",
+      "colors_label": "Colores",
+      "duration_label": "Duración",
+      "speed_label": "Velocidad",
+      "direction_label": "Dirección"
+    }
+  },
+  "buttons": {
+    "save": "GUARDAR",
+    "test": "PRUEBA",
+    "test_connection": "PROBAR CONEXIÓN",
+    "browse_directory": "EXAMINAR DIRECTORIO",
+    "verify_path": "VERIFICAR RUTA",
+    "new_effect": "NUEVO EFECTO",
+    "clone_effect": "CLONAR EFECTO",
+    "add_step": "AÑADIR PASO",
+    "test_full_effect": "PROBAR EFECTO COMPLETO",
+    "stop": "DETENER",
+    "duplicate": "Duplicar",
+    "delete": "Eliminar",
+    "play": "Reproducir"
+  },
+  "languages": {
+    "en": "English (United States)",
+    "it": "Italiano",
+    "de": "Deutsch",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "effect_types": {
+    "static_transition": "Transición Estática",
+    "breath": "Respiración",
+    "color_cycle": "Ciclo de Colores",
+    "wave": "Onda",
+    "ripple": "Ondulación",
+    "explosion": "Explosión",
+    "gradient": "Degradado",
+    "pulse": "Pulso"
+  },
+  "post_behaviors": {
+    "turn_off": "Apagar",
+    "static_color": "Color Estático",
+    "loop_effect": "Bucle de Efecto"
+  },
+  "notifications": {
+    "settings_loaded": "Configuración cargada",
+    "settings_saved": "¡Configuración guardada exitosamente!",
+    "openrgb_connected": "¡OpenRGB OK! {{count}} dispositivo(s) encontrado(s)",
+    "openrgb_failed": "Conexión fallida",
+    "path_verified": "¡Ruta verificada! {{count}} archivo(s) de diario encontrado(s)",
+    "path_invalid": "Ruta inválida",
+    "effect_saved": "Efecto guardado exitosamente",
+    "effect_deleted": "Efecto eliminado"
+  }
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ED:Event2Led - Manual de Usuario</title>
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/manual.css">
+    <style>
+    .wip-overlay {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        height: 100vh; gap: 20px; text-align: center; padding: 40px;
+        background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+        color: rgba(255,255,255,0.7);
+        font-family: "Rajdhani", sans-serif;
+    }
+    .wip-overlay h1 { font-family: "Orbitron", sans-serif; color: #ff6b35; font-size: 1.8rem; margin: 0; }
+    .wip-overlay p { font-size: 1.1rem; margin: 0; max-width: 500px; }
+    .wip-overlay .lang-links { display: flex; gap: 10px; margin-top: 20px; }
+    .wip-overlay a {
+        padding: 8px 20px; border-radius: 6px; font-size: 0.9rem; font-weight: 700;
+        text-decoration: none; border: 1px solid rgba(255,107,53,0.5);
+        color: #ff6b35; background: rgba(255,107,53,0.1); transition: all 0.2s;
+    }
+    .wip-overlay a:hover { background: rgba(255,107,53,0.2); }
+    .wip-overlay a.secondary { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.2); background: transparent; }
+    .wip-overlay a.secondary:hover { color: #ff6b35; border-color: rgba(255,107,53,0.4); }
+    </style>
+</head>
+<body>
+<div class="wip-overlay">
+    <span class="material-symbols-outlined" style="font-size:64px;color:rgba(255,107,53,0.5);">translate</span>
+    <h1>ED:Event2Led</h1>
+    <p>La traducción al español de este manual está en proceso. Por favor, utilice la versión en inglés o italiano mientras tanto.</p>
+    <div class="lang-links">
+        <a href="manual_en.html">English</a>
+        <a href="manual.html" class="secondary">Italiano</a>
+    </div>
+</div>
+<script src="js/manual.js"></script>
+</body>
+</html>

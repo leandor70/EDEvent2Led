@@ -1,0 +1,303 @@
+[OK] Loaded 202 translation keys from en.json
+
+
+======================================================================
+  index.html
+======================================================================
+
+[TEXT_CONTENT] 63 hardcoded strings:
+  Line    5: "ED:Event2Led"
+            -> Use existing key: app.name
+  Line   41: "Elite Dangerous RGB Lighting Control"
+            -> NEW translation needed
+  Line   42: "Real-time Journal Monitoring · OpenRGB Integration · Multi-step Effect Sequencer"
+            -> NEW translation needed
+  Line   42: "OpenRGB"
+            -> Use existing key: sections.activity_logs.filter_openrgb
+  Line   58: "Checking..."
+            -> NEW translation needed
+  Line   42: "Journal Monitor"
+            -> NEW translation needed
+  Line   68: "Inactive"
+            -> NEW translation needed
+  Line   73: "Last Event"
+            -> NEW translation needed
+  Line   77: "No effect fired yet"
+            -> NEW translation needed
+  Line   88: "Start Monitoring"
+            -> NEW translation needed
+  ... and 53 more
+
+[ALT] 1 hardcoded strings:
+  Line   15: "Spiral Galaxy Background"
+            -> NEW translation needed
+
+======================================================================
+  code.html
+======================================================================
+
+[TEXT_CONTENT] 8 hardcoded strings:
+  Line    5: "ED:Event2Led Configuration Setup"
+            -> NEW translation needed
+  Line   50: "English (United States)"
+            -> Use existing key: languages.en
+  Line   50: "English (United States)"
+            -> Use existing key: languages.en
+  Line   55: "Deutsch"
+            -> Use existing key: languages.de
+  Line   56: "Français"
+            -> Use existing key: languages.fr
+  Line   57: "Español"
+            -> Use existing key: languages.es
+  Line   77: "Violet"
+            -> Use existing key: sections.system_settings.theme_violet
+  Line  179: "ED:Event2Led v1.2.4"
+            -> NEW translation needed
+
+[ALT] 1 hardcoded strings:
+  Line   16: "Spiral Galaxy Background"
+            -> NEW translation needed
+
+======================================================================
+  effects-editor.html
+======================================================================
+
+[TEXT_CONTENT] 16 hardcoded strings:
+  Line    5: "ED:Event2Led Effects Editor"
+            -> NEW translation needed
+  Line   52: "All"
+            -> Use existing key: sections.effects_library.filter_all
+  Line   54: "Events"
+            -> Use existing key: navigation.events
+  Line   56: "Status"
+            -> Use existing key: sections.event_mapping.filter_status
+  Line   58: "General"
+            -> NEW translation needed
+  Line   52: "All"
+            -> Use existing key: sections.effects_library.filter_all
+  Line   88: "Combat Alert"
+            -> NEW translation needed
+  Line  105: "Docked - Green"
+            -> NEW translation needed
+  Line  145: "Category:"
+            -> NEW translation needed
+  Line    5: "Event"
+            -> NEW translation needed
+  ... and 6 more
+
+[PLACEHOLDER] 1 hardcoded strings:
+  Line  141: "Effect Name"
+            -> Use existing key: sections.effect_editor.name_label
+
+[TITLE] 4 hardcoded strings:
+  Line   73: "Delete effect"
+            -> NEW translation needed
+  Line   73: "Delete effect"
+            -> NEW translation needed
+  Line   73: "Delete effect"
+            -> NEW translation needed
+  Line  217: "Revert to last saved state"
+            -> NEW translation needed
+
+[ALT] 1 hardcoded strings:
+  Line   14: "Spiral Galaxy Background"
+            -> NEW translation needed
+
+======================================================================
+  events.html
+======================================================================
+
+[TEXT_CONTENT] 19 hardcoded strings:
+  Line    5: "ED:Event2Led Events Mapping"
+            -> NEW translation needed
+  Line   50: "All"
+            -> Use existing key: sections.effects_library.filter_all
+  Line   51: "Startup"
+            -> NEW translation needed
+  Line   52: "Travel"
+            -> Use existing key: sections.event_mapping.filter_travel
+  Line   53: "Combat"
+            -> Use existing key: sections.event_mapping.filter_combat
+  Line   54: "Exploration"
+            -> NEW translation needed
+  Line   55: "Trade"
+            -> NEW translation needed
+  Line   56: "Station"
+            -> NEW translation needed
+  Line   57: "Powerplay"
+            -> NEW translation needed
+  Line   58: "Squadrons"
+            -> NEW translation needed
+  ... and 9 more
+
+[PLACEHOLDER] 1 hardcoded strings:
+  Line  189: "Cerca effetti..."
+            -> NEW translation needed
+
+[TITLE] 1 hardcoded strings:
+  Line  127: "Deassign effects from filtered events"
+            -> NEW translation needed
+
+[ALT] 1 hardcoded strings:
+  Line   14: "Spiral Galaxy Background"
+            -> NEW translation needed
+
+======================================================================
+  devices.html
+======================================================================
+
+[TEXT_CONTENT] 14 hardcoded strings:
+  Line    6: "ED:Event2Led Device Management"
+            -> NEW translation needed
+  Line   69: "Flash Test"
+            -> Use existing key: sections.device_testing.flash_test_title
+  Line   87: "Export Info"
+            -> NEW translation needed
+  Line   92: "Effect Preview"
+            -> NEW translation needed
+  Line   96: "Test your library effects on real hardware"
+            -> NEW translation needed
+  Line  109: "Preview on All Devices"
+            -> NEW translation needed
+  Line  113: "Stop"
+            -> Use existing key: buttons.stop
+  Line  117: "Turn Off Selected"
+            -> NEW translation needed
+  Line  123: "Preview runs the full effect sequence on all connected devices. Create and edit effects in the Effects Editor."
+            -> NEW translation needed
+  Line  127: "Hardware Modes"
+            -> Use existing key: sections.device_testing.hardware_modes_title
+  ... and 4 more
+
+[ALT] 1 hardcoded strings:
+  Line   21: "Spiral Galaxy Background"
+            -> NEW translation needed
+
+======================================================================
+  log.html
+======================================================================
+
+[TEXT_CONTENT] 5 hardcoded strings:
+  Line    5: "ED:Event2Led Activity Logs"
+            -> NEW translation needed
+  Line   70: "Loading logs..."
+            -> NEW translation needed
+  Line   77: "Total entries:"
+            -> NEW translation needed
+  Line   78: "Errors:"
+            -> NEW translation needed
+  Line   79: "Warnings:"
+            -> NEW translation needed
+
+[ALT] 1 hardcoded strings:
+  Line   15: "Spiral Galaxy Background"
+            -> NEW translation needed
+
+======================================================================
+  keyboard-designer.html
+======================================================================
+
+[TEXT_CONTENT] 33 hardcoded strings:
+  Line    5: "ED:Event2Led Keyboard Designer"
+            -> NEW translation needed
+  Line   29: "Load keybindings → color keys by category &nbsp;·&nbsp; Click a key → assign color &nbsp;·&nbsp; Save to P1 / P2 / P3"
+            -> NEW translation needed
+  Line   44: "LIVE PREVIEW"
+            -> Use existing key: buttons.live_preview
+  Line  203: "No LED"
+            -> NEW translation needed
+  Line  207: "LED index visible (Live Preview off)"
+            -> NEW translation needed
+  Line  244: "Keybind Profile"
+            -> NEW translation needed
+  Line  245: "No profile loaded"
+            -> NEW translation needed
+  Line  261: "LOAD KEYBINDINGS"
+            -> NEW translation needed
+  Line  268: "Ship"
+            -> NEW translation needed
+  Line  278: "On Foot"
+            -> NEW translation needed
+  ... and 23 more
+
+[PLACEHOLDER] 2 hardcoded strings:
+  Line  248: "Auto-detect or browse..."
+            -> NEW translation needed
+  Line  284: "Filter..."
+            -> NEW translation needed
+
+[TITLE] 7 hardcoded strings:
+  Line  249: "Path to .binds file"
+            -> NEW translation needed
+  Line  253: "Browse"
+            -> NEW translation needed
+  Line  324: "Load P1 from disk"
+            -> NEW translation needed
+  Line  337: "Load P2 from disk"
+            -> NEW translation needed
+  Line  350: "Load P3 from disk"
+            -> NEW translation needed
+  Line  380: "Click to change color"
+            -> NEW translation needed
+  Line  387: "Clear color (restore default)"
+            -> NEW translation needed
+
+[ALT] 1 hardcoded strings:
+  Line   15: "Spiral Galaxy Background"
+            -> NEW translation needed
+
+======================================================================
+  status.html
+======================================================================
+
+[TEXT_CONTENT] 24 hardcoded strings:
+  Line    5: "ED:Event2Led Game Status"
+            -> NEW translation needed
+  Line   31: "GAME STATUS"
+            -> NEW translation needed
+  Line   34: "Real-Time Ship Parameters"
+            -> NEW translation needed
+  Line   43: "Monitoring"
+            -> NEW translation needed
+  Line   53: "Active Alerts"
+            -> NEW translation needed
+  Line   62: "Ship Flags"
+            -> NEW translation needed
+  Line   66: "Status.json — Flags"
+            -> NEW translation needed
+  Line   69: "Odyssey Flags"
+            -> NEW translation needed
+  Line   73: "Status.json — Flags2"
+            -> NEW translation needed
+  Line   84: "All"
+            -> Use existing key: sections.effects_library.filter_all
+  ... and 14 more
+
+[ALT] 1 hardcoded strings:
+  Line   16: "Spiral Galaxy Background"
+            -> NEW translation needed
+
+======================================================================
+  loading.html
+======================================================================
+
+[TEXT_CONTENT] 4 hardcoded strings:
+  Line    6: "ED:Event2Led - Loading"
+            -> NEW translation needed
+  Line    6: "ED:Event2Led"
+            -> Use existing key: app.name
+  Line   21: "Elite Dangerous RGB Lighting Control"
+            -> NEW translation needed
+  Line   28: "Initializing system..."
+            -> NEW translation needed
+
+======================================================================
+  SUMMARY
+======================================================================
+Total hardcoded strings found: 101
+Translation keys available: 202
+
+[ACTION REQUIRED]
+1. Add data-i18n attributes to HTML elements
+2. Add missing keys to all translation files (en, it, de, es, fr)
+3. Test language switching in UI

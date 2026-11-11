@@ -1,0 +1,5312 @@
+{
+  "version": 1,
+  "effects": [
+    {
+      "id": "effect_predefined_001",
+      "name": "FSD Hyperspace Jump",
+      "description": "Portale iperspaziale: aurora blue/cyan seguita da flash bianco d'arrivo",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "explosion_ring",
+          "params": {
+            "colors": [
+              [
+                255,
+                240,
+                80
+              ],
+              [
+                255,
+                60,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 400,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": 2,
+            "ring_width": 0.1,
+            "decay_rate": 0.4,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "aurora",
+          "params": {
+            "colors": [
+              [
+                0,
+                40,
+                180
+              ],
+              [
+                0,
+                200,
+                255
+              ],
+              [
+                80,
+                0,
+                220
+              ]
+            ],
+            "duration_ms": 3000,
+            "direction": null,
+            "speed": 0.9,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 400,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": 0.5,
+            "tail_length": 1,
+            "wave_frequency": 1,
+            "ripple": 0.4,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_2",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                153
+              ]
+            ],
+            "duration_ms": 900,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_3",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                51,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 400,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_4",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_002",
+      "name": "Under Attack",
+      "description": "Allarme combattimento: esplosione rossa ripetuta + breath urgente infinito",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "bloom",
+          "params": {
+            "colors": [
+              [
+                255,
+                240,
+                180
+              ],
+              [
+                255,
+                80,
+                0
+              ],
+              [
+                200,
+                0,
+                0
+              ],
+              [
+                80,
+                0,
+                0
+              ],
+              [
+                10,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 3100,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": 2,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                180,
+                0,
+                0
+              ],
+              [
+                15,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": null,
+            "speed": null,
+            "num_loops": 5,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_2",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_003",
+      "name": "Docked Safe",
+      "description": "Attracco completato: gradiente verde calmo poi breath di conferma",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                0,
+                255,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_004",
+      "name": "FSD Charging",
+      "description": "Carica del FSD: onda che scorre da blu profondo verso bianco-ciano",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "color_cycle",
+          "params": {
+            "colors": [
+              [
+                0,
+                5,
+                40
+              ],
+              [
+                0,
+                60,
+                180
+              ],
+              [
+                0,
+                180,
+                255
+              ],
+              [
+                200,
+                240,
+                255
+              ]
+            ],
+            "duration_ms": 4000,
+            "direction": "down",
+            "speed": 3,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 400,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_005",
+      "name": "Fuel Scoop Active",
+      "description": "Fuel scoop attivo: simulazione fiamma solare arancione e gialla",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "fire",
+          "params": {
+            "colors": [
+              [
+                180,
+                20,
+                0
+              ],
+              [
+                255,
+                200,
+                0
+              ]
+            ],
+            "duration_ms": 8000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": 0.75,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774305770358",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {
+        "tags": [
+          "travel",
+          "fuel",
+          "scoop"
+        ]
+      },
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_006",
+      "name": "Discovery Scan",
+      "description": "Scansione esplorativa: aurora verde/teal/viola danzante",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "bloom",
+          "params": {
+            "colors": [
+              [
+                0,
+                51,
+                0
+              ],
+              [
+                0,
+                153,
+                0
+              ],
+              [
+                157,
+                255,
+                136
+              ],
+              [
+                215,
+                255,
+                148
+              ],
+              [
+                0,
+                51,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993756121",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_007",
+      "name": "Silent Running",
+      "description": "Modalita silenziosa: dissolvenza in nero cosmico con minimo blu notturno",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "two_color_nuance",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                8
+              ],
+              [
+                0,
+                10,
+                40
+              ]
+            ],
+            "duration_ms": 2500,
+            "direction": "down",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 400,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993753881",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_008",
+      "name": "Shield Hit",
+      "description": "Impatto scudi: flash bianco accecante poi breath ciano di recupero",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                230,
+                250,
+                255
+              ]
+            ],
+            "duration_ms": 200,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                0,
+                160,
+                220
+              ],
+              [
+                0,
+                15,
+                40
+              ]
+            ],
+            "duration_ms": 1800,
+            "direction": null,
+            "speed": null,
+            "num_loops": 3,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993753201",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {
+        "tags": [
+          "combat",
+          "shield",
+          "impact"
+        ]
+      },
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_009",
+      "name": "Supercruise",
+      "description": "Volo in supercrociera: onde oceaniche profonde in blu siderale",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "ocean_waves",
+          "params": {
+            "colors": [
+              [
+                0,
+                10,
+                50
+              ],
+              [
+                0,
+                60,
+                140
+              ],
+              [
+                120,
+                190,
+                255
+              ]
+            ],
+            "duration_ms": 8000,
+            "direction": null,
+            "speed": 1.1,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993752520",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {
+        "tags": [
+          "travel",
+          "supercruise"
+        ]
+      },
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_010",
+      "name": "Hacking Terminal",
+      "description": "Terminale hacking Odyssey: matrix rain verde densa su sfondo nero",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "matrix_rain",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                90,
+                25
+              ],
+              [
+                0,
+                255,
+                65
+              ]
+            ],
+            "duration_ms": 12000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": 1.8,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993751801",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {
+        "tags": [
+          "hacking",
+          "odyssey",
+          "terminal"
+        ]
+      },
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_011",
+      "name": "Plasma Field",
+      "description": "Campo plasma anomalia: sinusoidi sovrapposte con palette vivace multicromatica",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "plasma",
+          "params": {
+            "colors": [
+              [
+                200,
+                0,
+                80
+              ],
+              [
+                255,
+                100,
+                0
+              ],
+              [
+                255,
+                220,
+                0
+              ],
+              [
+                0,
+                200,
+                80
+              ],
+              [
+                0,
+                80,
+                255
+              ]
+            ],
+            "duration_ms": 8000,
+            "direction": null,
+            "speed": 1,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              0.8,
+              1.2,
+              0.6
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993747733",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {
+        "tags": [
+          "exploration",
+          "anomaly",
+          "plasma"
+        ]
+      },
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_predefined_012",
+      "name": "Neutron Star Jump",
+      "description": "Salto da stella di neutroni: fulmini su buio cosmico profondo",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "lightning",
+          "params": {
+            "colors": [
+              [
+                2,
+                2,
+                15
+              ],
+              [
+                210,
+                225,
+                255
+              ]
+            ],
+            "duration_ms": 12000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": 1400,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993747067",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {
+        "tags": [
+          "travel",
+          "neutron",
+          "boost"
+        ]
+      },
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1771803297936",
+      "name": "SupercruiseExit Effect",
+      "description": "Effect for SupercruiseExit event",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "bump",
+          "params": {
+            "colors": [
+              [
+                255,
+                255,
+                0
+              ],
+              [
+                0,
+                85,
+                255
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": "br",
+            "speed": null,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993746387",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1772227237027",
+      "name": "SupercruiseEntry Effect",
+      "description": "Effect for SupercruiseEntry event",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "wave",
+          "params": {
+            "colors": [
+              [
+                0,
+                10,
+                40
+              ],
+              [
+                0,
+                160,
+                255
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": "down",
+            "speed": 8,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                0,
+                255,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993745013",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1772227363076",
+      "name": "DockingDenied Effect",
+      "description": "Effect for DockingDenied event",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                153,
+                153,
+                153
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": null,
+            "speed": null,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774222118517",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1772232214644",
+      "name": "SupercruiseEntry Effect",
+      "description": "Effect for SupercruiseEntry event",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                0,
+                10,
+                40
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "wave",
+          "params": {
+            "colors": [
+              [
+                0,
+                10,
+                40
+              ],
+              [
+                0,
+                160,
+                255
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": "down",
+            "speed": 8,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_2",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                255,
+                255,
+                255
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993742734",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1772232422484",
+      "name": "DockingRequested Effect",
+      "description": "Effect for DockingRequested event",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                51,
+                51,
+                51
+              ],
+              [
+                160,
+                160,
+                160
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": 4,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1772232569444",
+      "name": "HeatWarning Effect",
+      "description": "Effect for HeatWarning event",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "lightning",
+          "params": {
+            "colors": [
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                255,
+                255,
+                0
+              ]
+            ],
+            "duration_ms": 10000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 400,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": 500,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993741893",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1772232580820",
+      "name": "HeatDamage Effect",
+      "description": "Effect for HeatDamage event",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "fire",
+          "params": {
+            "colors": [
+              [
+                200,
+                30,
+                0
+              ],
+              [
+                255,
+                220,
+                0
+              ]
+            ],
+            "duration_ms": 6000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": 0.8,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993739666",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1772232596980",
+      "name": "ShieldState Effect",
+      "description": "Effect for ShieldState event",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "wave",
+          "params": {
+            "colors": [
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                0,
+                160,
+                255
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": "top",
+            "speed": 8,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993738933",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1772232657546",
+      "name": "DockingTimeout Effect",
+      "description": "Effect for DockingTimeout event",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "bump",
+          "params": {
+            "colors": [
+              [
+                51,
+                51,
+                51
+              ],
+              [
+                255,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": "down",
+            "speed": null,
+            "num_loops": 3,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774222232228",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "under_attack_right",
+      "name": "Under Attack — Right (Starboard)",
+      "description": "Directional attack wave from left side",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "directional_flash",
+          "params": {
+            "colors": [
+              [
+                20,
+                0,
+                0
+              ],
+              [
+                255,
+                20,
+                0
+              ]
+            ],
+            "duration_ms": 600,
+            "direction": "right",
+            "speed": null,
+            "num_loops": 2,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993737987",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D",
+        "1D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "under_attack_left",
+      "name": "Under Attack — Left (Port)",
+      "description": "Directional attack wave from left side",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "directional_flash",
+          "params": {
+            "colors": [
+              [
+                20,
+                0,
+                0
+              ],
+              [
+                255,
+                20,
+                0
+              ]
+            ],
+            "duration_ms": 600,
+            "direction": "left",
+            "speed": null,
+            "num_loops": 2,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993735867",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D",
+        "1D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "under_attack_front",
+      "name": "Under Attack — Front",
+      "description": "Directional attack wave from bottom side",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "directional_flash",
+          "params": {
+            "colors": [
+              [
+                20,
+                0,
+                0
+              ],
+              [
+                255,
+                20,
+                0
+              ]
+            ],
+            "duration_ms": 600,
+            "direction": "top",
+            "speed": null,
+            "num_loops": 2,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993734933",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D",
+        "1D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "under_attack_rear",
+      "name": "Under Attack — Rear",
+      "description": "Directional attack wave from bottom side",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "directional_flash",
+          "params": {
+            "colors": [
+              [
+                20,
+                0,
+                0
+              ],
+              [
+                255,
+                20,
+                0
+              ]
+            ],
+            "duration_ms": 600,
+            "direction": "down",
+            "speed": null,
+            "num_loops": 2,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993734253",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D",
+        "1D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "overheat_warning",
+      "name": "Overheating Warning",
+      "description": "Quick-created — refine in Effects Editor",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                255,
+                255,
+                51
+              ]
+            ],
+            "duration_ms": 800,
+            "direction": null,
+            "speed": null,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 150,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1775082737.147
+    },
+    {
+      "id": "interdiction_alert",
+      "name": "Interdiction Alert",
+      "description": "Being interdicted - yellow/red glitch",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "glitch",
+          "params": {
+            "colors": [
+              [
+                20,
+                20,
+                60
+              ],
+              [
+                51,
+                255,
+                255
+              ],
+              [
+                255,
+                0,
+                0
+              ],
+              [
+                255,
+                100,
+                0
+              ]
+            ],
+            "duration_ms": 3000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": 0.3,
+            "glitch_duration_ms": 100,
+            "duration_variability": 0.6,
+            "persistence_percentage": 0.2,
+            "color_variation": 0.3,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "danger_alert",
+      "name": "In Danger",
+      "description": "Critical danger state - intense red",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                200,
+                0,
+                0
+              ],
+              [
+                255,
+                20,
+                0
+              ]
+            ],
+            "duration_ms": 1200,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": true,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993730893",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "0D",
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "loop_effect",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "low_fuel_warning",
+      "name": "Low Fuel Warning",
+      "description": "Quick-created — refine in Effects Editor",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                255,
+                0,
+                255
+              ],
+              [
+                0,
+                0,
+                255
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": null,
+            "speed": null,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1775082900.941
+    },
+    {
+      "id": "fsd_charging",
+      "name": "FSD Charging",
+      "description": "FSD charging - blue wave",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "wave",
+          "params": {
+            "colors": [
+              [
+                0,
+                80,
+                255
+              ],
+              [
+                0,
+                0,
+                40
+              ]
+            ],
+            "duration_ms": 3000,
+            "direction": "right",
+            "speed": 1.2,
+            "num_loops": null,
+            "loop_infinite": true,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993725772",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "loop_effect",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "low_oxygen_warning",
+      "name": "Low Oxygen (Odyssey)",
+      "description": "Oxygen critical - cyan pulse",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                0,
+                255,
+                255
+              ],
+              [
+                0,
+                150,
+                200
+              ]
+            ],
+            "duration_ms": 900,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": true,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993725120",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "0D",
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "loop_effect",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "low_health_warning",
+      "name": "Low Health (Odyssey)",
+      "description": "Health critical - dark red pulse",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                150,
+                0,
+                0
+              ],
+              [
+                220,
+                20,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": true,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993724413",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "0D",
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "loop_effect",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "extreme_heat",
+      "name": "Extreme Heat (Odyssey)",
+      "description": "Extreme heat environment - fire effect",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "fire",
+          "params": {
+            "colors": [
+              [
+                200,
+                30,
+                0
+              ],
+              [
+                255,
+                220,
+                0
+              ]
+            ],
+            "duration_ms": 5000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": true,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": 0.85,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993723719",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "loop_effect",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "extreme_cold",
+      "name": "Extreme Cold (Odyssey)",
+      "description": "Extreme cold environment - cyan/white shimmer",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                0,
+                180,
+                255
+              ],
+              [
+                180,
+                220,
+                255
+              ]
+            ],
+            "duration_ms": 1800,
+            "direction": null,
+            "speed": null,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 800,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1773346677701",
+      "name": "Keyboard Horizon",
+      "description": "",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "3",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "general",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1773352242833",
+      "name": "Keyboard Fill",
+      "description": "",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [
+              [
+                255,
+                153,
+                0
+              ]
+            ],
+            "duration_ms": 800,
+            "direction": "fill",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "general",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1774220627596",
+      "name": "DockingGranted Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                51,
+                255,
+                51
+              ],
+              [
+                255,
+                255,
+                153
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 150,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1774222677957",
+      "name": "CockpitBreached Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                153,
+                51,
+                255
+              ],
+              [
+                255,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 150,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1774222734125",
+      "name": "ShieldState Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": 0,
+          "effect_type": "color_cycle",
+          "params": {
+            "colors": [
+              [
+                255,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": [
+              1,
+              1,
+              1,
+              1
+            ],
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1774993718065",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "0D",
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Combat",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": null
+    },
+    {
+      "id": "effect_1774223680437",
+      "name": "DockingCancelled Effect",
+      "description": "Quick-created — refine in Effects Editor",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "bump",
+          "params": {
+            "colors": [
+              [
+                0,
+                255,
+                0
+              ],
+              [
+                255,
+                102,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": "down",
+            "speed": null,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Travel",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1775080075.157
+    },
+    {
+      "id": "effect_1774303099875",
+      "name": "HullDamage Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "bloom",
+          "params": {
+            "colors": [
+              [
+                102,
+                0,
+                102
+              ],
+              [
+                153,
+                153,
+                255
+              ],
+              [
+                204,
+                255,
+                204
+              ],
+              [
+                255,
+                102,
+                0
+              ],
+              [
+                102,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": 2,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Combat",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1774303099.874
+    },
+    {
+      "id": "effect_1774994109011",
+      "name": "ApproachBody Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "bloom",
+          "params": {
+            "colors": [
+              [
+                255,
+                255,
+                0
+              ],
+              [
+                51,
+                0,
+                0
+              ],
+              [
+                0,
+                51,
+                0
+              ],
+              [
+                0,
+                0,
+                51
+              ],
+              [
+                0,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": 2,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Travel",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1774994109.011
+    },
+    {
+      "id": "effect_1774994152755",
+      "name": "FSDTarget Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                102,
+                255,
+                102
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Travel",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1774994152.755
+    },
+    {
+      "id": "effect_1774994188076",
+      "name": "DiscoveryScan Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "wave",
+          "params": {
+            "colors": [
+              [
+                102,
+                255,
+                255
+              ],
+              [
+                0,
+                160,
+                255
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": "right",
+            "speed": 6,
+            "num_loops": 4,
+            "loop_infinite": false,
+            "fade_in_ms": 800,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Exploration",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1774994188.075
+    },
+    {
+      "id": "effect_1774994207599",
+      "name": "Scan Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "bump",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                255
+              ],
+              [
+                102,
+                102,
+                255
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": "top",
+            "speed": null,
+            "num_loops": 2,
+            "loop_infinite": false,
+            "fade_in_ms": 400,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Exploration",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1774994207.598
+    },
+    {
+      "id": "effect_1774994244433",
+      "name": "RefuelAll Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                51,
+                255,
+                51
+              ],
+              [
+                255,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 700,
+            "direction": null,
+            "speed": null,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Station Services",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1774994244.432
+    },
+    {
+      "id": "effect_1774994276571",
+      "name": "Repair Effect",
+      "description": "Quick-created effect (needs refinement)",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "color_cycle",
+          "params": {
+            "colors": [
+              [
+                51,
+                0,
+                0
+              ],
+              [
+                0,
+                255,
+                0
+              ],
+              [
+                230,
+                255,
+                230
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": "right",
+            "speed": 1,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 400,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1774994276.57
+    },
+    {
+      "id": "effect_1775342963665",
+      "name": "Shutdown Effect",
+      "description": "Quick-created — refine in Effects Editor",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                255,
+                255,
+                255
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                32,
+                32,
+                32
+              ]
+            ],
+            "duration_ms": 5900,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1775342963.664
+    },
+    {
+      "id": "effect_1776114941024",
+      "name": "Docked ON Effect",
+      "description": "Quick-created — refine in Effects Editor",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "breath",
+          "params": {
+            "colors": [
+              [
+                51,
+                164,
+                167
+              ],
+              [
+                0,
+                102,
+                102
+              ]
+            ],
+            "duration_ms": 9700,
+            "direction": null,
+            "speed": null,
+            "num_loops": 4,
+            "loop_infinite": false,
+            "fade_in_ms": 800,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "status",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1776114941.023
+    },
+    {
+      "id": "effect_1776374880680",
+      "name": "NavRouteClear Effect",
+      "description": "Quick-created — refine in Effects Editor",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "wave",
+          "params": {
+            "colors": [
+              [
+                0,
+                153,
+                153
+              ],
+              [
+                153,
+                153,
+                0
+              ]
+            ],
+            "duration_ms": 2000,
+            "direction": "down",
+            "speed": 8,
+            "num_loops": 1,
+            "loop_infinite": false,
+            "fade_in_ms": 150,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Travel",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1776374880.678
+    },
+    {
+      "id": "effect_1776375396979",
+      "name": "SystemsShutdown Effect",
+      "description": "Quick-created — refine in Effects Editor",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "glitch",
+          "params": {
+            "colors": [
+              [
+                10,
+                10,
+                30
+              ],
+              [
+                0,
+                0,
+                102
+              ],
+              [
+                0,
+                0,
+                204
+              ],
+              [
+                255,
+                102,
+                0
+              ]
+            ],
+            "duration_ms": 5000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 150,
+            "glitch_percentage": 0.04,
+            "glitch_duration_ms": 100,
+            "duration_variability": 0.5,
+            "persistence_percentage": 0.2,
+            "color_variation": 1,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                102
+              ]
+            ],
+            "duration_ms": 2500,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_2",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1776375396.978
+    },
+    {
+      "id": "effect_1776375862176",
+      "name": "Passengers Effect",
+      "description": "Quick-created — refine in Effects Editor",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "matrix_rain",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                100,
+                30
+              ],
+              [
+                0,
+                255,
+                70
+              ]
+            ],
+            "duration_ms": 2500,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 150,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": 0.8,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_1",
+          "effect_type": "static_transition",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                102
+              ]
+            ],
+            "duration_ms": 1000,
+            "direction": null,
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        },
+        {
+          "step_id": "step_2",
+          "effect_type": "keyboard_default",
+          "params": {
+            "colors": [],
+            "duration_ms": 800,
+            "direction": "1",
+            "speed": null,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 0,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "event",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1776375862.174
+    },
+    {
+      "id": "effect_1776376186475",
+      "name": "LeaveBody Effect",
+      "description": "Quick-created — refine in Effects Editor",
+      "steps": [
+        {
+          "step_id": "step_0",
+          "effect_type": "color_cycle",
+          "params": {
+            "colors": [
+              [
+                0,
+                0,
+                51
+              ],
+              [
+                0,
+                153,
+                153
+              ],
+              [
+                255,
+                255,
+                0
+              ],
+              [
+                0,
+                0,
+                255
+              ],
+              [
+                255,
+                255,
+                255
+              ],
+              [
+                0,
+                0,
+                0
+              ]
+            ],
+            "duration_ms": 6000,
+            "direction": "top",
+            "speed": 1,
+            "num_loops": null,
+            "loop_infinite": false,
+            "fade_in_ms": 150,
+            "glitch_percentage": null,
+            "glitch_duration_ms": null,
+            "duration_variability": null,
+            "persistence_percentage": null,
+            "color_variation": null,
+            "intensity": null,
+            "density": null,
+            "wave_weights": null,
+            "height": null,
+            "tail_length": null,
+            "wave_frequency": null,
+            "ripple": null,
+            "bolt_interval_ms": null,
+            "falloff": null,
+            "expansion_factor": null,
+            "ring_width": null,
+            "decay_rate": null,
+            "use_normalized": false
+          }
+        }
+      ],
+      "topology_support": [
+        "1D",
+        "2D"
+      ],
+      "post_behavior": "static_color",
+      "post_behavior_data": null,
+      "category": "Travel",
+      "metadata": {},
+      "is_quick_created": false,
+      "created_timestamp": 1776376186.474
+    }
+  ]
+}

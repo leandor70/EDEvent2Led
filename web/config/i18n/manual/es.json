@@ -1,0 +1,34 @@
+{
+  "header": {
+    "title": "Manual de Usuario"
+  },
+  "search": {
+    "placeholder": "Buscar en el manual...",
+    "noResults": "No se encontraron resultados",
+    "tryDifferent": "Pruebe con palabras clave diferentes"
+  },
+  "toc": {
+    "section": {
+      "intro": "Introducción",
+      "pages": "Páginas de la Aplicación",
+      "appendices": "Apéndices"
+    },
+    "chapter1": "1. Introducción",
+    "chapter2": "2. Panel de Inicio",
+    "chapter3": "3. Biblioteca de Efectos",
+    "chapter4": "4. Mapeo de Eventos",
+    "chapter5": "5. Diseñador de Teclado",
+    "chapter6": "6. Topología de Dispositivos",
+    "chapter7": "7. Estado del Juego",
+    "chapter8": "8. Dispositivos",
+    "chapter9": "9. Prueba de Hardware",
+    "chapter10": "10. Registro de Actividad",
+    "chapter11": "11. Configuración",
+    "appendixA": "A. Glosario",
+    "appendixB": "B. Referencia de Efectos",
+    "appendixC": "C. Referencia de Eventos",
+    "appendixD": "D. FAQ",
+    "appendixE": "E. Resolución de Problemas",
+    "chapter12": "12. Ambilight"
+  }
+}

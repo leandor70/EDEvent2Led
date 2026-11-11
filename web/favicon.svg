@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background -->
+  <rect width="32" height="32" rx="5" fill="#05070a"/>
+  <!-- Top accent line -->
+  <rect x="3" y="3" width="26" height="2" rx="1" fill="#FF6600"/>
+  <!-- E2L text -->
+  <text x="16" y="23"
+        font-family="'Courier New', Courier, monospace"
+        font-size="11"
+        font-weight="bold"
+        fill="#FF6600"
+        text-anchor="middle"
+        letter-spacing="0.5">E2L</text>
+  <!-- Bottom accent line -->
+  <rect x="3" y="27" width="26" height="2" rx="1" fill="#FF6600" opacity="0.4"/>
+</svg>

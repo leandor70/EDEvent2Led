@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topology Editor - ED:Event2Led</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link href="css/sci-fi-theme.css" rel="stylesheet">
+<style>
+    /* CSS Reset for Links and Base Elements */
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    button {
+        border: none;
+        background: none;
+        font: inherit;
+        cursor: pointer;
+    }
+    input, select, textarea {
+        font: inherit;
+    }
+
+    /* Tailwind Utility Classes Replacement */
+    .h-screen { height: 100vh; }
+    .w-full { width: 100%; }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .fixed { position: fixed; }
+    .flex { display: flex; }
+    .flex-1 { flex: 1 1 0%; }
+    .flex-col { flex-direction: column; }
+    .flex-shrink-0 { flex-shrink: 0; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-6 { gap: 1.5rem; }
+    .space-y-1 > * + * { margin-top: 0.25rem; }
+    .space-y-2 > * + * { margin-top: 0.5rem; }
+    .space-y-3 > * + * { margin-top: 0.75rem; }
+    .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+    .z-0 { z-index: 0; }
+    .z-10 { z-index: 10; }
+    .z-20 { z-index: 20; }
+    .w-12 { width: 3rem; }
+    .w-24 { width: 6rem; }
+    .w-64 { width: 16rem; }
+    .w-72 { width: 18rem; }
+    .w-9 { width: 2.25rem; }
+    .w-4 { width: 1rem; }
+    .h-px { height: 1px; }
+    .h-0\.5 { height: 0.125rem; }
+    .h-full { height: 100%; }
+    .h-5 { height: 1.25rem; }
+    .h-4 { height: 1rem; }
+    .h-2 { height: 0.5rem; }
+    .min-w-0 { min-width: 0; }
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .px-12 { padding-left: 3rem; padding-right: 3rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .pt-4 { padding-top: 1rem; }
+    .pt-8 { padding-top: 2rem; }
+    .pt-12 { padding-top: 3rem; }
+    .pb-3 { padding-bottom: 0.75rem; }
+    .pb-4 { padding-bottom: 1rem; }
+    .pb-8 { padding-bottom: 2rem; }
+    .pb-12 { padding-bottom: 3rem; }
+    .mb-1 { margin-bottom: 0.25rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-10 { margin-bottom: 2.5rem; }
+    .ml-auto { margin-left: auto; }
+    .mx-2 { margin-left: 0.5rem; margin-right: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-auto { margin-top: auto; }
+    .text-\[9px\] { font-size: 9px; }
+    .text-\[10px\] { font-size: 10px; }
+    .text-\[11px\] { font-size: 11px; }
+    .text-\[15px\] { font-size: 15px; }
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-white { color: #fff; }
+    .text-white\/30 { color: rgba(255,255,255,0.3); }
+    .text-white\/40 { color: rgba(255,255,255,0.4); }
+    .text-white\/50 { color: rgba(255,255,255,0.5); }
+    .text-white\/60 { color: rgba(255,255,255,0.6); }
+    .text-white\/80 { color: rgba(255,255,255,0.8); }
+    .text-blue-300 { color: rgb(147, 197, 253); }
+    .text-blue-400 { color: rgb(96, 165, 250); }
+    .text-amber-300 { color: rgb(252, 211, 77); }
+    .text-amber-400 { color: rgb(251, 191, 36); }
+    .text-amber-400\/70 { color: rgba(251, 191, 36, 0.7); }
+    .text-\[var\(--primary-accent\)\] { color: var(--primary-accent); }
+    .text-\[var\(--primary-accent\)\]\/70 { color: rgba(255, 102, 0, 0.7); }
+    .font-bold { font-weight: 700; }
+    .uppercase { text-transform: uppercase; }
+    .tracking-\[0\.2em\] { letter-spacing: 0.2em; }
+    .tracking-\[0\.3em\] { letter-spacing: 0.3em; }
+    .tracking-\[0\.4em\] { letter-spacing: 0.4em; }
+    .tracking-wider { letter-spacing: 0.05em; }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .border { border-width: 1px; }
+    .border-t { border-top-width: 1px; }
+    .border-l-0 { border-left-width: 0; }
+    .border-y-0 { border-top-width: 0; border-bottom-width: 0; }
+    .border-white\/10 { border-color: rgba(255,255,255,0.1); }
+    .bg-black\/40 { background-color: rgba(0,0,0,0.4); }
+    .bg-gray-700 { background-color: rgb(55, 65, 81); }
+    .bg-white\/5 { background-color: rgba(255,255,255,0.05); }
+    .bg-\[var\(--primary-accent\)\] { background-color: var(--primary-accent); }
+    .bg-amber-500 { background-color: rgb(245, 158, 11); }
+    .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
+    .bg-gradient-to-l { background-image: linear-gradient(to left, var(--tw-gradient-stops)); }
+    .bg-gradient-to-b { background-image: linear-gradient(to bottom, var(--tw-gradient-stops)); }
+    .from-transparent { --tw-gradient-from: transparent; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(0,0,0,0)); }
+    .from-\[\#05070a\]\/40 { --tw-gradient-from: rgba(5,7,10,0.4); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(0,0,0,0)); }
+    .via-\[\#05070a\]\/70 { --tw-gradient-stops: var(--tw-gradient-from), rgba(5,7,10,0.7), var(--tw-gradient-to, rgba(0,0,0,0)); }
+    .to-\[\#05070a\] { --tw-gradient-to: #05070a; }
+    .to-\[var\(--primary-accent\)\] { --tw-gradient-to: var(--primary-accent); }
+    .opacity-25 { opacity: 0.25; }
+    .opacity-50 { opacity: 0.5; }
+    .object-cover { object-fit: cover; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-y-auto { overflow-y: auto; }
+    .cursor-pointer { cursor: pointer; }
+    .appearance-none { appearance: none; }
+    .accent-\[var\(--primary-accent\)\] { accent-color: var(--primary-accent); }
+    .block { display: block; }
+    .hidden { display: none; }
+    .group { position: relative; }
+    .transition-colors { transition-property: color, background-color, border-color; transition-duration: 150ms; }
+    .transition-opacity { transition-property: opacity; transition-duration: 150ms; }
+    .hover\:bg-white\/5:hover { background-color: rgba(255,255,255,0.05); }
+    .hover\:text-white\/80:hover { color: rgba(255,255,255,0.8); }
+    .hover\:text-\[var\(--primary-accent\)\]:hover { color: var(--primary-accent); }
+    .hover\:text-amber-400:hover { color: rgb(251, 191, 36); }
+    .group:hover .group-hover\:opacity-20 { opacity: 0.2; }
+    .group:hover .group-hover\:opacity-15 { opacity: 0.15; }
+    .group:hover .group-hover\:text-\[var\(--primary-accent\)\] { color: var(--primary-accent); }
+    .group:hover .group-hover\:text-amber-400 { color: rgb(251, 191, 36); }
+    .group:hover .group-hover\:text-white\/80 { color: rgba(255,255,255,0.8); }
+    .blur-sm { filter: blur(4px); }
+    .opacity-0 { opacity: 0; }
+    .opacity-15 { opacity: 0.15; }
+    .opacity-20 { opacity: 0.2; }
+    .flex-wrap { flex-wrap: wrap; }
+    .tracking-\[0\.15em\] { letter-spacing: 0.15em; }
+    .tracking-\[0\.1em\] { letter-spacing: 0.1em; }
+    .w-12 { width: 3rem; }
+    .shrink-0 { flex-shrink: 0; }
+</style>
+
+<style>
+    /* ========================================
+       FADE TRANSITIONS - Universal Solution
+       ======================================== */
+    body {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        background-color: #000; /* Black base for fade */
+    }
+
+    body.loaded {
+        opacity: 1;
+    }
+
+    body.fade-out {
+        opacity: 0;
+    }
+</style>
+
+<style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            src: url('fonts/MaterialSymbolsOutlined.woff2') format('woff2');
+            font-display: block;
+        }
+</style>
+<style >
+        :root {
+            --primary-accent: #FF6600;
+            --bg-dark: #05070a;
+            --panel-bg: rgba(18, 20, 24, 0.9);
+            --border-color: rgba(255, 102, 0, 0.3);
+            --text-main: #e0e0e0;
+        }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+        .orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .sci-fi-border {
+            border: 1px solid var(--border-color);
+            position: relative;
+            background: linear-gradient(135deg, rgba(20, 22, 26, 0.95) 0%, rgba(10, 12, 14, 0.98) 100%);
+            box-shadow: 0 0 15px rgba(0,0,0,0.5), inset 0 0 20px rgba(255, 102, 0, 0.05);
+        }
+        .sci-fi-border::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px; width: 10px; height: 10px;
+            border-top: 2px solid var(--primary-accent);
+            border-left: 2px solid var(--primary-accent);
+        }
+        .sci-fi-border::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; right: -1px; width: 10px; height: 10px;
+            border-bottom: 2px solid var(--primary-accent);
+            border-right: 2px solid var(--primary-accent);
+        }
+        .carbon-pattern {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.02) 1px, transparent 0);
+            background-size: 4px 4px;
+        }
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-item {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar-item.active {
+            color: var(--primary-accent);
+            background: linear-gradient(90deg, rgba(255, 102, 0, 0.15) 0%, transparent 100%);
+        }
+
+        .sidebar-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 3px;
+            background-color: var(--primary-accent);
+            box-shadow: 0 0 8px var(--primary-accent);
+        }
+
+        .sidebar-item:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        /* Hide scrollbars in topology editor sidebars */
+        aside.overflow-y-auto {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
+        }
+        aside.overflow-y-auto::-webkit-scrollbar {
+            display: none; /* Chrome/Safari/Opera */
+        }
+
+        /* The canvas fills the container; JS (resizeToContainer) keeps its pixel
+           size equal to the displayed size. min-height/min-width 0 let the flex
+           chain shrink to the window instead of growing with the content. */
+        #canvas-container {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            min-width: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255,102,0,0.03) 0%, rgba(0,0,0,0.8) 100%);
+        }
+
+        #topology-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 0 30px rgba(255,102,0,0.2);
+            cursor: crosshair;
+            background: #0a0a0c;
+        }
+
+        /* Global scrollbar styling */
+        *::-webkit-scrollbar { width: 6px; }
+        *::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        *::-webkit-scrollbar-thumb {
+            background: rgba(255, 102, 0, 0.3);
+            border-radius: 3px;
+        }
+        *::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 102, 0, 0.5);
+        }
+
+        /* Zone card */
+        .zone-card {
+            transition: all 0.2s;
+            cursor: pointer;
+            padding: 10px;  /* Margine costante per tutte le card */
+        }
+        .zone-card:hover {
+            background: rgba(255, 102, 0, 0.1);
+            border-color: var(--primary-accent);
+        }
+        .zone-card.selected {
+            box-shadow: inset 0 0 0 1px var(--primary-accent);
+            background: rgba(255, 102, 0, 0.2);
+        }
+
+        /* Device selector cards */
+        .device-selector-card {
+            cursor: pointer;
+            padding: 8px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 6px;
+            transition: all 0.2s;
+        }
+        .device-selector-card:hover {
+            background: rgba(255, 102, 0, 0.1);
+            border-color: var(--primary-accent);
+        }
+        .device-selector-card.active {
+            background: rgba(255, 102, 0, 0.2);
+            box-shadow: inset 0 0 0 1px var(--primary-accent);
+        }
+        .device-selector-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        .device-selector-meta {
+            font-size: 10px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+
+        /* Control buttons */
+        .btn-sci-fi {
+            background: linear-gradient(180deg, rgba(255, 102, 0, 0.1) 0%, rgba(255, 102, 0, 0.05) 100%);
+            border: 1px solid var(--border-color);
+            color: rgba(255, 255, 255, 0.9);  /* White text for visibility */
+            transition: all 0.2s;
+        }
+        .btn-sci-fi:hover {
+            background: rgba(255, 102, 0, 0.2);
+            border-color: var(--primary-accent);
+            color: white;  /* Bright white on hover */
+        }
+        .btn-sci-fi:active {
+            background: rgba(255, 102, 0, 0.3);
+        }
+
+        /* Glass toggle switch - Removed duplicate styles (moved to complete glassmorphism section below) */
+        .preset-btn {
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.2s;
+        }
+        .preset-btn:hover {
+            color: white;
+            background: rgba(255, 102, 0, 0.15) !important;
+            border-color: var(--primary-accent) !important;
+        }
+
+        /* Rotation button active state */
+        .rotation-btn.active {
+            background: linear-gradient(180deg, rgba(255, 102, 0, 0.4) 0%, rgba(255, 102, 0, 0.2) 100%);
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.3), inset 0 0 10px rgba(255, 102, 0, 0.1);
+        }
+
+        /* Preset button active state (same as rotation) */
+        .preset-btn.active {
+            background: linear-gradient(180deg, rgba(255, 102, 0, 0.4) 0%, rgba(255, 102, 0, 0.2) 100%);
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.3), inset 0 0 10px rgba(255, 102, 0, 0.1);
+        }
+
+        /* Calibration toggle active state */
+        #btn-calibration-toggle.active {
+            background: linear-gradient(180deg, rgba(255, 102, 0, 0.4) 0%, rgba(255, 102, 0, 0.2) 100%);
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.3), inset 0 0 10px rgba(255, 102, 0, 0.1);
+            color: white;
+        }
+
+        /* Calibration spacing input */
+        .calibration-spacing-input {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            padding: 6px 4px;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 12px;
+            width: 48px;
+            text-align: center;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .calibration-spacing-input:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            color: white;
+        }
+
+        /* Inspector input fields */
+        .inspector-input {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .inspector-input:focus {
+            outline: none;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 8px rgba(255,102,0,0.3);
+        }
+    </style>
+</head>
+<body class="h-screen w-full relative flex">
+
+<!-- Background -->
+<div class="fixed inset-0 z-0">
+    <img data-i18n-attr="alt:alt_text.background_image" alt="Spiral Galaxy Background" class="w-full h-full object-cover opacity-25" src="images/backgrounds/spiral-galaxy.jpg"/>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#05070a]/40 via-[#05070a]/70 to-[#05070a]"></div>
+</div>
+
+<!-- Navigation Component (loaded dynamically) -->
+<div id="sidebar-nav" data-active-page="topology"></div>
+
+<!-- Main Content -->
+<main class="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
+    <!-- Header -->
+    <header class="w-full pt-12 pb-8 flex flex-col items-center">
+        <div class="flex items-center gap-4 mb-2">
+            <div class="h-px w-24 bg-gradient-to-r from-transparent to-[var(--primary-accent)] opacity-50"></div>
+            <h1 class="orbitron text-4xl font-bold tracking-[0.3em] text-white" data-i18n="pages.topology.title">TOPOLOGY EDITOR</h1>
+            <div class="h-px w-24 bg-gradient-to-l from-transparent to-[var(--primary-accent)] opacity-50"></div>
+        </div>
+        <p class="text-sm uppercase tracking-[0.4em] text-white/60" data-i18n="pages.topology.subtitle">Multi-Zone Spatial Configuration</p>
+    </header>
+
+    <!-- Editor Layout -->
+    <div class="flex-1 flex gap-6 px-12 pb-12" style="min-height:0">
+
+        <!-- Left Sidebar: Device List -->
+        <aside class="w-72 flex flex-col gap-4 overflow-y-auto px-1">
+            <div class="sci-fi-border carbon-pattern p-4">
+                <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-4" data-i18n="pages.topology.devices_title">Multi-Zone Devices</div>
+
+                <!-- No-devices empty state -->
+                <div id="no-devices-state" class="hidden text-center py-4">
+                    <span class="material-symbols-outlined text-3xl text-white/20 block mb-2">device_unknown</span>
+                    <p class="text-xs text-white/40"><span data-i18n="pages.topology.no_devices">No devices configured.</span><br><span data-i18n="pages.topology.no_devices_hint">Enable "Topology Editor" in</span><br><a href="devices.html" class="text-[var(--primary-accent)] hover:underline" data-i18n="pages.topology.device_management">Device Management</a>.</p>
+                </div>
+
+                <!-- Dynamic device list — populated by JS -->
+                <div id="topology-device-list"></div>
+            </div>
+
+            <!-- Grid Configuration -->
+            <div class="sci-fi-border carbon-pattern p-4">
+                <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-4" data-i18n="pages.topology.grid_title">Grid Config</div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs text-white/60 block mb-1"><span data-i18n="pages.topology.grid_size">Grid Size:</span> <span id="grid-size-value">1</span></label>
+                        <input type="range" id="grid-size" min="0.5" max="5" step="0.5" value="1" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[var(--primary-accent)]">
+                    </div>
+
+                    <label class="flex items-center gap-2 text-xs cursor-pointer">
+                        <input type="checkbox" id="snap-enabled" checked class="w-4 h-4 accent-[var(--primary-accent)]">
+                        <span data-i18n="pages.topology.snap_to_grid">Snap to Grid</span>
+                    </label>
+
+                    <label class="flex items-center gap-2 text-xs cursor-pointer">
+                        <input type="checkbox" id="show-grid" checked class="w-4 h-4 accent-[var(--primary-accent)]">
+                        <span data-i18n="pages.topology.show_grid">Show Grid</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Zones List -->
+            <div class="sci-fi-border carbon-pattern flex-1 flex flex-col">
+                <div class="p-4 flex-shrink-0">
+                    <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase" data-i18n="pages.topology.zones_title">Zones</div>
+                </div>
+                <div class="flex-1 px-4 pb-4 overflow-y-auto">
+                    <div id="zones-list" class="space-y-2">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center: Canvas -->
+        <div class="flex-1 flex flex-col gap-4" style="min-width:0;min-height:0">
+            <div class="flex-1 sci-fi-border carbon-pattern p-6 flex flex-col" style="min-height:0">
+                <div id="canvas-container">
+                    <canvas id="topology-canvas" width="800" height="600"></canvas>
+                </div>
+
+                <!-- Canvas Controls -->
+                <div class="flex gap-3 mt-4 justify-center" style="flex-wrap:wrap">
+                    <button id="btn-reload-openrgb" class="btn-sci-fi px-4 py-2 rounded text-xs uppercase tracking-wider flex items-center gap-2" data-i18n-attr="title:pages.topology.reload_leds_tooltip" title="Reload zone LED counts from OpenRGB hardware">
+                        <span class="material-symbols-outlined text-base">refresh</span>
+                        <span data-i18n="pages.topology.btn_reload">Reload from OpenRGB</span>
+                    </button>
+                    <button id="btn-auto-layout" class="btn-sci-fi px-4 py-2 rounded text-xs uppercase tracking-wider flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">grid_view</span>
+                        <span data-i18n="pages.topology.btn_auto_layout">Auto Layout</span>
+                    </button>
+                    <button id="btn-reset" class="btn-sci-fi px-4 py-2 rounded text-xs uppercase tracking-wider flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">restart_alt</span>
+                        <span data-i18n="pages.topology.btn_reset_all">Reset All</span>
+                    </button>
+                    <button id="btn-reset-view" class="btn-sci-fi px-4 py-2 rounded text-xs uppercase tracking-wider flex items-center gap-2" data-i18n-attr="title:pages.topology.reset_view_tooltip" title="Fit all zones in view">
+                        <span class="material-symbols-outlined text-base">fit_screen</span>
+                        <span data-i18n="pages.topology.btn_reset_view">Reset View</span>
+                    </button>
+                    <div class="flex items-center gap-1">
+                        <button id="btn-calibration-toggle" class="btn-sci-fi px-4 py-2 rounded text-xs uppercase tracking-wider flex items-center gap-2" data-i18n-attr="title:pages.topology.calibration_tooltip" title="Show the calibration rings around the effect center, on the canvas and on the real LEDs">
+                            <span class="material-symbols-outlined text-base">adjust</span>
+                            <span data-i18n="pages.topology.btn_calibration">Calibration</span>
+                        </button>
+                        <input type="number" id="calibration-spacing" class="calibration-spacing-input"
+                               min="1" max="1000" step="1" value="10"
+                               data-i18n-attr="title:pages.topology.calibration_spacing_tooltip" title="Ring spacing in world units">
+                        <span class="text-xs text-white/30">u</span>
+                    </div>
+                    <button id="btn-save" class="px-4 py-2 rounded text-xs uppercase tracking-wider flex items-center gap-2 bg-[var(--primary-accent)] text-white">
+                        <span class="material-symbols-outlined text-base">save</span>
+                        <span data-i18n="pages.topology.btn_save">Save Topology</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info Bar -->
+            <div class="sci-fi-border carbon-pattern p-3 flex items-center gap-4 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-[var(--primary-accent)]">info</span>
+                    <span data-i18n="pages.topology.canvas_hints" class="text-white/60">Drag zones · [R] rotate · [F] flip · Middle-drag to pan · Scroll to zoom</span>
+                </div>
+                <div class="ml-auto flex items-center gap-4">
+                    <div id="mouse-pos" class="text-white/40">X: 0, Y: 0</div>
+                    <div id="zoom-level" class="text-white/40">100%</div>
+                    <div id="bbox-info" class="text-white/40">BBox: 0×0</div>
+                    <div id="vbbox-info" class="text-[var(--primary-accent)]">VBBox: 0×0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar: Zone Inspector -->
+        <aside class="w-72 flex flex-col gap-4 overflow-y-auto px-1">
+            <div class="sci-fi-border carbon-pattern p-4">
+                <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-4" data-i18n="pages.topology.inspector_title">Zone Inspector</div>
+
+                <div id="zone-inspector" class="space-y-3">
+                    <div id="no-selection" class="text-xs text-white/40 text-center py-8" data-i18n="pages.topology.no_selection">No zone selected</div>
+
+                    <div id="inspector-fields" class="space-y-3 hidden">
+                        <div>
+                            <label class="text-xs text-white/60 block mb-1" data-i18n="pages.topology.zone_name">Zone Name</label>
+                            <input type="text" id="zone-name" class="inspector-input w-full text-sm" data-i18n-attr="placeholder:pages.topology.zone_name_placeholder" placeholder="Zone name">
+                        </div>
+
+                        <div class="flex gap-2">
+                            <div class="flex-1">
+                                <label class="text-xs text-white/60 block mb-1" data-i18n="pages.topology.position_x">Position X</label>
+                                <input type="number" id="zone-x" class="inspector-input w-full text-sm" step="0.5">
+                            </div>
+                            <div class="flex-1">
+                                <label class="text-xs text-white/60 block mb-1" data-i18n="pages.topology.position_y">Position Y</label>
+                                <input type="number" id="zone-y" class="inspector-input w-full text-sm" step="0.5">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-white/60 block mb-1" data-i18n="pages.topology.rotation">Rotation</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button class="rotation-btn btn-sci-fi px-4 py-2 rounded text-xs" data-rotation="0">
+                                    <div class="text-base">→</div>
+                                    <div class="text-[10px] opacity-60">0°</div>
+                                </button>
+                                <button class="rotation-btn btn-sci-fi px-4 py-2 rounded text-xs" data-rotation="90">
+                                    <div class="text-base">↑</div>
+                                    <div class="text-[10px] opacity-60">90°</div>
+                                </button>
+                                <button class="rotation-btn btn-sci-fi px-4 py-2 rounded text-xs" data-rotation="180">
+                                    <div class="text-base">←</div>
+                                    <div class="text-[10px] opacity-60">180°</div>
+                                </button>
+                                <button class="rotation-btn btn-sci-fi px-4 py-2 rounded text-xs" data-rotation="270">
+                                    <div class="text-base">↓</div>
+                                    <div class="text-[10px] opacity-60">270°</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-xs text-white/60 block mb-1" data-i18n="pages.topology.direction">Direction</label>
+                            <select id="zone-direction" class="inspector-input w-full text-sm">
+                                <option value="forward" data-i18n="pages.topology.dir_forward">Forward (0→N)</option>
+                                <option value="reverse" data-i18n="pages.topology.dir_reverse">Reverse (N→0)</option>
+                            </select>
+                        </div>
+
+                        <button id="btn-flip-direction" class="btn-sci-fi w-full px-3 py-2 rounded text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-base">swap_horiz</span>
+                            <span data-i18n="pages.topology.flip_direction">Flip Direction</span>
+                        </button>
+
+                        <div class="pt-3 border-t border-white/10">
+                            <label class="text-xs text-white/60 block mb-1"><span data-i18n="pages.topology.physical_length">Physical Length (cm)</span>
+                                <span class="text-white/30 font-normal ml-1" data-i18n="pages.topology.optional">optional</span>
+                            </label>
+                            <input type="number" id="zone-physical-length" class="inspector-input w-full text-sm"
+                                   min="0.1" step="0.5" data-i18n-attr="placeholder:pages.topology.physical_length_placeholder" placeholder="e.g. 120">
+                            <div class="text-[10px] text-white/30 mt-1">
+                                <span data-i18n="pages.topology.spacing">Spacing:</span> <span id="zone-spacing-display">1.0 (default)</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t border-white/10">
+                            <div class="text-xs text-white/40 space-y-1">
+                                <div><span data-i18n="pages.topology.device">Device:</span> <span id="zone-device" class="text-white/60"></span></div>
+                                <div><span data-i18n="pages.topology.zone_index">Zone Index:</span> <span id="zone-index" class="text-white/60"></span></div>
+                                <div><span data-i18n="pages.topology.led_count">LED Count:</span> <span id="zone-led-count" class="text-white/60"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Effect Center -->
+            <div class="sci-fi-border carbon-pattern p-4">
+                <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-cyan-400">center_focus_strong</span>
+                    <span data-i18n="pages.topology.effect_center_title">Effect Center</span>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- X/Y Percentage Inputs -->
+                    <div class="flex gap-2">
+                        <div class="flex-1">
+                            <label class="text-xs text-white/60 block mb-1" data-i18n="pages.topology.center_x">Center X (%)</label>
+                            <input type="number" id="center-x" class="inspector-input w-full text-sm px-2 py-1 bg-white/5 border border-white/20 rounded"
+                                   min="0" max="100" step="1" value="50">
+                        </div>
+                        <div class="flex-1">
+                            <label class="text-xs text-white/60 block mb-1" data-i18n="pages.topology.center_y">Center Y (%)</label>
+                            <input type="number" id="center-y" class="inspector-input w-full text-sm px-2 py-1 bg-white/5 border border-white/20 rounded"
+                                   min="0" max="100" step="1" value="50">
+                        </div>
+                    </div>
+
+                    <!-- Quick Presets -->
+                    <div>
+                        <label class="text-xs text-white/60 block mb-1" data-i18n="pages.topology.quick_presets">Quick Presets</label>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button class="preset-btn px-2 py-1.5 text-[10px] rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+                                    data-preset="center" data-i18n-attr="title:pages.topology.preset_center" title="Center (50, 50)" data-i18n="pages.topology.preset_center_label">Center</button>
+                            <button class="preset-btn px-2 py-1.5 text-[10px] rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+                                    data-preset="top" data-i18n-attr="title:pages.topology.preset_top" title="Top (50, 90)" data-i18n="pages.topology.preset_top_label">Top</button>
+                            <button class="preset-btn px-2 py-1.5 text-[10px] rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+                                    data-preset="bottom" data-i18n-attr="title:pages.topology.preset_bottom" title="Bottom (50, 10)" data-i18n="pages.topology.preset_bottom_label">Bottom</button>
+                            <button class="preset-btn px-2 py-1.5 text-[10px] rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+                                    data-preset="left" data-i18n-attr="title:pages.topology.preset_left" title="Left (10, 50)" data-i18n="pages.topology.preset_left_label">Left</button>
+                            <button class="preset-btn px-2 py-1.5 text-[10px] rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+                                    data-preset="right" data-i18n-attr="title:pages.topology.preset_right" title="Right (90, 50)" data-i18n="pages.topology.preset_right_label">Right</button>
+                        </div>
+                    </div>
+
+                    <!-- Help Text -->
+                    <div class="text-[10px] text-white/40 flex items-start gap-2 pt-2 border-t border-white/10">
+                        <span class="material-symbols-outlined" style="font-size:14px;">info</span>
+                        <span data-i18n="pages.topology.effect_center_help">Drag the cyan crosshair on the canvas or use the fields above. It stays where you put it, even when you move the zones. Radial effects (Bloom, Explosion, Plasma) expand from this point.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen rectangle (ambilight): LED position decides the side of the screen -->
+            <div class="sci-fi-border carbon-pattern p-4">
+                <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-cyan-400">desktop_windows</span>
+                    <span data-i18n="pages.topology.screen_title">Screen</span>
+                </div>
+                <div class="space-y-3">
+                    <div id="screen-mode" class="text-xs text-white/60 leading-relaxed"></div>
+                    <div id="screen-size" class="text-[10px] text-white/40 leading-relaxed"></div>
+                    <div class="grid grid-cols-2 gap-1">
+                        <button id="btn-screen-fit" class="px-2 py-1.5 text-[10px] rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors" data-i18n="pages.topology.screen_fit" data-i18n-attr="title:pages.topology.screen_fit_tooltip" title="Place the screen around the LEDs of the devices the ambilight drives">Fit</button>
+                        <button id="btn-screen-auto" class="px-2 py-1.5 text-[10px] rounded bg-white/5 hover:bg-white/10 border border-white/10 transition-colors disabled:opacity-40" data-i18n="pages.topology.screen_auto" data-i18n-attr="title:pages.topology.screen_auto_tooltip" title="Forget the rectangle placed by hand">Automatic</button>
+                    </div>
+                    <div class="text-[10px] text-white/40 flex items-start gap-2 pt-2 border-t border-white/10">
+                        <span class="material-symbols-outlined" style="font-size:14px;">info</span>
+                        <span data-i18n="pages.topology.screen_help">Drag a corner to resize (the proportions stay those of your screen), the border to move. A dot on a LED: it reads the point of the screen under it. A faded LED: outside the screen, left alone by the ambilight. Zone names do not matter: only where the LEDs are.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calibration Settings Panel (shown when calibration active) -->
+            <div id="calibration-panel" class="sci-fi-border carbon-pattern p-4 hidden">
+                <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base text-[var(--primary-accent)]">adjust</span>
+                    <span data-i18n="pages.topology.calibration_title">Calibration Settings</span>
+                </div>
+                <div class="space-y-3 text-xs">
+
+                    <!-- Center LED row -->
+                    <div class="calib-row" data-key="center">
+                        <div class="flex items-center justify-between mb-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full shrink-0" style="background:#FFFFFF; box-shadow:0 0 4px #fff"></div>
+                                <span class="text-white/80" data-i18n="pages.topology.calib_center_led">Center LED</span>
+                            </div>
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="checkbox" class="calib-blink w-3 h-3 accent-[var(--primary-accent)]" checked>
+                                <span class="text-white/50" data-i18n="pages.topology.calib_blink">Blink</span>
+                            </label>
+                        </div>
+                        <div class="calib-speed-row flex items-center gap-2">
+                            <input type="range" class="calib-speed flex-1 accent-[var(--primary-accent)]" style="height:4px"
+                                   min="100" max="2000" step="50" value="333">
+                            <span class="calib-speed-label text-[10px] text-white/40 w-12 text-right">333ms</span>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-white/10"></div>
+
+                    <!-- White rings -->
+                    <div class="calib-row" data-key="white">
+                        <div class="flex items-center justify-between mb-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-sm shrink-0" style="background:#FFFFFF; box-shadow:0 0 4px #fff"></div>
+                                <span class="text-white/80" data-i18n="pages.topology.calib_white">White rings</span>
+                            </div>
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="checkbox" class="calib-blink w-3 h-3 accent-[var(--primary-accent)]">
+                                <span class="text-white/50" data-i18n="pages.topology.calib_blink">Blink</span>
+                            </label>
+                        </div>
+                        <div class="calib-speed-row flex items-center gap-2 hidden">
+                            <input type="range" class="calib-speed flex-1 accent-[var(--primary-accent)]" style="height:4px"
+                                   min="100" max="3000" step="100" value="1000">
+                            <span class="calib-speed-label text-[10px] text-white/40 w-12 text-right">1000ms</span>
+                        </div>
+                    </div>
+
+                    <!-- Red rings -->
+                    <div class="calib-row" data-key="red">
+                        <div class="flex items-center justify-between mb-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-sm shrink-0" style="background:#FF3C3C; box-shadow:0 0 4px #f44"></div>
+                                <span class="text-white/80" data-i18n="pages.topology.calib_red">Red rings</span>
+                            </div>
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="checkbox" class="calib-blink w-3 h-3 accent-[var(--primary-accent)]">
+                                <span class="text-white/50" data-i18n="pages.topology.calib_blink">Blink</span>
+                            </label>
+                        </div>
+                        <div class="calib-speed-row flex items-center gap-2 hidden">
+                            <input type="range" class="calib-speed flex-1 accent-[var(--primary-accent)]" style="height:4px"
+                                   min="100" max="3000" step="100" value="1000">
+                            <span class="calib-speed-label text-[10px] text-white/40 w-12 text-right">1000ms</span>
+                        </div>
+                    </div>
+
+                    <!-- Blue rings -->
+                    <div class="calib-row" data-key="blue">
+                        <div class="flex items-center justify-between mb-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-sm shrink-0" style="background:#507FFF; box-shadow:0 0 4px #68f"></div>
+                                <span class="text-white/80" data-i18n="pages.topology.calib_blue">Blue rings</span>
+                            </div>
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="checkbox" class="calib-blink w-3 h-3 accent-[var(--primary-accent)]">
+                                <span class="text-white/50" data-i18n="pages.topology.calib_blink">Blink</span>
+                            </label>
+                        </div>
+                        <div class="calib-speed-row flex items-center gap-2 hidden">
+                            <input type="range" class="calib-speed flex-1 accent-[var(--primary-accent)]" style="height:4px"
+                                   min="100" max="3000" step="100" value="1000">
+                            <span class="calib-speed-label text-[10px] text-white/40 w-12 text-right">1000ms</span>
+                        </div>
+                    </div>
+
+                    <!-- Green rings -->
+                    <div class="calib-row" data-key="green">
+                        <div class="flex items-center justify-between mb-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-sm shrink-0" style="background:#3CD250; box-shadow:0 0 4px #3d5"></div>
+                                <span class="text-white/80" data-i18n="pages.topology.calib_green">Green rings</span>
+                            </div>
+                            <label class="flex items-center gap-1 cursor-pointer">
+                                <input type="checkbox" class="calib-blink w-3 h-3 accent-[var(--primary-accent)]">
+                                <span class="text-white/50" data-i18n="pages.topology.calib_blink">Blink</span>
+                            </label>
+                        </div>
+                        <div class="calib-speed-row flex items-center gap-2 hidden">
+                            <input type="range" class="calib-speed flex-1 accent-[var(--primary-accent)]" style="height:4px"
+                                   min="100" max="3000" step="100" value="1000">
+                            <span class="calib-speed-label text-[10px] text-white/40 w-12 text-right">1000ms</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Overlaps Warning -->
+            <div id="overlap-warning" class="sci-fi-border carbon-pattern p-4 hidden" style="border-color: #ff0000;">
+                <div class="flex items-center gap-2 text-xs text-red-400">
+                    <span class="material-symbols-outlined text-base">warning</span>
+                    <span data-i18n="pages.topology.overlaps">Zone overlaps detected!</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+</main>
+
+<script src="/eel.js"></script>
+<script src="js/common.js"></script>
+<script src="js/glass-select.js"></script>
+<script src="js/i18n.js"></script>
+
+<!-- Manual Viewer (in-app browser) -->
+<script src="js/manual-viewer.js"></script>
+
+<script src="js/load-navigation.js"></script>
+<script src="js/topology-editor.js"></script>
+<script src="js/keyboard-shortcuts.js"></script>
+</body>
+</html>

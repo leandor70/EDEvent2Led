@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ED:Event2Led - Effects Lib</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="css/tailwind.min.css" rel="stylesheet">
+<link href="css/fonts.css" rel="stylesheet">
+<link href="css/sci-fi-theme.css" rel="stylesheet">
+<link href="css/sci-fi-forms.css" rel="stylesheet">
+<style>
+        /* ========================================
+           EFFECTS EDITOR - PAGE-SPECIFIC STYLES
+           ======================================== */
+        body {
+            overflow: auto;
+        }
+
+        .glow-orange {
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+        }
+
+        .step-card {
+            transition: all 0.2s;
+        }
+        .step-card:hover {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.2);
+        }
+        .drag-handle {
+            cursor: grab;
+        }
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .preset-btn {
+            background: rgba(255, 102, 0, 0.05);
+            border: 1px solid rgba(255, 102, 0, 0.2);
+            transition: all 0.2s;
+        }
+        .preset-btn:hover {
+            background: rgba(255, 102, 0, 0.15);
+            border-color: var(--primary-accent);
+        }
+        .preset-btn.active {
+            background: var(--primary-accent);
+            border-color: var(--primary-accent);
+            color: white;
+        }
+
+        /* Direction grid buttons: muted icon when not selected */
+        .dir-btn:not(.active) {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        /* Effect Card Delete Button (On-Hover) */
+        .effect-card {
+            position: relative;
+        }
+        .effect-delete-btn {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(220, 38, 38, 0.9);
+            border: 1px solid rgba(220, 38, 38, 0.5);
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.2s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .effect-card:hover .effect-delete-btn {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+        .effect-delete-btn:hover {
+            background: rgba(220, 38, 38, 1);
+            border-color: rgb(220, 38, 38);
+            box-shadow: 0 0 12px rgba(220, 38, 38, 0.6);
+        }
+        .effect-delete-btn .material-symbols-outlined {
+            font-size: 18px;
+            color: white;
+        }
+        /* Compact Effect Cards with Hover Expansion */
+        .effect-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 90px;
+            overflow: hidden;
+        }
+        .effect-card:hover {
+            z-index: 10;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+        .effect-card .timeline-preview {
+            display: flex;
+            gap: 2px;
+            height: 6px;
+            margin-top: 0.5rem;
+        }
+        .effect-card .timeline-segment {
+            flex: 1;
+            border-radius: 1px;
+            min-width: 4px;
+        }
+
+        /* Effect Card Selected State */
+        .effect-card.selected {
+            border-color: var(--primary-accent);
+            background: rgba(255, 102, 0, 0.1);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="h-screen w-full relative flex">
+<style>
+/* Effects List - Scrollable container */
+#effects-list-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+#effects-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 102, 0, 0.3) rgba(0, 0, 0, 0.2);
+}
+
+/* Global scrollbar styling - applies to ALL scrollbars */
+*::-webkit-scrollbar { width: 6px; }
+*::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb {
+    background: rgba(255, 102, 0, 0.3);
+    border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 102, 0, 0.5);
+}
+
+/* Specific overrides */
+#effects-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#effects-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+#effects-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 102, 0, 0.3);
+    border-radius: 3px;
+}
+
+#effects-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 102, 0, 0.5);
+}
+</style>
+<div class="fixed inset-0 z-0">
+<img data-i18n-attr="alt:alt_text.background_image" alt="Spiral Galaxy Background" class="w-full h-full object-cover opacity-25" src="images/backgrounds/spiral-galaxy.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-b from-[#05070a]/40 via-[#05070a]/70 to-[#05070a]"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[700px] pointer-events-none opacity-20">
+<svg class="w-full h-full stroke-[var(--primary-accent)] fill-none opacity-40" viewBox="0 0 100 100">
+<polygon points="50,5 95,80 5,80" stroke-width="0.1"></polygon>
+<polygon points="50,15 85,75 15,75" stroke-width="0.1"></polygon>
+<polygon points="50,30 70,70 30,70" stroke-width="0.1"></polygon>
+<polygon points="50,45 60,65 40,65" stroke-width="0.1"></polygon>
+</svg>
+</div>
+</div>
+<!-- Navigation Component (loaded dynamically) -->
+<div id="sidebar-nav" data-active-page="effects-lib"></div>
+<main class="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
+<header class="w-full pt-12 pb-8 flex flex-col items-center">
+<div class="flex items-center gap-4 mb-2">
+<div class="h-px w-24 bg-gradient-to-r from-transparent to-[var(--primary-accent)] opacity-50"></div>
+<h1 class="orbitron text-4xl font-bold tracking-[0.3em] text-white" data-i18n="pages.effects_editor.title">
+                EFFECTS EDITOR
+            </h1>
+<div class="h-px w-24 bg-gradient-to-l from-transparent to-[var(--primary-accent)] opacity-50"></div>
+</div>
+<p class="text-sm uppercase tracking-[0.4em] text-white/60" data-i18n="pages.effects_editor.subtitle">Design Multi-Step Lighting Sequences</p>
+</header>
+<div class="flex-1 px-12 pb-12 overflow-y-auto flex gap-6">
+<!-- Effects List Sidebar (Left 30%) -->
+<aside class="w-80 flex-shrink-0 flex flex-col h-full">
+<div class="sci-fi-border carbon-pattern flex flex-col h-full">
+    <!-- Fixed Header -->
+    <div class="p-6 pb-4 flex-shrink-0">
+        <div class="orbitron text-xl font-bold border-b border-white/10 pb-4 mb-6 tracking-widest uppercase" data-i18n="sections.effects_library.title">Effects Library</div>
+
+        <!-- Search Bar -->
+        <div class="mb-4">
+            <input id="library-search" class="w-full bg-black/60 border border-[var(--primary-accent)]/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none" placeholder="Search effects..." data-i18n-attr="placeholder:sections.effects_library.search_placeholder" type="text"/>
+        </div>
+
+        <!-- NEW Filter Toggle -->
+        <div class="mb-3">
+            <label class="glass-toggle-container">
+                <span class="glass-toggle-label text-sm text-white/70" data-i18n="sections.effects_library.show_new">Show NEW</span>
+                <input type="checkbox" class="glass-toggle-input" id="toggle-filter-new">
+                <div class="glass-toggle-track">
+                    <div class="glass-toggle-thumb"></div>
+                </div>
+            </label>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex gap-1 mb-3">
+            <button class="lib-cat-tab active preset-btn px-2.5 py-1 text-xs uppercase tracking-wider rounded"
+                    data-cat="" data-i18n="sections.effects_library.cat_all">All</button>
+            <button class="lib-cat-tab preset-btn px-2.5 py-1 text-xs uppercase tracking-wider rounded"
+                    data-cat="event" data-i18n="sections.effects_library.cat_events">Events</button>
+            <button class="lib-cat-tab preset-btn px-2.5 py-1 text-xs uppercase tracking-wider rounded"
+                    data-cat="status" data-i18n="sections.effects_library.cat_status">Status</button>
+            <button class="lib-cat-tab preset-btn px-2.5 py-1 text-xs uppercase tracking-wider rounded"
+                    data-cat="general" data-i18n="sections.effects_library.cat_general">General</button>
+        </div>
+    </div>
+
+    <!-- Effects List Container (scroll managed by inner #effects-list) -->
+    <div class="flex-1 px-6 pb-4" id="effects-list-container">
+        <div class="space-y-2" id="effects-list">
+<!-- Effect 1: FSD Jump - Blue -->
+<div class="effect-card bg-black/40 border border-white/10 rounded p-3 cursor-pointer hover:bg-black/60">
+<!-- Delete Button (On-Hover) -->
+<button class="effect-delete-btn" data-i18n-attr="title:tooltips.delete_effect" title="Delete effect" aria-label="Delete FSD Jump - Blue effect">
+<span class="material-symbols-outlined">delete</span>
+</button>
+
+<div class="flex items-center justify-between mb-2">
+<span class="font-bold text-white">FSD Jump - Blue</span>
+<span class="text-xs bg-[var(--primary-accent)]/20 text-[var(--primary-accent)] px-2 py-0.5 rounded">3 STEPS</span>
+</div>
+<div class="flex gap-1">
+<div class="w-6 h-6 bg-blue-500 rounded"></div>
+<div class="w-6 h-6 bg-cyan-400 rounded"></div>
+<div class="w-6 h-6 bg-blue-600 rounded"></div>
+</div>
+</div>
+
+<!-- Effect 2: Combat Alert -->
+<div class="effect-card bg-black/40 border border-white/10 rounded p-3 cursor-pointer hover:bg-black/60">
+<!-- Delete Button (On-Hover) -->
+<button class="effect-delete-btn" data-i18n-attr="title:tooltips.delete_effect" title="Delete effect" aria-label="Delete Combat Alert effect">
+<span class="material-symbols-outlined">delete</span>
+</button>
+
+<div class="flex items-center justify-between mb-2">
+<span class="font-bold text-white/70">Combat Alert</span>
+<span class="text-xs bg-white/10 text-white/50 px-2 py-0.5 rounded">2 STEPS</span>
+</div>
+<div class="flex gap-1">
+<div class="w-6 h-6 bg-red-600 rounded"></div>
+<div class="w-6 h-6 bg-orange-500 rounded"></div>
+</div>
+</div>
+
+<!-- Placeholder effects will be replaced by JS -->
+        </div>
+    </div>
+
+</div>
+</aside>
+
+<!-- Effect Editor (Right 70%) -->
+<div class="flex-1">
+<div class="sci-fi-border carbon-pattern p-6">
+<!-- Effect Header -->
+<div class="mb-8">
+<input id="effect-name" class="bg-transparent border-b-2 border-[var(--primary-accent)] text-2xl orbitron font-bold text-white w-full pb-2 focus:outline-none" placeholder="Effect Name" data-i18n-attr="placeholder:sections.effect_editor.effect_name_placeholder" type="text" value="" disabled/>
+<input id="effect-description" type="hidden" value=""/>
+<input id="effect-category" type="hidden" value="event"/>
+<div class="mt-2 flex items-center gap-3 flex-wrap">
+    <div class="flex items-center gap-2">
+        <span class="text-xs text-white/60 uppercase tracking-wider" data-i18n="sections.effect_editor.category_label">Category:</span>
+        <select id="effect-category-select" disabled
+            class="bg-black/60 border border-white/10 text-white/60 text-xs rounded px-2 py-1
+                   focus:border-[var(--primary-accent)]/50 outline-none disabled:opacity-40">
+            <option value="event" data-i18n="sections.effect_editor.cat_event">Event</option>
+            <option value="status" data-i18n="sections.effect_editor.cat_status">Status</option>
+            <option value="general" data-i18n="sections.effect_editor.cat_general">General</option>
+        </select>
+    </div>
+    <!-- Associated Events Container -->
+    <div id="effect-events-container" class="flex flex-wrap gap-2"></div>
+</div>
+
+<input id="post-behavior" type="hidden" value="static_color"/>
+</div>
+
+<!-- Color Timeline Visualization -->
+<div class="mb-8">
+<div class="orbitron text-sm tracking-widest text-[var(--primary-accent)] uppercase mb-4" data-i18n="sections.effect_editor.color_timeline">Color Timeline</div>
+<div class="sci-fi-border rounded-lg overflow-hidden">
+<canvas id="colorTimeline" class="w-full" height="120" style="display: block;"></canvas>
+</div>
+<div class="flex justify-between items-center mt-2 px-2">
+<span class="text-xs text-white/40 uppercase">0ms</span>
+<span id="totalDuration" class="text-[13px] orbitron font-bold text-[var(--primary-accent)]">Total: 2500ms</span>
+<span id="endTime" class="text-xs text-white/40 uppercase">2500ms</span>
+</div>
+</div>
+
+<!-- Steps Sequencer -->
+<div class="orbitron text-sm tracking-widest text-[var(--primary-accent)] uppercase mb-4" data-i18n="sections.effect_editor.effect_steps">Effect Steps</div>
+
+<div class="space-y-4 mb-6" id="steps-container">
+    <!-- Steps will be dynamically created here by JavaScript -->
+    <div class="text-center text-white/40 py-8">
+        <span class="material-symbols-outlined text-4xl mb-2 block opacity-50">edit_off</span>
+        <p data-i18n="sections.effect_editor.select_effect_hint">Select an effect to start editing</p>
+    </div>
+</div>
+
+<!-- Add Step + Test Full Effect Buttons -->
+<div class="flex gap-4 mb-6">
+<button id="btn-add-step" class="flex-1 btn-sci-fi p-3 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+<span class="orbitron text-sm tracking-[0.2em] font-bold" data-i18n="buttons.add_step">ADD STEP</span>
+</button>
+<button id="btn-test-effect" class="flex-1 btn-sci-fi p-3 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">play_arrow</span>
+<span class="orbitron text-sm tracking-[0.2em] font-bold" data-i18n="buttons.test_full_effect">TEST FULL EFFECT</span>
+</button>
+<button id="btn-stop-effect" class="flex-1 btn-sci-fi p-3 flex items-center justify-center gap-2 bg-red-500/20 hover:bg-red-500/30">
+<span class="material-symbols-outlined">stop</span>
+<span class="orbitron text-sm tracking-[0.2em] font-bold" data-i18n="buttons.stop">STOP</span>
+</button>
+</div>
+
+<!-- Save + Revert Buttons -->
+<div class="flex gap-3">
+<button id="btn-save-effect" class="flex-1 relative group">
+<div class="absolute inset-0 bg-[var(--primary-accent)] blur-md opacity-20 group-hover:opacity-40 transition-opacity"></div>
+<div class="relative flex items-center justify-center gap-4 px-6 py-6 sci-fi-border border-2 border-[var(--primary-accent)]/60 bg-black/80">
+<span class="material-symbols-outlined text-3xl text-[var(--primary-accent)]">save</span>
+<span class="orbitron text-2xl font-black tracking-[0.6em] text-white group-hover:text-[var(--primary-accent)] transition-colors" data-i18n="buttons.save">SAVE</span>
+<div class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-12 bg-[var(--primary-accent)] opacity-20"></div>
+<div class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-12 bg-[var(--primary-accent)] opacity-20"></div>
+</div>
+</button>
+<button id="btn-revert-effect" class="relative group" data-i18n-attr="title:tooltips.revert_tooltip" title="Revert to last saved state">
+<div class="absolute inset-0 bg-amber-500 blur-md opacity-10 group-hover:opacity-25 transition-opacity"></div>
+<div class="relative flex items-center justify-center gap-3 px-6 py-6 sci-fi-border border-2 border-amber-500/40 bg-black/80 hover:border-amber-500/70 transition-colors">
+<span class="material-symbols-outlined text-2xl text-amber-400">history</span>
+<span class="orbitron text-sm font-black tracking-[0.3em] text-amber-400/80 group-hover:text-amber-400 transition-colors" data-i18n="buttons.revert">REVERT</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<script>
+// ========================================
+// COLOR TIMELINE VISUALIZATION
+// ========================================
+
+// Helper: Draw Breath effect (oscillating gradient between 2 colors)
+function drawBreathSegment(ctx, x, y, width, height, color1, color2, numLoops) {
+    // Each loop renders one complete color1->color2->color1 cycle
+    const loops = Math.max(1, numLoops || 1);
+    const cycleWidth = width / loops;
+
+    for (let i = 0; i < loops; i++) {
+        const cx = x + i * cycleWidth;
+        const half = cycleWidth / 2;
+
+        // First half: color1 -> color2
+        const g1 = ctx.createLinearGradient(cx, y, cx + half, y);
+        g1.addColorStop(0, color1);
+        g1.addColorStop(1, color2);
+        ctx.fillStyle = g1;
+        ctx.fillRect(cx, y, half, height);
+
+        // Second half: color2 -> color1
+        const g2 = ctx.createLinearGradient(cx + half, y, cx + cycleWidth, y);
+        g2.addColorStop(0, color2);
+        g2.addColorStop(1, color1);
+        ctx.fillStyle = g2;
+        ctx.fillRect(cx + half, y, half, height);
+    }
+}
+
+// Helper: Draw Color Cycle effect (n colors with smooth transitions)
+function drawColorCycleSegment(ctx, x, y, width, height, colors) {
+    const numColors = colors.length;
+    const segmentWidth = width / numColors;
+
+    for (let i = 0; i < numColors; i++) {
+        const gradient = ctx.createLinearGradient(x + i * segmentWidth, y, x + (i + 1) * segmentWidth, y);
+
+        const currentColor = colors[i];
+        const nextColor = colors[(i + 1) % numColors];
+
+        // Smooth transition between colors
+        gradient.addColorStop(0, currentColor);
+        gradient.addColorStop(0.7, currentColor);
+        gradient.addColorStop(1, nextColor);
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(x + i * segmentWidth, y, segmentWidth, height);
+    }
+}
+
+// Helper: Draw Static Transition (gradient from previous color to target)
+function drawStaticTransitionSegment(ctx, x, y, width, height, fromColor, toColor) {
+    const gradient = ctx.createLinearGradient(x, y, x + width, y);
+    gradient.addColorStop(0, fromColor);
+    gradient.addColorStop(1, toColor);
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(x, y, width, height);
+}
+
+// Helper: Draw Spatial effect (multiple colors as bands/grid)
+function drawSpatialSegment(ctx, x, y, width, height, colors, layout = 'horizontal') {
+    const numColors = colors.length;
+
+    if (layout === 'horizontal') {
+        // Horizontal bands
+        const bandHeight = height / numColors;
+        colors.forEach((color, i) => {
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y + i * bandHeight, width, bandHeight);
+        });
+    } else if (layout === 'vertical') {
+        // Vertical bands
+        const bandWidth = width / numColors;
+        colors.forEach((color, i) => {
+            ctx.fillStyle = color;
+            ctx.fillRect(x + i * bandWidth, y, bandWidth, height);
+        });
+    } else if (layout === 'grid') {
+        // 2x2 grid for Four Corner Nuance
+        const halfWidth = width / 2;
+        const halfHeight = height / 2;
+
+        if (colors.length >= 4) {
+            ctx.fillStyle = colors[0]; // Top-Left
+            ctx.fillRect(x, y, halfWidth, halfHeight);
+
+            ctx.fillStyle = colors[1]; // Top-Right
+            ctx.fillRect(x + halfWidth, y, halfWidth, halfHeight);
+
+            ctx.fillStyle = colors[2]; // Bottom-Left
+            ctx.fillRect(x, y + halfHeight, halfWidth, halfHeight);
+
+            ctx.fillStyle = colors[3]; // Bottom-Right
+            ctx.fillRect(x + halfWidth, y + halfHeight, halfWidth, halfHeight);
+        }
+    }
+}
+
+function renderColorTimeline() {
+    const canvas = document.getElementById('colorTimeline');
+    if (!canvas) {
+        console.warn('Canvas #colorTimeline not found');
+        return;
+    }
+
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width = canvas.offsetWidth;
+    const height = canvas.height;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+
+    // Get step data from DOM
+    const steps = [];
+    const stepCards = document.querySelectorAll('.step-card');
+
+    console.log(`Found ${stepCards.length} step cards`);
+
+    stepCards.forEach((card, index) => {
+        // Find duration input
+        const durationInput = card.querySelector('.step-duration');
+
+        // Find ALL color inputs (for multi-color effects)
+        const colorInputs = card.querySelectorAll('.step-color');
+
+        // Find effect type select
+        const effectSelect = card.querySelector('.step-type');
+
+        const colors = [];
+        colorInputs.forEach(input => {
+            const colorValue = input.value && input.value.startsWith('#') ? input.value : '#0055FF';
+            colors.push(colorValue);
+        });
+
+        console.log(`Step ${index + 1}:`, {
+            hasDuration: !!durationInput,
+            numColors: colors.length,
+            hasSelect: !!effectSelect,
+            duration: durationInput ? durationInput.value : 'N/A',
+            colors: colors,
+            effectType: effectSelect ? effectSelect.value : 'N/A'
+        });
+
+        if (durationInput && colors.length > 0) {
+            const duration = parseInt(durationInput.value) || 500;
+            const effectType = effectSelect ? effectSelect.value : 'static_transition';
+            const numLoopsInput = card.querySelector('.param-num-loops');
+            const numLoops = numLoopsInput ? parseInt(numLoopsInput.value) || 1 : 1;
+
+            steps.push({
+                duration: duration,
+                colors: colors,
+                effectType: effectType,
+                numLoops: numLoops,
+                name: (effectSelect && effectSelect.selectedIndex >= 0 && effectSelect.options[effectSelect.selectedIndex]) ? effectSelect.options[effectSelect.selectedIndex].text : 'Effect',
+                index: index + 1
+            });
+        }
+    });
+
+    console.log(`Rendering ${steps.length} steps:`, steps);
+
+    if (steps.length === 0) {
+        console.warn('No steps found to render');
+        return;
+    }
+
+    // Calculate total duration
+    const totalDuration = steps.reduce((sum, step) => sum + step.duration, 0);
+
+    // Update duration display
+    const totalDurationEl = document.getElementById('totalDuration');
+    const endTimeEl = document.getElementById('endTime');
+    if (totalDurationEl) {
+        totalDurationEl.textContent = `Total: ${totalDuration >= 1000 ? (totalDuration / 1000).toFixed(1) + 's' : totalDuration + 'ms'}`;
+    }
+    if (endTimeEl) {
+        endTimeEl.textContent = totalDuration >= 1000 ? (totalDuration / 1000).toFixed(1) + 's' : totalDuration + 'ms';
+    }
+
+    // Drawing parameters
+    const padding = 20;
+    const timelineHeight = 60;
+    const timelineY = 20;
+    const labelY = timelineY + timelineHeight + 15;
+
+    // Draw background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+    ctx.fillRect(padding, timelineY, width - padding * 2, timelineHeight);
+
+    // Draw each step using effect-specific rendering
+    let currentX = padding;
+    let cumulativeTime = 0;
+
+    steps.forEach((step, index) => {
+        const stepWidth = ((width - padding * 2) * step.duration) / totalDuration;
+
+        // Determine previous color for static_transition
+        const prevColor = index > 0 ? steps[index - 1].colors[0] : '#000000';
+
+        // Render based on effect type
+        switch (step.effectType) {
+            case 'breath':
+                // Oscillating gradient between 2 colors
+                if (step.colors.length >= 2) {
+                    drawBreathSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors[0], step.colors[1], step.numLoops);
+                } else {
+                    // Fallback to solid color
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'color_cycle':
+                // Multiple colors with smooth transitions
+                if (step.colors.length >= 2) {
+                    drawColorCycleSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors);
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'static_transition':
+                // Gradient from previous color to target color
+                drawStaticTransitionSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, prevColor, step.colors[0]);
+                break;
+
+            case 'four_corner_nuance':
+                // 2x2 grid of 4 colors
+                if (step.colors.length >= 4) {
+                    drawSpatialSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors, 'grid');
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'bloom':
+                // Temporal palette: 5 colours from t=0% to t=100% (horizontal bands)
+                if (step.colors.length >= 2) {
+                    drawSpatialSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors, 'horizontal');
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'explosion_ring': {
+                // 2 colours: ring peak (left) + decaying trail (right → black)
+                if (step.colors.length >= 2) {
+                    const ringCol  = step.colors[0];
+                    const trailCol = step.colors[1];
+                    const halfW    = stepWidth * 0.35;   // ring occupies 35% of width
+
+                    // Left band: black → ring peak (ring approaching)
+                    const gRing = ctx.createLinearGradient(currentX, 0, currentX + halfW, 0);
+                    gRing.addColorStop(0, 'rgba(0,0,0,0)');
+                    gRing.addColorStop(1, ringCol);
+                    ctx.fillStyle = gRing;
+                    ctx.fillRect(currentX, timelineY, halfW, timelineHeight);
+
+                    // Right band: trail colour fading to black
+                    const gTrail = ctx.createLinearGradient(currentX + halfW, 0, currentX + stepWidth, 0);
+                    gTrail.addColorStop(0, trailCol);
+                    gTrail.addColorStop(1, 'rgba(0,0,0,0)');
+                    ctx.fillStyle = gTrail;
+                    ctx.fillRect(currentX + halfW, timelineY, stepWidth - halfW, timelineHeight);
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+            }
+
+            case 'two_color_nuance':
+                // 2 horizontal bands (spatial gradient)
+                if (step.colors.length >= 2) {
+                    drawSpatialSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors, 'horizontal');
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'wave':
+                // Wave: 2 colors with directional gradient visualization
+                if (step.colors.length >= 2) {
+                    // Draw horizontal gradient to represent wave propagation
+                    const gradient = ctx.createLinearGradient(currentX, 0, currentX + stepWidth, 0);
+                    gradient.addColorStop(0, step.colors[0]);
+                    gradient.addColorStop(1, step.colors[1]);
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+
+                    // Add directional indicator (small arrow)
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                    ctx.font = 'bold 12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('→', currentX + stepWidth / 2, timelineY + timelineHeight / 2 + 4);
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'bump':
+                // Bump: 2 colors with bidirectional gradient (bounce-back)
+                if (step.colors.length >= 2) {
+                    // Draw gradient to center then reverse (bounce effect visualization)
+                    const halfWidth = stepWidth / 2;
+
+                    // Left half: color1 → color2
+                    const gradient1 = ctx.createLinearGradient(currentX, 0, currentX + halfWidth, 0);
+                    gradient1.addColorStop(0, step.colors[0]);
+                    gradient1.addColorStop(1, step.colors[1]);
+                    ctx.fillStyle = gradient1;
+                    ctx.fillRect(currentX, timelineY, halfWidth, timelineHeight);
+
+                    // Right half: color2 → color1 (bounce back)
+                    const gradient2 = ctx.createLinearGradient(currentX + halfWidth, 0, currentX + stepWidth, 0);
+                    gradient2.addColorStop(0, step.colors[1]);
+                    gradient2.addColorStop(1, step.colors[0]);
+                    ctx.fillStyle = gradient2;
+                    ctx.fillRect(currentX + halfWidth, timelineY, halfWidth, timelineHeight);
+
+                    // Add bidirectional indicator (arrows)
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                    ctx.font = 'bold 10px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('⇄', currentX + stepWidth / 2, timelineY + timelineHeight / 2 + 4);
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'plasma':
+                // 5-color palette: horizontal bands showing the gradient palette
+                if (step.colors.length >= 2) {
+                    drawSpatialSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors, 'horizontal');
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'aurora':
+                // 3-color bands: curtain-fall gradient from top to bottom
+                if (step.colors.length >= 2) {
+                    drawSpatialSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors, 'horizontal');
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'ocean_waves':
+                // 3-color bands: deep water, surface, wave crest
+                if (step.colors.length >= 2) {
+                    drawSpatialSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors, 'horizontal');
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'fire':
+                // 2-color bands: background bottom, flame top
+                if (step.colors.length >= 2) {
+                    drawSpatialSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors, 'horizontal');
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'glitch':
+                // 4-color bands: glitch palette colors
+                if (step.colors.length >= 2) {
+                    drawSpatialSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors, 'horizontal');
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            case 'matrix_rain':
+                // 3-color bands: background, trail, head
+                if (step.colors.length >= 2) {
+                    drawSpatialSegment(ctx, currentX, timelineY, stepWidth, timelineHeight, step.colors, 'horizontal');
+                } else {
+                    ctx.fillStyle = step.colors[0];
+                    ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                }
+                break;
+
+            default:
+                // Fallback: solid color (first color)
+                ctx.fillStyle = step.colors[0];
+                ctx.fillRect(currentX, timelineY, stepWidth, timelineHeight);
+                break;
+        }
+
+        // Draw step label
+        ctx.font = '10px Orbitron, monospace';
+        ctx.textAlign = 'center';
+        const labelX = currentX + stepWidth / 2;
+
+        // Step number
+        ctx.fillStyle = '#FF6600';
+        ctx.fillText(`Step ${step.index}`, labelX, labelY);
+
+        // Duration
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.font = '9px Rajdhani, sans-serif';
+        const durationText = step.duration >= 1000 ? (step.duration / 1000).toFixed(1) + 's' : step.duration + 'ms';
+        ctx.fillText(durationText, labelX, labelY + 12);
+
+        // Move to next position
+        currentX += stepWidth;
+        cumulativeTime += step.duration;
+    });
+
+    // Draw time markers at step boundaries
+    currentX = padding;
+    cumulativeTime = 0;
+
+    steps.forEach((step, index) => {
+        const stepWidth = ((width - padding * 2) * step.duration) / totalDuration;
+
+        // Draw marker line at step boundary (except first)
+        if (index > 0) {
+            ctx.strokeStyle = 'rgba(255, 102, 0, 0.5)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(currentX, timelineY);
+            ctx.lineTo(currentX, timelineY + timelineHeight);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Time label above marker
+            ctx.fillStyle = '#FF6600';
+            ctx.font = 'bold 9px Rajdhani, sans-serif';
+            ctx.textAlign = 'center';
+            const timeText = cumulativeTime >= 1000 ? (cumulativeTime / 1000).toFixed(2) + 's' : cumulativeTime + 'ms';
+            ctx.fillText(timeText, currentX, timelineY - 5);
+        }
+
+        currentX += stepWidth;
+        cumulativeTime += step.duration;
+    });
+
+    // Draw tick marks (intermediate time markers)
+    const timelineWidth = width - padding * 2;
+    const tickInterval = totalDuration <= 2000 ? 250 : totalDuration <= 5000 ? 500 : 1000; // 250ms, 500ms or 1s intervals
+
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';  // Increased opacity: 0.15 → 0.4
+    ctx.lineWidth = 1.5;  // Increased width: 1 → 1.5
+    ctx.setLineDash([3, 3]);  // Increased dash: [2,2] → [3,3]
+
+    for (let time = tickInterval; time < totalDuration; time += tickInterval) {
+        const tickX = padding + (timelineWidth * time / totalDuration);
+
+        // Check if this position is too close to a step boundary marker (avoid overlap)
+        let tooClose = false;
+        let cumTime = 0;
+        for (let i = 0; i < steps.length; i++) {
+            cumTime += steps[i].duration;
+            const boundaryX = padding + (timelineWidth * cumTime / totalDuration);
+            if (Math.abs(tickX - boundaryX) < 15) { // 15px tolerance
+                tooClose = true;
+                break;
+            }
+        }
+
+        if (!tooClose) {
+            // Draw tick line (shorter than boundary markers)
+            ctx.beginPath();
+            ctx.moveTo(tickX, timelineY + timelineHeight * 0.2);
+            ctx.lineTo(tickX, timelineY + timelineHeight * 0.8);
+            ctx.stroke();
+
+            // Add small label below timeline for major ticks
+            if (time % 1000 === 0) { // Only for full seconds
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.font = '8px Rajdhani, sans-serif';
+                ctx.textAlign = 'center';
+                const tickLabel = (time / 1000).toFixed(1) + 's';
+                ctx.fillText(tickLabel, tickX, timelineY + timelineHeight + 8);
+            }
+        }
+    }
+
+    ctx.setLineDash([]);
+
+    // Draw outer border
+    ctx.strokeStyle = 'rgba(255, 102, 0, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(padding, timelineY, width - padding * 2, timelineHeight);
+
+    // Draw corner accents (sci-fi style)
+    const cornerSize = 8;
+    ctx.strokeStyle = '#FF6600';
+    ctx.lineWidth = 2;
+
+    // Top-left corner
+    ctx.beginPath();
+    ctx.moveTo(padding, timelineY + cornerSize);
+    ctx.lineTo(padding, timelineY);
+    ctx.lineTo(padding + cornerSize, timelineY);
+    ctx.stroke();
+
+    // Top-right corner
+    ctx.beginPath();
+    ctx.moveTo(width - padding - cornerSize, timelineY);
+    ctx.lineTo(width - padding, timelineY);
+    ctx.lineTo(width - padding, timelineY + cornerSize);
+    ctx.stroke();
+
+    // Bottom-left corner
+    ctx.beginPath();
+    ctx.moveTo(padding, timelineY + timelineHeight - cornerSize);
+    ctx.lineTo(padding, timelineY + timelineHeight);
+    ctx.lineTo(padding + cornerSize, timelineY + timelineHeight);
+    ctx.stroke();
+
+    // Bottom-right corner
+    ctx.beginPath();
+    ctx.moveTo(width - padding - cornerSize, timelineY + timelineHeight);
+    ctx.lineTo(width - padding, timelineY + timelineHeight);
+    ctx.lineTo(width - padding, timelineY + timelineHeight - cornerSize);
+    ctx.stroke();
+}
+
+// Helper function to convert hex to RGBA
+function hexToRGBA(hex, alpha) {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+// Initialize timeline after DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing timeline...');
+    // Set keyboard shortcut context
+    if (typeof setShortcutContext === 'function') setShortcutContext('effects-lib');
+    // Small delay to ensure all elements are rendered
+    setTimeout(function() {
+        renderColorTimeline();
+    }, 100);
+});
+
+// Also try on window load (fallback)
+window.addEventListener('load', function() {
+    console.log('Window loaded, rendering timeline...');
+    renderColorTimeline();
+});
+
+// Re-render on window resize
+window.addEventListener('resize', function() {
+    renderColorTimeline();
+});
+
+// Duration controls sync
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to format duration display
+    function formatDuration(ms) {
+        if (ms >= 1000 && ms % 1000 === 0) {
+            return (ms / 1000) + 's';
+        }
+        return ms + 'ms';
+    }
+
+    // Function to update active preset button
+    function updateActivePreset(target, value) {
+        const presetButtons = document.querySelectorAll(`button[data-target="${target}"]`);
+        presetButtons.forEach(btn => {
+            if (parseInt(btn.dataset.duration) === parseInt(value)) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    // Function to sync duration controls
+    function syncDuration(target, value) {
+        const slider = document.querySelector(`.duration-slider[data-target="${target}"]`);
+        const input = document.querySelector(`.duration-input[data-target="${target}"]`);
+        const label = slider.closest('div').parentElement.querySelector('.duration-label');
+
+        // Clamp slider value to its range
+        const sliderValue = Math.min(Math.max(value, slider.min), slider.max);
+
+        slider.value = sliderValue;
+        input.value = value;
+        label.textContent = formatDuration(value);
+
+        // Update active preset
+        updateActivePreset(target, value);
+
+        // Update color timeline visualization
+        renderColorTimeline();
+    }
+
+    // Setup all duration sliders
+    document.querySelectorAll('.duration-slider').forEach(slider => {
+        const target = slider.dataset.target;
+
+        // Initialize
+        syncDuration(target, slider.value);
+
+        slider.addEventListener('input', function() {
+            syncDuration(target, this.value);
+        });
+    });
+
+    // Setup all duration inputs
+    document.querySelectorAll('.duration-input').forEach(input => {
+        const target = input.dataset.target;
+
+        input.addEventListener('input', function() {
+            syncDuration(target, this.value);
+        });
+    });
+
+    // Setup preset buttons
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.dataset.target;
+            const duration = this.dataset.duration;
+            syncDuration(target, duration);
+        });
+    });
+});
+</script>
+
+
+
+
+
+<script>
+    // ========================================
+    // FADE TRANSITIONS - Click to Black → Navigate → Fade from Black
+    // ========================================
+
+    // Fade from black is now controlled by effects.js
+    // After i18n translations are applied to prevent FOUC (Flash of Unstyled Content)
+
+    // Fallback: show after 2.5s even if effects.js doesn't trigger it
+    setTimeout(function() {
+        if (!document.body.classList.contains('loaded')) {
+            console.warn('[Fade] Fallback: forcing fade-in after timeout');
+            document.body.classList.add('loaded');
+        }
+    }, 2500);
+
+    // ========================================
+    // EFFECT DELETE FUNCTIONALITY
+    // ========================================
+
+    // Extract delete handler for reuse
+    function handleDeleteClick(e) {
+        e.stopPropagation();
+
+        const effectCard = this.closest('.effect-card');
+        const effectName = effectCard.querySelector('.font-bold').textContent.trim();
+
+        if (confirm(`Delete effect "${effectName}"?\n\nThis action cannot be undone.`)) {
+            effectCard.style.transition = 'all 0.3s ease';
+            effectCard.style.opacity = '0';
+            effectCard.style.transform = 'translateX(-20px)';
+
+            setTimeout(() => {
+                effectCard.remove();
+                console.log(`Effect "${effectName}" deleted successfully`);
+            }, 300);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle delete button clicks
+        const deleteButtons = document.querySelectorAll('.effect-delete-btn');
+
+        deleteButtons.forEach(btn => {
+            btn.addEventListener('click', handleDeleteClick);
+        });
+    });
+
+    // Intercept navigation links for fade to black
+    document.addEventListener('DOMContentLoaded', function() {
+        const links = document.querySelectorAll('a[href]');
+
+        links.forEach(link => {
+            // Skip external links, anchors, javascript:, and absolute URLs
+            const href = link.getAttribute('href');
+            if (!href ||
+                href.startsWith('#') ||
+                href.startsWith('javascript:') ||
+                href.startsWith('http://') ||
+                href.startsWith('https://') ||
+                href.includes('://')) {
+                return;
+            }
+
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetUrl = this.href;
+
+                // Disable all links during transition
+                document.body.style.pointerEvents = 'none';
+
+                // Fade to black
+                document.body.classList.remove('loaded');
+                document.body.classList.add('fade-out');
+
+                // Navigate after fade completes (300ms)
+                setTimeout(function() {
+                    window.location.href = targetUrl;
+                }, 300);
+            });
+        });
+    });
+
+    // ========================================
+    // CUSTOM DROPDOWN FUNCTIONALITY
+    // ========================================
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropdowns = document.querySelectorAll('.custom-dropdown');
+
+        dropdowns.forEach(dropdown => {
+            const button = dropdown.querySelector('.dropdown-button');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            const items = dropdown.querySelectorAll('.dropdown-item');
+            const selected = button.querySelector('.dropdown-selected');
+
+            // Toggle menu on button click
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = !menu.classList.contains('hidden');
+
+                // Close all other dropdowns
+                document.querySelectorAll('.custom-dropdown .dropdown-menu').forEach(m => {
+                    if (m !== menu) {
+                        m.classList.add('hidden');
+                        m.parentElement.querySelector('.dropdown-button').classList.remove('active');
+                    }
+                });
+
+                if (isOpen) {
+                    menu.classList.add('hidden');
+                    button.classList.remove('active');
+                } else {
+                    menu.classList.remove('hidden');
+                    button.classList.add('active');
+                }
+            });
+
+            // Select item on click
+            items.forEach(item => {
+                item.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    const text = this.textContent;
+
+                    // Update selected text
+                    selected.textContent = text;
+
+                    // Update selected item styling
+                    items.forEach(i => i.classList.remove('selected'));
+                    this.classList.add('selected');
+
+                    // Sync value to sibling hidden input
+                    const hiddenInput = dropdown.parentElement.querySelector('input[type="hidden"]');
+                    if (hiddenInput) hiddenInput.value = value;
+
+                    // Close menu
+                    menu.classList.add('hidden');
+                    button.classList.remove('active');
+                });
+            });
+
+            // Set first item as selected by default
+            if (items.length > 0) {
+                items[0].classList.add('selected');
+            }
+        });
+
+        // Close all dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.custom-dropdown')) {
+                document.querySelectorAll('.custom-dropdown .dropdown-menu').forEach(menu => {
+                    menu.classList.add('hidden');
+                    menu.parentElement.querySelector('.dropdown-button').classList.remove('active');
+                });
+            }
+        });
+    });
+
+    // Drag and drop functionality moved to effects.js
+    // See setupDragAndDrop() function
+</script>
+
+<!-- Eel Bridge (Python-JavaScript communication) -->
+<script src="/eel.js"></script>
+
+<!-- Common Utilities -->
+<script src="js/common.js"></script>
+<script src="js/glass-select.js"></script>
+
+<!-- Internationalization (i18n) -->
+<script src="js/i18n.js"></script>
+
+<!-- Effect Editor Module (must be before effects.js) -->
+<script src="js/effect-editor-module.js"></script>
+
+<!-- Effects Editor Logic -->
+<script src="js/effects.js"></script>
+
+<!-- Manual Viewer (in-app browser) -->
+<script src="js/manual-viewer.js"></script>
+
+<!-- Load Navigation Component -->
+<script src="js/load-navigation.js"></script>
+
+<!-- Color Picker Modal (reusable module) -->
+<script src="js/color-picker.js"></script>
+
+
+<script src="js/keyboard-shortcuts.js"></script>
+</body></html>

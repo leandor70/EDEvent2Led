@@ -1,0 +1,34 @@
+{
+  "header": {
+    "title": "User Manual"
+  },
+  "search": {
+    "placeholder": "Search in manual...",
+    "noResults": "No results found",
+    "tryDifferent": "Try different keywords"
+  },
+  "toc": {
+    "section": {
+      "intro": "Introduction",
+      "pages": "Application Pages",
+      "appendices": "Appendices"
+    },
+    "chapter1": "1. Introduction",
+    "chapter2": "2. Home Dashboard",
+    "chapter3": "3. Effects Library",
+    "chapter4": "4. Event Mapping",
+    "chapter5": "5. Keyboard Designer",
+    "chapter6": "6. Device Topology",
+    "chapter7": "7. Game Status",
+    "chapter8": "8. Devices",
+    "chapter9": "9. Hardware Test",
+    "chapter10": "10. Activity Log",
+    "chapter11": "11. Settings",
+    "appendixA": "A. Glossary",
+    "appendixB": "B. Effects Reference",
+    "appendixC": "C. Events Reference",
+    "appendixD": "D. FAQ",
+    "appendixE": "E. Troubleshooting",
+    "chapter12": "12. Ambilight"
+  }
+}

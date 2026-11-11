@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "schemes": [
+    {
+      "id": "ed_combat",
+      "name": "Elite Dangerous - Combat",
+      "description": "Combat-focused key coloring: Red for weapons, Blue for targets, Green for pips",
+      "device_type": "keyboard",
+      "led_colors": {
+        "0": [
+          255,
+          0,
+          0
+        ],
+        "1": [
+          255,
+          50,
+          0
+        ],
+        "2": [
+          200,
+          0,
+          0
+        ],
+        "3": [
+          200,
+          0,
+          0
+        ],
+        "15": [
+          0,
+          0,
+          255
+        ],
+        "16": [
+          0,
+          50,
+          255
+        ],
+        "17": [
+          0,
+          100,
+          255
+        ],
+        "80": [
+          0,
+          255,
+          0
+        ],
+        "81": [
+          0,
+          255,
+          0
+        ],
+        "82": [
+          0,
+          255,
+          0
+        ],
+        "83": [
+          0,
+          255,
+          0
+        ]
+      },
+      "key_bindings": {
+        "PrimaryFire": 0,
+        "SecondaryFire": 1,
+        "SelectTarget": 15,
+        "CycleNextTarget": 16,
+        "SelectHighestThreat": 17,
+        "IncreaseSystemsPower": 80,
+        "IncreaseEnginesPower": 81,
+        "IncreaseWeaponsPower": 82,
+        "ResetPowerDistribution": 83
+      },
+      "metadata": {
+        "author": "System",
+        "category": "Elite Dangerous",
+        "description_detailed": "Optimized for combat: weapons in red, targeting in blue, pips in green"
+      }
+    },
+    {
+      "id": "ed_exploration",
+      "name": "Elite Dangerous - Exploration",
+      "description": "Exploration-focused key coloring: Cyan for scanners, Yellow for lights",
+      "device_type": "keyboard",
+      "led_colors": {
+        "10": [
+          0,
+          255,
+          255
+        ],
+        "11": [
+          0,
+          200,
+          255
+        ],
+        "20": [
+          255,
+          255,
+          0
+        ],
+        "21": [
+          255,
+          200,
+          0
+        ],
+        "30": [
+          128,
+          0,
+          255
+        ],
+        "40": [
+          0,
+          255,
+          128
+        ]
+      },
+      "key_bindings": {
+        "FSSMode": 10,
+        "DSSMode": 11,
+        "ShipLights": 20,
+        "NightVision": 21,
+        "FlightAssist": 30,
+        "HyperSuperCombination": 40
+      },
+      "metadata": {
+        "author": "System",
+        "category": "Elite Dangerous",
+        "description_detailed": "Optimized for exploration: scanners in cyan, utilities in yellow"
+      }
+    },
+    {
+      "id": "ed_trading",
+      "name": "Elite Dangerous - Trading/Mining",
+      "description": "Trading and mining key coloring: Green for cargo, Orange for mining tools",
+      "device_type": "keyboard",
+      "led_colors": {
+        "50": [
+          0,
+          255,
+          0
+        ],
+        "51": [
+          0,
+          200,
+          0
+        ],
+        "60": [
+          255,
+          128,
+          0
+        ],
+        "61": [
+          255,
+          100,
+          0
+        ],
+        "62": [
+          255,
+          80,
+          0
+        ],
+        "70": [
+          128,
+          128,
+          255
+        ]
+      },
+      "key_bindings": {
+        "ToggleCargoScoop": 50,
+        "JettisonAllCargo": 51,
+        "PrimaryFire": 60,
+        "ProspectorLimpet": 61,
+        "CollectorLimpet": 62,
+        "LandingGear": 70
+      },
+      "metadata": {
+        "author": "System",
+        "category": "Elite Dangerous",
+        "description_detailed": "Optimized for trading and mining: cargo in green, mining tools in orange"
+      }
+    }
+  ]
+}

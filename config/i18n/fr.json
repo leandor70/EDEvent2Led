@@ -1,0 +1,133 @@
+{
+  "app": {
+    "name": "ED:EVENT2LED",
+    "tagline": "Traduction des logs d'Elite Dangerous en éclairage LED immersif",
+    "version": "v1.2.4",
+    "build": "Build 2024.10.27",
+    "status": "Tous les systèmes nominaux."
+  },
+  "navigation": {
+    "title": "Navigation",
+    "home": "Accueil",
+    "configuration": "Configuration",
+    "effects_editor": "Éditeur d'Effets",
+    "events": "Événements",
+    "test": "Test",
+    "log": "Journal",
+    "keyboard_designer": "Designer de Clavier",
+    "system_status": "État Système",
+    "core_online": "Cœur En Ligne"
+  },
+  "pages": {
+    "configuration": {
+      "title": "CONFIGURATION",
+      "subtitle": "Configuration Système"
+    },
+    "effects_editor": {
+      "title": "ÉDITEUR D'EFFETS",
+      "subtitle": "Concevoir des séquences lumineuses multi-étapes"
+    },
+    "events": {
+      "title": "ÉVÉNEMENTS",
+      "subtitle": "Mappage des événements de jeu"
+    }
+  },
+  "sections": {
+    "system_settings": {
+      "title": "Paramètres Système",
+      "language_label": "Sélection de Langue",
+      "theme_label": "Couleurs de Thème",
+      "theme_elite": "Elite",
+      "theme_violet": "Violet",
+      "theme_cyan": "Cyan",
+      "theme_matrix": "Matrix"
+    },
+    "openrgb": {
+      "title": "Connexion OpenRGB",
+      "host_label": "IP Serveur:",
+      "port_label": "Port Serveur:",
+      "status_connected": "État: Connecté",
+      "status_disconnected": "État: Déconnecté",
+      "device_count": "{{count}} appareil(s)"
+    },
+    "game_integration": {
+      "title": "Intégration Jeu",
+      "journal_path_label": "Chemin Journal:",
+      "browse_label": "Parcourir Répertoire:",
+      "status_verified": "État: Vérifié",
+      "status_not_verified": "État: Non Vérifié",
+      "file_count": "{{count}} fichier(s)"
+    },
+    "effects_library": {
+      "title": "Bibliothèque d'Effets",
+      "search_placeholder": "Rechercher des effets...",
+      "filter_all": "Tous",
+      "filter_1d": "1D",
+      "filter_2d": "2D",
+      "steps_count": "{{count}} ÉTAPES"
+    },
+    "effect_editor": {
+      "title": "Éditeur d'Effet",
+      "name_label": "Nom d'Effet",
+      "topology_label": "Topologie:",
+      "post_behavior_label": "Comportement Final:",
+      "color_timeline": "Chronologie des Couleurs",
+      "total_duration": "Total: {{duration}}",
+      "effect_steps": "Étapes d'Effet"
+    },
+    "step_editor": {
+      "color_label": "Couleur",
+      "colors_label": "Couleurs",
+      "duration_label": "Durée",
+      "speed_label": "Vitesse",
+      "direction_label": "Direction"
+    }
+  },
+  "buttons": {
+    "save": "ENREGISTRER",
+    "test": "TEST",
+    "test_connection": "TESTER CONNEXION",
+    "browse_directory": "PARCOURIR RÉPERTOIRE",
+    "verify_path": "VÉRIFIER CHEMIN",
+    "new_effect": "NOUVEL EFFET",
+    "clone_effect": "CLONER EFFET",
+    "add_step": "AJOUTER ÉTAPE",
+    "test_full_effect": "TESTER EFFET COMPLET",
+    "stop": "ARRÊTER",
+    "duplicate": "Dupliquer",
+    "delete": "Supprimer",
+    "play": "Lecture"
+  },
+  "languages": {
+    "en": "English (United States)",
+    "it": "Italiano",
+    "de": "Deutsch",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "effect_types": {
+    "static_transition": "Transition Statique",
+    "breath": "Respiration",
+    "color_cycle": "Cycle de Couleurs",
+    "wave": "Vague",
+    "ripple": "Ondulation",
+    "explosion": "Explosion",
+    "gradient": "Dégradé",
+    "pulse": "Impulsion"
+  },
+  "post_behaviors": {
+    "turn_off": "Éteindre",
+    "static_color": "Couleur Statique",
+    "loop_effect": "Boucle d'Effet"
+  },
+  "notifications": {
+    "settings_loaded": "Paramètres chargés",
+    "settings_saved": "Paramètres enregistrés avec succès!",
+    "openrgb_connected": "OpenRGB OK! {{count}} appareil(s) trouvé(s)",
+    "openrgb_failed": "Connexion échouée",
+    "path_verified": "Chemin vérifié! {{count}} fichier(s) journal trouvé(s)",
+    "path_invalid": "Chemin invalide",
+    "effect_saved": "Effet enregistré avec succès",
+    "effect_deleted": "Effet supprimé"
+  }
+}

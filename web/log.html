@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ED:Event2Led Activity Logs</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="css/tailwind.min.css" rel="stylesheet">
+<link href="css/fonts.css" rel="stylesheet">
+<link href="css/sci-fi-theme.css" rel="stylesheet">
+<style>
+    /* ========================================
+       FADE TRANSITIONS - Universal Solution
+       ======================================== */
+    body {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        background-color: #000; /* Black base for fade */
+    }
+</style>
+
+<style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            src: url('fonts/MaterialSymbolsOutlined.woff2') format('woff2');
+            font-display: block;
+        }
+</style>
+<style >
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow: auto;
+        }
+        .log-viewer {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            background: #0a0a0c;
+            color: #b0b0b0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-y: auto;
+            height: 100%;
+        }
+        .log-entry {
+            margin-bottom: 4px;
+        }
+        .log-timestamp {
+            color: #606060;
+        }
+        .log-category {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .log-event {
+            color: #4CAF50;
+        }
+        .log-render {
+            color: #2196F3;
+        }
+        .log-openrgb {
+            color: var(--primary-accent);
+        }
+        .log-error {
+            color: #F44336;
+        }
+        .log-warning {
+            color: #FF9800;
+        }
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            -webkit-font-feature-settings: 'liga';
+        }
+
+        /* ========================================
+           SCI-FI FORM CONTROLS - Elite Dangerous Theme
+           ======================================== */
+        select,
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="password"],
+        textarea {
+            background-color: rgba(0, 0, 0, 0.6) !important;
+            border: 1px solid rgba(255, 102, 0, 0.15) !important;
+            color: #e0e0e0 !important;
+            padding: 10px 12px !important;
+            border-radius: 4px !important;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+            font-family: 'Rajdhani', sans-serif !important;
+        }
+
+        select:hover,
+        input[type="text"]:hover,
+        input[type="number"]:hover,
+        input[type="email"]:hover,
+        input[type="password"]:hover,
+        textarea:hover {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            border-color: rgba(255, 102, 0, 0.3) !important;
+        }
+
+        select:focus,
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        textarea:focus {
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            border-color: #FF6600 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2) !important;
+        }
+
+        /* Placeholder text styling */
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(255, 102, 0, 0.4);
+            font-style: italic;
+        }
+
+        /* Disabled state */
+        select:disabled,
+        input:disabled,
+        textarea:disabled {
+            background-color: rgba(0, 0, 0, 0.3) !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
+            color: #666666 !important;
+            cursor: not-allowed !important;
+        }
+
+        /* Global scrollbar styling - applies to ALL scrollbars */
+        *::-webkit-scrollbar { width: 6px; }
+        *::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        *::-webkit-scrollbar-thumb {
+            background: rgba(255, 102, 0, 0.3);
+            border-radius: 3px;
+        }
+        *::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 102, 0, 0.5);
+        }
+
+        /* Specific overrides */
+        .log-viewer::-webkit-scrollbar,
+        .overflow-y-auto::-webkit-scrollbar {
+            width: 6px;
+        }
+        .log-viewer::-webkit-scrollbar-track,
+        .overflow-y-auto::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        .log-viewer::-webkit-scrollbar-thumb,
+        .overflow-y-auto::-webkit-scrollbar-thumb {
+            background: rgba(255, 102, 0, 0.3);
+            border-radius: 3px;
+        }
+        .log-viewer::-webkit-scrollbar-thumb:hover,
+        .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 102, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="h-screen w-full relative flex">
+<div class="fixed inset-0 z-0">
+<img alt="Spiral Galaxy Background" class="w-full h-full object-cover opacity-25" src="images/backgrounds/spiral-galaxy.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-b from-[#05070a]/40 via-[#05070a]/70 to-[#05070a]"></div>
+</div>
+<!-- Navigation Component (loaded dynamically) -->
+<div id="sidebar-nav" data-active-page="log"></div>
+<main class="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
+<header class="w-full pt-12 pb-8 flex flex-col items-center">
+<div class="flex items-center gap-4 mb-2">
+<div class="h-px w-24 bg-gradient-to-r from-transparent to-[var(--primary-accent)] opacity-50"></div>
+<h1 class="orbitron text-4xl font-bold tracking-[0.3em] text-white" data-i18n="pages.activity_logs.title">
+                ACTIVITY LOGS
+            </h1>
+<div class="h-px w-24 bg-gradient-to-l from-transparent to-[var(--primary-accent)] opacity-50"></div>
+</div>
+<p class="text-sm uppercase tracking-[0.4em] text-white/60" data-i18n="pages.activity_logs.subtitle">Real-Time Event Monitoring</p>
+</header>
+<div class="flex-1 px-12 pb-12 overflow-hidden flex flex-col">
+<!-- Controls Bar -->
+<div class="flex items-center gap-4 mb-4">
+<button id="btn-clear-logs" class="btn-sci-fi px-4 py-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[var(--primary-accent)]">delete</span>
+<span class="orbitron text-sm tracking-[0.2em] font-bold" data-i18n="buttons.clear_logs">CLEAR LOGS</span>
+</button>
+
+<label class="glass-toggle-container">
+<input id="toggle-autoscroll" type="checkbox" class="glass-toggle-input" checked/>
+<div class="glass-toggle-track">
+<div class="glass-toggle-thumb"></div>
+</div>
+<span class="glass-toggle-label" data-i18n="sections.activity_logs.auto_scroll">Auto-scroll</span>
+</label>
+
+<div class="h-6 w-px bg-white/20"></div>
+
+<div class="flex gap-2">
+<button id="btn-filter-all" class="px-3 py-2 text-[13px] uppercase tracking-wider bg-[var(--primary-accent)] text-white rounded" data-i18n="sections.activity_logs.filter_all">All</button>
+<button id="btn-filter-events" class="px-3 py-2 text-[13px] uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-i18n="sections.activity_logs.filter_events">Events</button>
+<button id="btn-filter-effects" class="px-3 py-2 text-[13px] uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-i18n="sections.activity_logs.filter_effects">Effects</button>
+<button id="btn-filter-openrgb" class="px-3 py-2 text-[13px] uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-i18n="sections.activity_logs.filter_openrgb">OpenRGB</button>
+<button id="btn-filter-errors" class="px-3 py-2 text-[13px] uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5" data-i18n="sections.activity_logs.filter_errors">Errors</button>
+</div>
+
+<div class="flex-1"></div>
+
+<input id="log-search" class="bg-black/60 border border-[var(--primary-accent)]/50 text-white rounded px-4 py-2 w-64 text-sm focus:ring-1 focus:ring-[var(--primary-accent)] outline-none" data-i18n-attr="placeholder:sections.activity_logs.filter_placeholder" placeholder="Filter logs..." type="text"/>
+
+<button id="btn-export-logs" class="btn-sci-fi px-4 py-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[var(--primary-accent)]">download</span>
+<span class="orbitron text-sm tracking-[0.2em] font-bold" data-i18n="buttons.export">EXPORT</span>
+</button>
+</div>
+
+<!-- Log Viewer -->
+<div class="sci-fi-border flex-1 overflow-hidden">
+<div id="log-viewer" class="log-viewer">
+<div style="padding:20px; color:#606060; text-align:center; font-style:italic;" data-i18n="common.loading_logs">Loading logs...</div>
+</div>
+</div>
+
+<!-- Stats Footer -->
+<div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10 text-sm">
+<div class="flex gap-6">
+<span class="text-white/60"><span data-i18n="common.total_entries">Total entries:</span> <span id="stat-total" class="text-white font-bold">0</span></span>
+<span class="text-white/60"><span data-i18n="common.errors">Errors:</span> <span id="stat-errors" class="text-red-400 font-bold">0</span></span>
+<span class="text-white/60"><span data-i18n="common.warnings">Warnings:</span> <span id="stat-warnings" class="text-yellow-400 font-bold">0</span></span>
+</div>
+
+<div class="text-white/60">
+                    <span data-i18n="common.last_updated">Last updated:</span> <span id="stat-last-updated" class="text-white">--</span>
+</div>
+</div>
+</div>
+</main>
+
+
+
+
+<script>
+    // ========================================
+    // FADE TRANSITIONS - Click to Black → Navigate → Fade from Black
+    // ========================================
+
+    // NOTE: Fade-in is triggered by log.js after i18n initialization
+    // Fallback: show after 2.5s even if log.js doesn't trigger it
+    setTimeout(function() {
+        if (!document.body.classList.contains('loaded')) {
+            console.warn('[Fade] Fallback: forcing fade-in after timeout');
+            document.body.classList.add('loaded');
+        }
+    }, 2500);
+
+    // Intercept navigation links for fade to black
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set keyboard shortcut context
+        if (typeof setShortcutContext === 'function') setShortcutContext('log');
+
+        const links = document.querySelectorAll('a[href]');
+
+        links.forEach(link => {
+            // Skip external links, anchors, javascript:, and absolute URLs
+            const href = link.getAttribute('href');
+            if (!href ||
+                href.startsWith('#') ||
+                href.startsWith('javascript:') ||
+                href.startsWith('http://') ||
+                href.startsWith('https://') ||
+                href.includes('://')) {
+                return;
+            }
+
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetUrl = this.href;
+
+                // Disable all links during transition
+                document.body.style.pointerEvents = 'none';
+
+                // Fade to black
+                document.body.classList.remove('loaded');
+                document.body.classList.add('fade-out');
+
+                // Navigate after fade completes (300ms)
+                setTimeout(function() {
+                    window.location.href = targetUrl;
+                }, 300);
+            });
+        });
+    });
+</script>
+
+<!-- Eel Bridge (auto-generated by Eel) -->
+<script src="/eel.js"></script>
+
+<!-- Common Utilities -->
+<script src="js/common.js"></script>
+<script src="js/glass-select.js"></script>
+
+<!-- i18n (Internationalization) -->
+<script src="js/i18n.js"></script>
+
+<!-- Activity Logs Logic -->
+<script src="js/log.js"></script>
+
+<!-- Manual Viewer (in-app browser) -->
+<script src="js/manual-viewer.js"></script>
+
+<!-- Load Navigation Component -->
+<script src="js/load-navigation.js"></script>
+<script src="js/keyboard-shortcuts.js"></script>
+</body></html>

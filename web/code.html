@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ED:Event2Led Configuration Setup</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="css/tailwind.min.css" rel="stylesheet">
+<link href="css/fonts.css" rel="stylesheet">
+<link href="css/sci-fi-theme.css" rel="stylesheet">
+<style>
+    /* ========================================
+       FADE TRANSITIONS - Universal Solution
+       ======================================== */
+    body {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        background-color: #000; /* Black base for fade */
+    }
+</style>
+
+<style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            src: url('fonts/MaterialSymbolsOutlined.woff2') format('woff2');
+            font-display: block;
+        }
+</style>
+<style >
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow: auto;
+        }
+        .glow-orange {
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+        }
+        .sidebar-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 3px;
+            background-color: var(--primary-accent);
+            box-shadow: 0 0 8px var(--primary-accent);
+        }
+        .sidebar-item:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+        .main-panel-section {
+            padding-top: 2.5rem;
+            padding-bottom: 2.5rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        /* ========================================
+           SCI-FI FORM CONTROLS - Elite Dangerous Theme
+           ======================================== */
+        select,
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="password"],
+        textarea {
+            background-color: rgba(0, 0, 0, 0.6) !important;
+            border: 1px solid rgba(255, 102, 0, 0.15) !important;
+            color: #e0e0e0 !important;
+            padding: 10px 12px !important;
+            border-radius: 4px !important;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+            font-family: 'Rajdhani', sans-serif !important;
+        }
+
+        select:hover,
+        input[type="text"]:hover,
+        input[type="number"]:hover,
+        input[type="email"]:hover,
+        input[type="password"]:hover,
+        textarea:hover {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            border-color: rgba(255, 102, 0, 0.3) !important;
+        }
+
+        select:focus,
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        textarea:focus {
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            border-color: #FF6600 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2) !important;
+        }
+
+        /* Placeholder text styling */
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(255, 102, 0, 0.4);
+            font-style: italic;
+        }
+
+        /* Disabled state */
+        select:disabled,
+        input:disabled,
+        textarea:disabled {
+            background-color: rgba(0, 0, 0, 0.3) !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
+            color: #666666 !important;
+            cursor: not-allowed !important;
+        }
+
+        /* ========================================
+           CUSTOM DROPDOWN - Glassmorphism Effect
+           ======================================== */
+        .custom-dropdown {
+            position: relative;
+        }
+
+        .custom-dropdown .dropdown-button {
+            border: 1px solid rgba(255, 102, 0, 0.15) !important;
+        }
+
+        .custom-dropdown .dropdown-button:hover {
+            border-color: rgba(255, 102, 0, 0.3) !important;
+        }
+
+        .custom-dropdown .dropdown-button.active {
+            border-color: rgba(255, 102, 0, 0.3) !important;
+        }
+
+        .custom-dropdown .dropdown-menu {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 102, 0, 0.15) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(255, 102, 0, 0.15) !important;
+            z-index: 1000;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            min-width: 100%;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 102, 0, 0.2) !important;
+            color: #FF6600 !important;
+        }
+
+        .dropdown-item.selected {
+            background: rgba(255, 102, 0, 0.15) !important;
+            color: #FF6600 !important;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="h-screen w-full relative flex">
+<style>
+/* CRITICAL: Border fix for custom dropdown - loads AFTER Tailwind */
+.custom-dropdown .dropdown-button {
+    border: 1px solid rgba(255, 102, 0, 0.15) !important;
+}
+
+.custom-dropdown .dropdown-button:hover,
+.custom-dropdown .dropdown-button.active {
+    border-color: rgba(255, 102, 0, 0.3) !important;
+}
+
+.custom-dropdown .dropdown-menu {
+    border: 1px solid rgba(255, 102, 0, 0.15) !important;
+}
+
+/* Global scrollbar styling - applies to ALL scrollbars */
+*::-webkit-scrollbar { width: 6px; }
+*::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb {
+    background: rgba(255, 102, 0, 0.3);
+    border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 102, 0, 0.5);
+}
+
+/* Specific overrides */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 6px;
+}
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: rgba(255, 102, 0, 0.3);
+    border-radius: 3px;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 102, 0, 0.5);
+}
+</style>
+<div class="fixed inset-0 z-0">
+<img data-i18n-attr="alt:alt_text.background_image" alt="Spiral Galaxy Background" class="w-full h-full object-cover opacity-25" src="images/backgrounds/spiral-galaxy.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-b from-[#05070a]/40 via-[#05070a]/70 to-[#05070a]"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[700px] pointer-events-none opacity-20">
+<svg class="w-full h-full stroke-[var(--primary-accent)] fill-none opacity-40" viewBox="0 0 100 100">
+<polygon points="50,5 95,80 5,80" stroke-width="0.1"></polygon>
+<polygon points="50,15 85,75 15,75" stroke-width="0.1"></polygon>
+<polygon points="50,30 70,70 30,70" stroke-width="0.1"></polygon>
+<polygon points="50,45 60,65 40,65" stroke-width="0.1"></polygon>
+</svg>
+</div>
+</div>
+<!-- Navigation Component (loaded dynamically) -->
+<div id="sidebar-nav" data-active-page="code"></div>
+<main class="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
+<header class="w-full pt-12 pb-8 flex flex-col items-center">
+<div class="flex items-center gap-4 mb-2">
+<div class="h-px w-24 bg-gradient-to-r from-transparent to-[var(--primary-accent)] opacity-50"></div>
+<h1 class="orbitron text-4xl font-bold tracking-[0.3em] text-white" data-i18n="app.name">
+                ED<span class="text-[var(--primary-accent)]">:</span>EVENT<span class="text-[var(--primary-accent)]">2</span>LED
+            </h1>
+<div class="h-px w-24 bg-gradient-to-l from-transparent to-[var(--primary-accent)] opacity-50"></div>
+</div>
+<p class="text-sm uppercase tracking-[0.4em] text-white/60" data-i18n="app.tagline">Translating Elite Dangerous Logs to Immersive LED Lighting</p>
+</header>
+<div class="flex-1 px-12 pb-12 overflow-y-auto">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+<section class="sci-fi-border carbon-pattern main-panel-section flex flex-col">
+<div class="orbitron text-xl font-bold border-b border-white/10 pb-4 mb-6 tracking-widest uppercase" data-i18n="sections.system_settings.title">System Settings</div>
+<div class="space-y-8">
+<div>
+<label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.system_settings.language_label">Language Selection</label>
+<div class="bg-black/40 border border-white/10 rounded p-4">
+<div class="custom-dropdown" id="language-dropdown">
+<button class="dropdown-button w-full bg-black/60 text-white rounded p-2 flex items-center justify-between transition-colors" type="button">
+<span class="dropdown-selected text-sm" id="language-selected">English (United States)</span>
+<span class="dropdown-arrow text-[var(--primary-accent)] text-xs transition-transform duration-300">▼</span>
+</button>
+<ul class="dropdown-menu hidden absolute mt-2 w-full rounded overflow-hidden shadow-xl">
+<li class="dropdown-item px-4 py-3 text-sm text-white cursor-pointer transition-colors" data-value="en">English (United States)</li>
+<li class="dropdown-item px-4 py-3 text-sm text-white cursor-pointer transition-colors" data-value="de">Deutsch</li>
+<li class="dropdown-item px-4 py-3 text-sm text-white cursor-pointer transition-colors" data-value="fr">Français</li>
+<li class="dropdown-item px-4 py-3 text-sm text-white cursor-pointer transition-colors" data-value="es">Español</li>
+<li class="dropdown-item px-4 py-3 text-sm text-white cursor-pointer transition-colors" data-value="it">Italiano</li>
+</ul>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.system_settings.theme_label">Theme Colors</label>
+<div class="bg-black/40 border border-white/10 rounded p-4">
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+<!-- Theme 1: Elite Orange -->
+<button class="theme-btn group flex flex-col items-center gap-2 p-3 bg-black/60 border-2 border-[#FF6600] rounded hover:bg-black/40 transition-all" data-theme="elite">
+<div class="w-full h-16 bg-[#FF6600] rounded shadow-lg" style="box-shadow: 0 0 8px rgba(255, 102, 0, 0.5);"></div>
+<div class="text-center">
+<div class="text-xs font-bold text-[#FF6600] uppercase tracking-wider" data-i18n="sections.system_settings.theme_elite">Elite</div>
+<div class="text-[10px] text-white/55">#FF6600</div>
+</div>
+<div class="w-2 h-2 rounded-full bg-[#FF6600]"></div>
+</button>
+
+<!-- Theme 2: Event2Led Violet -->
+<button class="theme-btn group flex flex-col items-center gap-2 p-3 bg-black/60 border border-white/10 rounded hover:border-[#7f13ec] hover:bg-black/40 transition-all" data-theme="event2led">
+<div class="w-full h-16 bg-[#7f13ec] rounded shadow-lg" style="box-shadow: 0 0 20px rgba(127, 19, 236, 0.3);"></div>
+<div class="text-center">
+<div class="text-xs font-bold text-[#7f13ec] uppercase tracking-wider" data-i18n="sections.system_settings.theme_violet">Violet</div>
+<div class="text-[10px] text-white/55">#7F13EC</div>
+</div>
+<div class="w-2 h-2 rounded-full bg-white/20"></div>
+</button>
+
+<!-- Theme 3: Cyan Tech -->
+<button class="theme-btn group flex flex-col items-center gap-2 p-3 bg-black/60 border border-white/10 rounded hover:border-[#14F5FF] hover:bg-black/40 transition-all" data-theme="dark">
+<div class="w-full h-16 bg-[#14F5FF] rounded shadow-lg" style="box-shadow: 0 0 20px rgba(20, 245, 255, 0.3);"></div>
+<div class="text-center">
+<div class="text-xs font-bold text-[#14F5FF] uppercase tracking-wider" data-i18n="sections.system_settings.theme_cyan">Cyan</div>
+<div class="text-[10px] text-white/55">#14F5FF</div>
+</div>
+<div class="w-2 h-2 rounded-full bg-white/20"></div>
+</button>
+
+<!-- Theme 4: Matrix Green -->
+<button class="theme-btn group flex flex-col items-center gap-2 p-3 bg-black/60 border border-white/10 rounded hover:border-[#00FF41] hover:bg-black/40 transition-all" data-theme="light">
+<div class="w-full h-16 bg-[#00FF41] rounded shadow-lg" style="box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);"></div>
+<div class="text-center">
+<div class="text-xs font-bold text-[#00FF41] uppercase tracking-wider" data-i18n="sections.system_settings.theme_matrix">Matrix</div>
+<div class="text-[10px] text-white/55">#00FF41</div>
+</div>
+<div class="w-2 h-2 rounded-full bg-white/20"></div>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="sci-fi-border carbon-pattern main-panel-section flex flex-col">
+<div class="orbitron text-xl font-bold border-b border-white/10 pb-4 mb-6 tracking-widest uppercase" data-i18n="sections.openrgb.title">OpenRGB Connection</div>
+<div class="space-y-6">
+<div class="bg-black/40 border border-white/10 rounded p-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-[var(--primary-accent)] glow-orange" id="openrgb-status-indicator"></div>
+<span class="text-sm text-[var(--primary-accent)] uppercase" id="openrgb-status">Status: Disconnected</span>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.openrgb.host_label">Server IP:</label>
+<input id="openrgb-host" class="w-full bg-black/60 border border-[var(--primary-accent)]/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none" type="text" value="127.0.0.1"/>
+</div>
+<div>
+<label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.openrgb.port_label">Server Port:</label>
+<input id="openrgb-port" class="w-full bg-black/60 border border-[var(--primary-accent)]/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none" type="number" value="6742"/>
+</div>
+</div>
+<button id="test-connection-btn" class="w-full btn-sci-fi p-4 flex items-center justify-center gap-3 group">
+<span class="material-symbols-outlined text-[var(--primary-accent)] group-hover:scale-110 transition-transform">hub</span>
+<span class="orbitron text-sm tracking-[0.2em] font-bold" data-i18n="buttons.test_connection">TEST CONNECTION</span>
+</button>
+</div>
+</section>
+<section class="sci-fi-border carbon-pattern main-panel-section flex flex-col">
+<div class="orbitron text-xl font-bold border-b border-white/10 pb-4 mb-6 tracking-widest uppercase" data-i18n="sections.game_integration.title">Game Integration</div>
+<div class="space-y-6">
+<div class="bg-black/40 border border-white/10 rounded p-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-gray-500" id="journal-status-indicator"></div>
+<span class="text-sm text-gray-400 uppercase" id="journal-status">Status: Not Verified</span>
+</div>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.game_integration.journal_path_label">Journal Path:</label>
+<input id="journal-path" class="w-full bg-black/60 border border-[var(--primary-accent)]/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none overflow-hidden whitespace-nowrap text-ellipsis placeholder-white/30" type="text" value="" placeholder="C:\Users\...\Saved Games\Frontier Developments\Elite Dangerous"/>
+</div>
+<div>
+<label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.game_integration.browse_label">Browse Directory:</label>
+<button id="browse-btn" class="w-full btn-sci-fi px-2 py-[14px] flex items-center justify-center gap-2 group">
+<span class="material-symbols-outlined text-sm text-[var(--primary-accent)] group-hover:scale-110 transition-transform">folder_open</span>
+<span class="orbitron text-sm tracking-[0.2em] font-bold" data-i18n="buttons.browse_directory">BROWSE DIRECTORY</span>
+</button>
+</div>
+</div>
+<button id="verify-path-btn" class="w-full btn-sci-fi p-4 flex items-center justify-center gap-3 group">
+<span class="material-symbols-outlined text-[var(--primary-accent)] group-hover:scale-110 transition-transform">verified</span>
+<span class="orbitron text-sm tracking-[0.2em] font-bold" data-i18n="buttons.verify_path">VERIFY PATH</span>
+</button>
+</div>
+</section>
+</div>
+<div class="mt-12 flex justify-center pb-20 px-12">
+<button id="save-btn" class="relative group w-full max-w-5xl">
+<div class="absolute inset-0 bg-[var(--primary-accent)] blur-md opacity-20 group-hover:opacity-40 transition-opacity"></div>
+<div class="relative flex items-center justify-center gap-6 px-24 py-6 sci-fi-border border-2 border-[var(--primary-accent)]/60 bg-black/80">
+<span class="material-symbols-outlined text-3xl text-[var(--primary-accent)]">save</span>
+<span class="orbitron text-2xl font-black tracking-[0.6em] text-white group-hover:text-[var(--primary-accent)] transition-colors" data-i18n="buttons.save">SAVE</span>
+<div class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-12 bg-[var(--primary-accent)] opacity-20"></div>
+<div class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-12 bg-[var(--primary-accent)] opacity-20"></div>
+</div>
+</button>
+</div>
+</div>
+<footer class="absolute bottom-0 left-0 right-0 z-20 h-10 bg-black/80 border-t border-white/10 flex items-center justify-center px-6">
+<div class="flex items-center gap-6 text-xs uppercase tracking-[0.2em] text-[#14F5FF]">
+<span>ED:Event2Led <span id="app-version">v1.2.4</span></span>
+<span class="w-1 h-1 rounded-full bg-[#14F5FF]/40"></span>
+<span>Build <span id="app-build-date">2024.10.27</span></span>
+<span class="w-1 h-1 rounded-full bg-[#14F5FF]/40"></span>
+<span class="flex items-center gap-2">
+                <span data-i18n="app.status">All systems nominal.</span>
+                <span class="material-symbols-outlined text-sm text-[#14F5FF]">data_usage</span>
+</span>
+</div>
+</footer>
+</main>
+
+
+
+
+
+<script>
+    // ========================================
+    // FADE TRANSITIONS - Click to Black → Navigate → Fade from Black
+    // ========================================
+
+    // Fade from black is now controlled by settings.js
+    // After i18n translations are applied to prevent FOUC (Flash of Unstyled Content)
+
+    // Fallback: show after 2.5s even if settings.js doesn't trigger it
+    setTimeout(function() {
+        if (!document.body.classList.contains('loaded')) {
+            console.warn('[Fade] Fallback: forcing fade-in after timeout');
+            document.body.classList.add('loaded');
+        }
+    }, 2500);
+
+    // Intercept navigation links for fade to black
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set keyboard shortcut context
+        if (typeof setShortcutContext === 'function') setShortcutContext('settings');
+
+        const links = document.querySelectorAll('a[href]');
+
+        links.forEach(link => {
+            // Skip external links, anchors, javascript:, and absolute URLs
+            const href = link.getAttribute('href');
+            if (!href ||
+                href.startsWith('#') ||
+                href.startsWith('javascript:') ||
+                href.startsWith('http://') ||
+                href.startsWith('https://') ||
+                href.includes('://')) {
+                return;
+            }
+
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetUrl = this.href;
+
+                // Disable all links during transition
+                document.body.style.pointerEvents = 'none';
+
+                // Fade to black
+                document.body.classList.remove('loaded');
+                document.body.classList.add('fade-out');
+
+                // Navigate after fade completes (300ms)
+                setTimeout(function() {
+                    window.location.href = targetUrl;
+                }, 300);
+            });
+        });
+    });
+
+    // ========================================
+    // CUSTOM DROPDOWN FUNCTIONALITY
+    // ========================================
+    // NOTE: Dropdown management moved to settings.js
+    // to avoid duplicate event listeners conflict
+
+// ── Global Wrappers for Keyboard Shortcuts ──────────────────────────────────
+// This function allows Ctrl+S to trigger the save settings button
+window.saveSettings = () => document.getElementById('save-btn')?.click();
+</script>
+
+<!-- Eel Bridge (Python-JavaScript communication) -->
+<script src="/eel.js"></script>
+
+<!-- Common Utilities -->
+<script src="js/common.js"></script>
+<script src="js/glass-select.js"></script>
+
+<!-- Internationalization (i18n) -->
+<script src="js/i18n.js"></script>
+
+<!-- Settings Page Logic -->
+<script src="js/settings.js"></script>
+
+<!-- Manual Viewer (in-app browser) -->
+<script src="js/manual-viewer.js"></script>
+
+<!-- Load Navigation Component -->
+<script src="js/load-navigation.js"></script>
+<script src="js/keyboard-shortcuts.js"></script>
+</body></html>

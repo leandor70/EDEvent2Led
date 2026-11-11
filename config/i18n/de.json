@@ -1,0 +1,133 @@
+{
+  "app": {
+    "name": "ED:EVENT2LED",
+    "tagline": "Übersetzung von Elite Dangerous Logs in immersive LED-Beleuchtung",
+    "version": "v1.2.4",
+    "build": "Build 2024.10.27",
+    "status": "Alle Systeme nominal."
+  },
+  "navigation": {
+    "title": "Navigation",
+    "home": "Startseite",
+    "configuration": "Konfiguration",
+    "effects_editor": "Effekt-Editor",
+    "events": "Ereignisse",
+    "test": "Test",
+    "log": "Protokoll",
+    "keyboard_designer": "Tastatur-Designer",
+    "system_status": "Systemstatus",
+    "core_online": "Kern Online"
+  },
+  "pages": {
+    "configuration": {
+      "title": "KONFIGURATION",
+      "subtitle": "System-Einrichtung"
+    },
+    "effects_editor": {
+      "title": "EFFEKT-EDITOR",
+      "subtitle": "Mehrstufige Lichtsequenzen entwerfen"
+    },
+    "events": {
+      "title": "EREIGNISSE",
+      "subtitle": "Spiel-Ereignis-Zuordnung"
+    }
+  },
+  "sections": {
+    "system_settings": {
+      "title": "Systemeinstellungen",
+      "language_label": "Sprachauswahl",
+      "theme_label": "Themenfarben",
+      "theme_elite": "Elite",
+      "theme_violet": "Violett",
+      "theme_cyan": "Cyan",
+      "theme_matrix": "Matrix"
+    },
+    "openrgb": {
+      "title": "OpenRGB-Verbindung",
+      "host_label": "Server-IP:",
+      "port_label": "Server-Port:",
+      "status_connected": "Status: Verbunden",
+      "status_disconnected": "Status: Getrennt",
+      "device_count": "{{count}} Gerät(e)"
+    },
+    "game_integration": {
+      "title": "Spiel-Integration",
+      "journal_path_label": "Journal-Pfad:",
+      "browse_label": "Verzeichnis durchsuchen:",
+      "status_verified": "Status: Verifiziert",
+      "status_not_verified": "Status: Nicht verifiziert",
+      "file_count": "{{count}} Datei(en)"
+    },
+    "effects_library": {
+      "title": "Effekt-Bibliothek",
+      "search_placeholder": "Effekte suchen...",
+      "filter_all": "Alle",
+      "filter_1d": "1D",
+      "filter_2d": "2D",
+      "steps_count": "{{count}} SCHRITTE"
+    },
+    "effect_editor": {
+      "title": "Effekt-Editor",
+      "name_label": "Effektname",
+      "topology_label": "Topologie:",
+      "post_behavior_label": "Nachverhalten:",
+      "color_timeline": "Farb-Timeline",
+      "total_duration": "Gesamt: {{duration}}",
+      "effect_steps": "Effekt-Schritte"
+    },
+    "step_editor": {
+      "color_label": "Farbe",
+      "colors_label": "Farben",
+      "duration_label": "Dauer",
+      "speed_label": "Geschwindigkeit",
+      "direction_label": "Richtung"
+    }
+  },
+  "buttons": {
+    "save": "SPEICHERN",
+    "test": "TEST",
+    "test_connection": "VERBINDUNG TESTEN",
+    "browse_directory": "VERZEICHNIS DURCHSUCHEN",
+    "verify_path": "PFAD VERIFIZIEREN",
+    "new_effect": "NEUER EFFEKT",
+    "clone_effect": "EFFEKT KLONEN",
+    "add_step": "SCHRITT HINZUFÜGEN",
+    "test_full_effect": "VOLLSTÄNDIGEN EFFEKT TESTEN",
+    "stop": "STOPP",
+    "duplicate": "Duplizieren",
+    "delete": "Löschen",
+    "play": "Abspielen"
+  },
+  "languages": {
+    "en": "English (United States)",
+    "it": "Italiano",
+    "de": "Deutsch",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "effect_types": {
+    "static_transition": "Statischer Übergang",
+    "breath": "Atmen",
+    "color_cycle": "Farbzyklus",
+    "wave": "Welle",
+    "ripple": "Wellen",
+    "explosion": "Explosion",
+    "gradient": "Gradient",
+    "pulse": "Impuls"
+  },
+  "post_behaviors": {
+    "turn_off": "Ausschalten",
+    "static_color": "Statische Farbe",
+    "loop_effect": "Effekt-Schleife"
+  },
+  "notifications": {
+    "settings_loaded": "Einstellungen geladen",
+    "settings_saved": "Einstellungen erfolgreich gespeichert!",
+    "openrgb_connected": "OpenRGB OK! {{count}} Gerät(e) gefunden",
+    "openrgb_failed": "Verbindung fehlgeschlagen",
+    "path_verified": "Pfad verifiziert! {{count}} Journal-Datei(en) gefunden",
+    "path_invalid": "Ungültiger Pfad",
+    "effect_saved": "Effekt erfolgreich gespeichert",
+    "effect_deleted": "Effekt gelöscht"
+  }
+}

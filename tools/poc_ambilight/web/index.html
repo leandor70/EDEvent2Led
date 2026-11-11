@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Ambilight POC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: {
+        panel:   '#0d1117',
+        surface: '#161b22',
+        border:  '#30363d',
+        accent:  '#58a6ff',
+        green:   '#3fb950',
+        amber:   '#d29922',
+      }}}
+    }
+  </script>
+  <style>
+    body { font-family: 'Consolas', 'Menlo', monospace; }
+    input[type=range] { cursor: pointer; }
+    .led-strip { display: flex; gap: 1px; height: 20px; border-radius: 3px; overflow: hidden; }
+    .led-cell  { flex: 1; min-width: 3px; transition: background-color 80ms linear; }
+    .label-row { display: flex; justify-content: space-between; align-items: center;
+                 font-size: 0.7rem; margin-bottom: 3px; }
+    .val       { color: #58a6ff; font-weight: 600; }
+  </style>
+  <script src="/eel.js"></script>
+</head>
+
+<body class="bg-panel text-gray-200 text-xs min-h-screen p-4 select-none">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-4 pb-3 border-b border-border">
+    <div class="flex items-center gap-3">
+      <span class="text-sm font-bold text-accent tracking-wide">Ambilight POC</span>
+      <span id="fps-badge" class="px-2 py-0.5 rounded bg-surface text-gray-500 border border-border">— fps</span>
+    </div>
+    <div class="flex gap-2">
+      <button id="btn-start" onclick="cmdStart()"
+        class="px-4 py-1.5 rounded bg-green text-black font-bold text-xs hover:opacity-80 transition-opacity">
+        ▶ Start
+      </button>
+      <button id="btn-stop" onclick="cmdStop()"
+        class="px-4 py-1.5 rounded bg-surface text-gray-400 border border-border font-bold text-xs hover:border-gray-500 transition-colors">
+        ⏹ Stop
+      </button>
+    </div>
+  </div>
+
+  <div class="grid gap-4" style="grid-template-columns: 300px 1fr">
+
+    <!-- ── LEFT: Controls ───────────────────────────────────────────── -->
+    <div class="space-y-3">
+
+      <!-- Strategy -->
+      <div class="bg-surface rounded-lg p-3 border border-border">
+        <div class="text-gray-500 uppercase tracking-widest text-[10px] mb-2">Strategia</div>
+        <select id="ctrl-strategy"
+          class="w-full bg-panel text-gray-200 rounded px-2 py-1.5 border border-border text-xs focus:outline-none focus:border-accent">
+        </select>
+        <div id="strategy-desc" class="text-gray-600 mt-1.5 leading-relaxed"></div>
+      </div>
+
+      <!-- Cattura -->
+      <div class="bg-surface rounded-lg p-3 border border-border space-y-3">
+        <div class="text-gray-500 uppercase tracking-widest text-[10px]">Cattura</div>
+
+        <div>
+          <div class="label-row">
+            <span class="text-gray-400">FPS target</span>
+            <span class="val" id="val-fps">15</span>
+          </div>
+          <input id="ctrl-fps" type="range" min="1" max="60" value="15"
+            oninput="liveUpdate('fps', +this.value, 'val-fps')"
+            class="w-full accent-sky-400 h-1.5">
+        </div>
+
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input id="ctrl-preview" type="checkbox"
+            onchange="eel.set_config({preview_only: this.checked})"
+            class="accent-sky-400 w-3 h-3">
+          <span class="text-gray-400">Preview only — non inviare ai LED</span>
+        </label>
+      </div>
+
+      <!-- Area di campionamento -->
+      <div class="bg-surface rounded-lg p-3 border border-border space-y-3">
+        <div class="text-gray-500 uppercase tracking-widest text-[10px]">Area di campionamento</div>
+
+        <!-- Depth fissa (strategie non-adaptive) -->
+        <div id="group-depth">
+          <div class="label-row">
+            <span class="text-gray-400">Depth</span>
+            <span><span class="val" id="val-depth">10</span><span class="text-gray-600"> %</span></span>
+          </div>
+          <input id="ctrl-depth" type="range" min="1" max="30" value="10"
+            oninput="liveUpdate('depth', +this.value, 'val-depth')"
+            class="w-full accent-sky-400 h-1.5">
+        </div>
+
+        <!-- Adaptive min / max -->
+        <div id="group-adaptive" class="space-y-3 hidden">
+          <div>
+            <div class="label-row">
+              <span class="text-gray-400">Depth min</span>
+              <span><span class="val" id="val-adaptive-min">3</span><span class="text-gray-600"> %</span></span>
+            </div>
+            <input id="ctrl-adaptive-min" type="range" min="1" max="15" value="3"
+              oninput="liveUpdate('adaptive_min', +this.value, 'val-adaptive-min')"
+              class="w-full accent-sky-400 h-1.5">
+          </div>
+          <div>
+            <div class="label-row">
+              <span class="text-gray-400">Depth max</span>
+              <span><span class="val" id="val-adaptive-max">20</span><span class="text-gray-600"> %</span></span>
+            </div>
+            <input id="ctrl-adaptive-max" type="range" min="5" max="40" value="20"
+              oninput="liveUpdate('adaptive_max', +this.value, 'val-adaptive-max')"
+              class="w-full accent-sky-400 h-1.5">
+          </div>
+        </div>
+      </div>
+
+      <!-- Smoothing temporale -->
+      <div id="group-smooth" class="bg-surface rounded-lg p-3 border border-border space-y-3">
+        <div class="text-gray-500 uppercase tracking-widest text-[10px]">Smoothing temporale</div>
+        <div>
+          <div class="label-row">
+            <span class="text-gray-400">Alpha EMA</span>
+            <span class="val" id="val-ema-alpha">0.35</span>
+          </div>
+          <input id="ctrl-ema-alpha" type="range" min="0.05" max="0.95" step="0.05" value="0.35"
+            oninput="liveUpdate('ema_alpha', +this.value, 'val-ema-alpha')"
+            class="w-full accent-sky-400 h-1.5">
+          <div class="text-gray-600 mt-1">0.05 = molto fluido · 0.95 = quasi istantaneo</div>
+        </div>
+        <div>
+          <div class="label-row">
+            <span class="text-gray-400">Scene-cut threshold</span>
+            <span class="val" id="val-scene-cut">60</span>
+          </div>
+          <input id="ctrl-scene-cut" type="range" min="10" max="150" value="60"
+            oninput="liveUpdate('scene_cut', +this.value, 'val-scene-cut')"
+            class="w-full accent-sky-400 h-1.5">
+          <div class="text-gray-600 mt-1">salto istantaneo sopra questa soglia delta</div>
+        </div>
+      </div>
+
+      <!-- Output -->
+      <div class="bg-surface rounded-lg p-3 border border-border">
+        <div class="text-gray-500 uppercase tracking-widest text-[10px] mb-3">Output</div>
+        <div id="group-saturation">
+          <div class="label-row">
+            <span class="text-gray-400">Boost saturazione</span>
+            <span class="val" id="val-saturation">1.4</span>
+          </div>
+          <input id="ctrl-saturation" type="range" min="0.5" max="2.5" step="0.1" value="1.4"
+            oninput="liveUpdate('saturation_boost', +this.value, 'val-saturation')"
+            class="w-full accent-sky-400 h-1.5">
+          <div class="text-gray-600 mt-1">1.0 = nessuno · 2.5 = max vivido</div>
+        </div>
+      </div>
+
+      <!-- Zone attive -->
+      <div class="bg-surface rounded-lg p-3 border border-border">
+        <div class="text-gray-500 uppercase tracking-widest text-[10px] mb-2">Zone attive</div>
+        <div id="zone-toggles" class="space-y-2"></div>
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT: Preview + stats ────────────────────────────────────── -->
+    <div class="space-y-3">
+
+      <!-- LED strip preview -->
+      <div class="bg-surface rounded-lg p-3 border border-border">
+        <div class="text-gray-500 uppercase tracking-widest text-[10px] mb-3">Preview LED</div>
+        <div id="zone-preview" class="space-y-3"></div>
+      </div>
+
+      <!-- Stats -->
+      <div class="bg-surface rounded-lg p-3 border border-border">
+        <div class="text-gray-500 uppercase tracking-widest text-[10px] mb-3">Statistiche</div>
+        <div class="grid grid-cols-4 gap-3 text-center">
+          <div class="bg-panel rounded p-2 border border-border">
+            <div class="text-xl font-bold text-accent" id="stat-fps">—</div>
+            <div class="text-gray-500 mt-0.5">FPS effettivi</div>
+          </div>
+          <div class="bg-panel rounded p-2 border border-border">
+            <div class="text-xl font-bold text-accent" id="stat-frames">—</div>
+            <div class="text-gray-500 mt-0.5">Frame totali</div>
+          </div>
+          <div class="bg-panel rounded p-2 border border-border">
+            <div class="text-xl font-bold" id="stat-status">IDLE</div>
+            <div class="text-gray-500 mt-0.5">Stato</div>
+          </div>
+          <div class="bg-panel rounded p-2 border border-border">
+            <div class="text-sm font-bold text-amber-400" id="stat-capturer">—</div>
+            <div class="text-gray-500 mt-0.5">Capturer</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/ambilight.js"></script>
+</body>
+</html>

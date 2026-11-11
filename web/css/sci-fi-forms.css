@@ -1,0 +1,133 @@
+/* ========================================
+   ED:Event2Led - Sci-Fi Theme: global form controls
+   Styles plain <select>/<input>/<textarea>/range elements and lifts the
+   contrast of .text-white/30 and /40 on the WHOLE page. Kept apart from
+   sci-fi-theme.css (components) because it restyles every form element:
+   linked only by the pages designed with it (index, events, effects-lib).
+   Load it right after sci-fi-theme.css.
+   ======================================== */
+
+/* ========================================
+   FORM CONTROLS - Elite Dangerous Theme
+   ======================================== */
+select,
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+textarea {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    border: 1px solid rgba(255, 102, 0, 0.15) !important;
+    color: #e0e0e0 !important;
+    padding: 10px 12px !important;
+    border-radius: 4px !important;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+    font-family: 'Rajdhani', sans-serif !important;
+}
+
+select:hover,
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+textarea:hover {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    border-color: rgba(255, 102, 0, 0.3) !important;
+}
+
+select:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    border-color: #FF6600 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2) !important;
+}
+
+/* <select>: arrow and dropdown list come from sci-fi-theme.css (GLASS SELECT)
+   and js/glass-select.js, the same on every page. */
+
+/* Placeholder text styling */
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255, 102, 0, 0.4);
+    font-style: italic;
+}
+
+/* Disabled state */
+select:disabled,
+input:disabled,
+textarea:disabled {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    color: #666666 !important;
+    cursor: not-allowed !important;
+}
+
+/* ========================================
+   RANGE SLIDER
+   ======================================== */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255,255,255,0.1);
+    outline: none;
+    height: 6px;
+    border-radius: 3px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-accent);
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--primary-accent);
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+}
+
+/* ========================================
+   ACCESSIBILITY - WCAG AA Contrast
+   ======================================== */
+
+/**
+ * Override Tailwind opacity utilities to meet WCAG AA standards.
+ *
+ * Background: #05070a (space black)
+ * Minimum contrast ratio required: 4.5:1 (WCAG AA Level)
+ *
+ * Original Tailwind values:
+ * - text-white/40 (0.4 opacity) → 3.2:1 ❌ FAIL
+ * - text-white/30 (0.3 opacity) → 2.4:1 ❌ FAIL
+ *
+ * Fixed values:
+ * - text-white/40 → 0.6 opacity → 5.8:1 ✅ PASS
+ * - text-white/30 → 0.5 opacity → 4.6:1 ✅ PASS
+ */
+
+.text-white\/40 {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.text-white\/30 {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Placeholder text (inputs) */
+::placeholder {
+    color: rgba(255, 255, 255, 0.6) !important;
+    opacity: 1;
+}

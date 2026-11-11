@@ -1,0 +1,133 @@
+{
+  "app": {
+    "name": "ED:EVENT2LED",
+    "tagline": "Traduzione dei Log di Elite Dangerous in Illuminazione LED Immersiva",
+    "version": "v1.2.4",
+    "build": "Build 2024.10.27",
+    "status": "Tutti i sistemi operativi."
+  },
+  "navigation": {
+    "title": "Navigazione",
+    "home": "Home",
+    "configuration": "Configurazione",
+    "effects_editor": "Editor Effetti",
+    "events": "Eventi",
+    "test": "Test",
+    "log": "Log",
+    "keyboard_designer": "Designer Tastiera",
+    "system_status": "Stato Sistema",
+    "core_online": "Core Online"
+  },
+  "pages": {
+    "configuration": {
+      "title": "CONFIGURAZIONE",
+      "subtitle": "Configurazione Sistema"
+    },
+    "effects_editor": {
+      "title": "EDITOR EFFETTI",
+      "subtitle": "Progetta Sequenze Luminose Multi-Step"
+    },
+    "events": {
+      "title": "EVENTI",
+      "subtitle": "Mappatura Eventi di Gioco"
+    }
+  },
+  "sections": {
+    "system_settings": {
+      "title": "Impostazioni Sistema",
+      "language_label": "Selezione Lingua",
+      "theme_label": "Colori Tema",
+      "theme_elite": "Elite",
+      "theme_violet": "Viola",
+      "theme_cyan": "Ciano",
+      "theme_matrix": "Matrix"
+    },
+    "openrgb": {
+      "title": "Connessione OpenRGB",
+      "host_label": "IP Server:",
+      "port_label": "Porta Server:",
+      "status_connected": "Stato: Connesso",
+      "status_disconnected": "Stato: Disconnesso",
+      "device_count": "{{count}} dispositivo(i)"
+    },
+    "game_integration": {
+      "title": "Integrazione Gioco",
+      "journal_path_label": "Percorso Journal:",
+      "browse_label": "Sfoglia Directory:",
+      "status_verified": "Stato: Verificato",
+      "status_not_verified": "Stato: Non Verificato",
+      "file_count": "{{count}} file"
+    },
+    "effects_library": {
+      "title": "Libreria Effetti",
+      "search_placeholder": "Cerca effetti...",
+      "filter_all": "Tutti",
+      "filter_1d": "1D",
+      "filter_2d": "2D",
+      "steps_count": "{{count}} STEP"
+    },
+    "effect_editor": {
+      "title": "Editor Effetto",
+      "name_label": "Nome Effetto",
+      "topology_label": "Topologia:",
+      "post_behavior_label": "Comportamento Finale:",
+      "color_timeline": "Timeline Colori",
+      "total_duration": "Totale: {{duration}}",
+      "effect_steps": "Step Effetto"
+    },
+    "step_editor": {
+      "color_label": "Colore",
+      "colors_label": "Colori",
+      "duration_label": "Durata",
+      "speed_label": "Velocità",
+      "direction_label": "Direzione"
+    }
+  },
+  "buttons": {
+    "save": "SALVA",
+    "test": "TEST",
+    "test_connection": "TEST CONNESSIONE",
+    "browse_directory": "SFOGLIA DIRECTORY",
+    "verify_path": "VERIFICA PERCORSO",
+    "new_effect": "NUOVO EFFETTO",
+    "clone_effect": "CLONA EFFETTO",
+    "add_step": "AGGIUNGI STEP",
+    "test_full_effect": "TEST EFFETTO COMPLETO",
+    "stop": "STOP",
+    "duplicate": "Duplica",
+    "delete": "Elimina",
+    "play": "Riproduci"
+  },
+  "languages": {
+    "en": "English (United States)",
+    "it": "Italiano",
+    "de": "Deutsch",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "effect_types": {
+    "static_transition": "Transizione Statica",
+    "breath": "Respiro",
+    "color_cycle": "Ciclo Colori",
+    "wave": "Onda",
+    "ripple": "Increspatura",
+    "explosion": "Esplosione",
+    "gradient": "Gradiente",
+    "pulse": "Impulso"
+  },
+  "post_behaviors": {
+    "turn_off": "Spegni",
+    "static_color": "Colore Statico",
+    "loop_effect": "Effetto Loop"
+  },
+  "notifications": {
+    "settings_loaded": "Impostazioni caricate",
+    "settings_saved": "Impostazioni salvate con successo!",
+    "openrgb_connected": "OpenRGB OK! {{count}} dispositivo(i) trovato(i)",
+    "openrgb_failed": "Connessione fallita",
+    "path_verified": "Percorso verificato! Trovati {{count}} file journal",
+    "path_invalid": "Percorso non valido",
+    "effect_saved": "Effetto salvato con successo",
+    "effect_deleted": "Effetto eliminato"
+  }
+}

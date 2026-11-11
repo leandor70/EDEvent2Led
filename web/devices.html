@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ED:Event2Led Device Management</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="css/tailwind.min.css" rel="stylesheet">
+    <link href="css/fonts.css" rel="stylesheet">
+
+    <link href="css/sci-fi-theme.css" rel="stylesheet">
+    <style>
+        /* ========================================
+           FADE TRANSITIONS - Universal Solution
+           ======================================== */
+        body {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            background-color: #000;
+        }
+    </style>
+
+    <style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            src: url('fonts/MaterialSymbolsOutlined.woff2') format('woff2');
+            font-display: block;
+        }
+    </style>
+
+    <style >
+        :root {
+            --primary-accent: #FF6600;
+            --bg-dark: #05070a;
+            --panel-bg: rgba(18, 20, 24, 0.9);
+            --border-color: rgba(255, 102, 0, 0.3);
+            --text-main: #e0e0e0;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --device-selected-bg: rgba(255, 102, 0, 0.08);
+            --device-selected-border: rgba(255, 102, 0, 0.3);
+            --device-hover-bg: rgba(255, 102, 0, 0.05);
+            --device-disabled-opacity: 0.4;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow: auto;
+        }
+
+        /* ========================================
+           DEVICE LIST STYLES
+           ======================================== */
+        .device-card {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 12px;
+        }
+
+        .device-card.selected {
+            background: var(--device-selected-bg);
+            border-color: var(--device-selected-border);
+            box-shadow: 0 0 12px rgba(255, 102, 0, 0.2);
+        }
+
+        .device-card.disabled {
+            opacity: var(--device-disabled-opacity);
+            cursor: not-allowed;
+        }
+
+        .device-card:not(.disabled):hover {
+            background: var(--device-hover-bg);
+            border-color: rgba(255, 102, 0, 0.2);
+        }
+
+        .device-icon {
+            font-size: 32px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .topology-badge {
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .topology-badge.matrix {
+            background: rgba(156, 39, 176, 0.2);
+            color: #AB47BC;
+        }
+
+        .topology-badge.linear {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FFA726;
+        }
+
+        .topology-badge.single {
+            background: rgba(117, 117, 117, 0.2);
+            color: #BDBDBD;
+        }
+
+        .led-count-badge {
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: rgba(76, 175, 80, 0.2);
+            color: #66BB6A;
+            font-family: 'Consolas', monospace;
+            font-weight: 600;
+        }
+
+        /* ========================================
+           TEST CONTROLS STYLES
+           ======================================== */
+        .test-section {
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .section-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .section-header .description {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 16px;
+        }
+
+        .control-row.wrap {
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .control-group.auto {
+            flex: 0 0 auto;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .info-box {
+            background: rgba(33, 150, 243, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 16px;
+            display: flex;
+            align-items: start;
+            gap: 10px;
+            font-size: 13px;
+            color: #64B5F6;
+        }
+
+        .info-box .material-symbols-outlined {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        /* ========================================
+           FORM CONTROLS
+           ======================================== */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            height: 6px;
+            border-radius: 3px;
+            width: 100%;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-accent);
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--primary-accent);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .disable-color-swatch {
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-left: 6px;
+            vertical-align: middle;
+            display: inline-block;
+            transition: border-color 0.2s;
+        }
+        .disable-color-swatch:hover {
+            border-color: rgba(255, 102, 0, 0.7);
+        }
+
+        input[type="number"] {
+            width: 100px;
+        }
+
+        select,
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            background-color: rgba(0, 0, 0, 0.6) !important;
+            border: 1px solid rgba(255, 102, 0, 0.15) !important;
+            color: #e0e0e0 !important;
+            padding: 10px 12px !important;
+            border-radius: 4px !important;
+            transition: all 0.2s ease !important;
+            font-family: 'Rajdhani', sans-serif !important;
+        }
+
+        select:hover,
+        input[type="text"]:hover,
+        input[type="number"]:hover {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            border-color: rgba(255, 102, 0, 0.3) !important;
+        }
+
+        select:focus,
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            border-color: #FF6600 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2) !important;
+        }
+
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            -webkit-font-feature-settings: 'liga';
+        }
+
+        /* Two Column Layout */
+        .two-column-layout {
+            display: grid;
+            grid-template-columns: 30% 70%;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .device-list-column {
+            overflow-y: auto;
+            padding-right: 12px;
+        }
+
+        .test-controls-column {
+            overflow-y: auto;
+            padding-right: 12px;
+        }
+
+        /* Scrollbar Styling - Unified style matching effect preview */
+        .device-list-column::-webkit-scrollbar,
+        .test-controls-column::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .device-list-column::-webkit-scrollbar-track,
+        .test-controls-column::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .device-list-column::-webkit-scrollbar-thumb,
+        .test-controls-column::-webkit-scrollbar-thumb {
+            background: rgba(255, 102, 0, 0.3);
+            border-radius: 3px;
+        }
+
+        .device-list-column::-webkit-scrollbar-thumb:hover,
+        .test-controls-column::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 102, 0, 0.5);
+        }
+
+        .hw-color {
+            width: 48px;
+            height: 48px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .hw-color:hover {
+            border-color: var(--primary-accent);
+        }
+
+        .unit {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-left: 8px;
+        }
+
+        /* ========================================
+           CUSTOM DROPDOWN - Glassmorphism Effect
+           ======================================== */
+
+        .custom-dropdown .dropdown-button {
+            border: 1px solid rgba(255, 102, 0, 0.15) !important;
+        }
+
+        .custom-dropdown .dropdown-button:hover {
+            border-color: rgba(255, 102, 0, 0.3) !important;
+        }
+
+        .custom-dropdown .dropdown-button.active {
+            border-color: rgba(255, 102, 0, 0.3) !important;
+        }
+
+        .custom-dropdown .dropdown-menu {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.6) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 102, 0, 0.15) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+                        0 0 0 1px rgba(255, 102, 0, 0.15) !important;
+            z-index: 1000;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            min-width: 100%;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 102, 0, 0.2) !important;
+            color: #FF6600 !important;
+        }
+
+        .dropdown-item.selected {
+            background: rgba(255, 102, 0, 0.15) !important;
+            color: #FF6600 !important;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body class="h-screen w-full relative flex">
+<style>
+/* CRITICAL: Border fix for custom dropdown - loads AFTER Tailwind */
+.custom-dropdown .dropdown-button {
+    border: 1px solid rgba(255, 102, 0, 0.15) !important;
+}
+
+.custom-dropdown .dropdown-button:hover,
+.custom-dropdown .dropdown-button.active {
+    border-color: rgba(255, 102, 0, 0.3) !important;
+}
+
+.custom-dropdown .dropdown-menu {
+    border: 1px solid rgba(255, 102, 0, 0.15) !important;
+}
+
+/* Global scrollbar styling - applies to ALL scrollbars */
+*::-webkit-scrollbar { width: 6px; }
+*::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb {
+    background: rgba(255,102,0,0.3);
+    border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,102,0,0.5);
+}
+
+/* Specific overrides kept for backward compatibility */
+#effect-preview-list::-webkit-scrollbar { width: 6px; }
+#effect-preview-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 3px; }
+#effect-preview-list::-webkit-scrollbar-thumb { background: rgba(255,102,0,0.3); border-radius: 3px; }
+#effect-preview-list::-webkit-scrollbar-thumb:hover { background: rgba(255,102,0,0.5); }
+
+.effect-preview-card {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+}
+.effect-preview-card:hover { border-color: rgba(255,102,0,0.3); background: rgba(255,102,0,0.05); }
+.effect-preview-card.selected { border-color: rgba(255,102,0,0.5); background: rgba(255,102,0,0.08); }
+
+/* ── On-disable row (inside device cards) ── */
+.on-disable-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+.on-disable-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    font-family: 'Orbitron', sans-serif;
+}
+.on-disable-select {
+    flex: 1;
+    font-size: 11px !important;
+    padding: 4px 28px 4px 8px !important;
+    background: rgba(0,0,0,0.4) !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    color: rgba(255,255,255,0.5) !important;
+}
+/* Highlight when device is disabled */
+.device-card.disabled .on-disable-row {
+    border-top-color: rgba(255,102,0,0.15);
+}
+.device-card.disabled .on-disable-label {
+    color: rgba(255,102,0,0.55);
+}
+.device-card.disabled .on-disable-select {
+    border-color: rgba(255,102,0,0.2) !important;
+    color: rgba(255,102,0,0.65) !important;
+}
+
+/* Ambilight idle badge */
+.ambilight-idle-badge {
+    font-size: 14px;
+    color: var(--primary-accent);
+    opacity: 0.8;
+    animation: ambiBadgePulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+@keyframes ambiBadgePulse {
+    0%, 100% { opacity: 0.8; }
+    50%       { opacity: 0.35; }
+}
+</style>
+    <!-- Background -->
+    <div class="fixed inset-0 z-0">
+        <img data-i18n-attr="alt:alt_text.background_image" alt="Spiral Galaxy Background" class="w-full h-full object-cover opacity-25" src="images/backgrounds/spiral-galaxy.jpg"/>
+        <div class="absolute inset-0 bg-gradient-to-b from-[#05070a]/40 via-[#05070a]/70 to-[#05070a]"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[700px] pointer-events-none opacity-20">
+            <svg class="w-full h-full stroke-[var(--primary-accent)] fill-none opacity-40" viewBox="0 0 100 100">
+                <polygon points="50,5 95,80 5,80" stroke-width="0.1"></polygon>
+                <polygon points="50,15 85,75 15,75" stroke-width="0.1"></polygon>
+                <polygon points="50,30 70,70 30,70" stroke-width="0.1"></polygon>
+                <polygon points="50,45 60,65 40,65" stroke-width="0.1"></polygon>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <!-- Navigation Component (loaded dynamically) -->
+    <div id="sidebar-nav" data-active-page="devices"></div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
+        <!-- Header -->
+        <header class="w-full pt-12 pb-8 flex flex-col items-center">
+            <div class="flex items-center gap-4 mb-2">
+                <div class="h-px w-24 bg-gradient-to-r from-transparent to-[var(--primary-accent)] opacity-50"></div>
+                <h1 class="orbitron text-4xl font-bold tracking-[0.3em] text-white" data-i18n="pages.device_testing.title">
+                    DEVICE MANAGEMENT
+                </h1>
+                <div class="h-px w-24 bg-gradient-to-l from-transparent to-[var(--primary-accent)] opacity-50"></div>
+            </div>
+            <p class="text-sm uppercase tracking-[0.4em] text-white/60" data-i18n="pages.device_testing.subtitle">Hardware Configuration &amp; Testing</p>
+        </header>
+
+        <!-- Two Column Layout -->
+        <div class="flex-1 px-12 pb-12 overflow-hidden">
+            <div class="two-column-layout">
+                <!-- Left Column: Device List -->
+                <div class="device-list-column">
+                    <div class="sci-fi-border carbon-pattern" style="display: flex; flex-direction: column; height: 100%; padding: 24px;">
+                        <div class="section-header" style="flex-shrink: 0;">
+                            <h3 style="font-family: 'Orbitron', sans-serif; font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #ffffff; margin-bottom: 4px;" data-i18n="sections.device_testing.devices_title">Devices</h3>
+                            <p class="description" data-i18n="sections.device_testing.devices_description">Connected RGB hardware</p>
+                        </div>
+                        <div id="device-list-container" style="flex: 1; overflow-y: auto; margin-right: -12px; padding-right: 12px;">
+                            <!-- Devices populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Test Controls -->
+                <div class="test-controls-column">
+                    <!-- Flash Test Section -->
+                    <div class="test-section sci-fi-border carbon-pattern" id="flash-test-section">
+                        <div class="section-header">
+                            <h3 data-i18n="sections.device_testing.flash_test_title">Flash Test</h3>
+                            <p class="description" data-i18n="sections.device_testing.flash_test_description">Quick white flash to identify device</p>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="bg-[var(--primary-accent)]/10 border border-[var(--primary-accent)] text-[var(--primary-accent)] px-4 py-2 rounded hover:bg-[var(--primary-accent)]/20 flex items-center gap-2" id="flash-btn">
+                                <span class="material-symbols-outlined text-base">flash_on</span>
+                                <span data-i18n="buttons.flash_device">Flash Device</span>
+                            </button>
+                            <button class="bg-transparent border border-[var(--primary-accent)]/50 text-[var(--primary-accent)]/80 px-4 py-2 rounded hover:bg-[var(--primary-accent)]/10 flex items-center gap-2" id="flash-all-btn">
+                                <span class="material-symbols-outlined text-base">flash_on</span>
+                                <span data-i18n="buttons.flash_all_devices">Flash All Devices</span>
+                            </button>
+                            <button class="bg-transparent border border-white/20 text-white/60 px-4 py-2 rounded hover:bg-white/5 flex items-center gap-2" id="export-devices-btn">
+                                <span class="material-symbols-outlined text-base">download</span>
+                                <span data-i18n="pages.device_testing.export_info">Export Info</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Effect Preview Section (loads VisualEffects from library) -->
+                    <div class="test-section sci-fi-border carbon-pattern" id="effect-preview-section">
+                        <div class="section-header">
+                            <h3 data-i18n="sections.device_testing.effect_preview_title">Effect Preview</h3>
+                            <p class="description" data-i18n="sections.device_testing.effect_preview_description">Test your library effects on real hardware</p>
+                        </div>
+
+                        <!-- Scrollable effects list -->
+                        <div id="effect-preview-list" style="max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; margin-bottom:16px; padding-right:4px;">
+                            <div data-i18n="common.loading_effects" style="text-align:center; padding:24px; color:rgba(255,255,255,0.4); font-size:13px;">
+                                Loading effects...
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="bg-[var(--primary-accent)]/10 border border-[var(--primary-accent)] text-[var(--primary-accent)] px-4 py-2 rounded hover:bg-[var(--primary-accent)]/20 flex items-center gap-2" id="preview-effect-btn">
+                                <span class="material-symbols-outlined text-base">play_arrow</span>
+                                <span data-i18n="buttons.preview_all">Preview on All Devices</span>
+                            </button>
+                            <button class="bg-transparent border border-white/20 text-white/60 px-4 py-2 rounded hover:bg-white/5 flex items-center gap-2" id="stop-effect-btn">
+                                <span class="material-symbols-outlined text-base">stop</span>
+                                <span data-i18n="buttons.stop">Stop</span>
+                            </button>
+                            <button class="bg-transparent border border-white/20 text-white/60 px-4 py-2 rounded hover:bg-white/5 flex items-center gap-2" id="clear-btn">
+                                <span class="material-symbols-outlined text-base">close</span>
+                                <span data-i18n="buttons.turn_off_selected">Turn Off Selected</span>
+                            </button>
+                        </div>
+
+                        <div class="info-box">
+                            <span class="material-symbols-outlined">info</span>
+                            <p data-i18n="sections.device_testing.effect_preview_info">Preview runs the full effect sequence on all connected devices. Create and edit effects in the Effects Editor.</p>
+                        </div>
+                    </div>
+
+                    <!-- Hardware Modes Section - REMOVED -->
+                    <!-- Feature removed due to OpenRGB SDK limitations - most modes require parameters that can't be reliably set via API -->
+                    <!-- Users can configure hardware modes directly in OpenRGB GUI if needed -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ========================================
+        // FADE TRANSITIONS
+        // ========================================
+        // NOTE: Fade-in is triggered by devices.js after i18n initialization
+        // Fallback: show after 2.5s even if devices.js doesn't trigger it
+        setTimeout(function() {
+            if (!document.body.classList.contains('loaded')) {
+                console.warn('[Fade] Fallback: forcing fade-in after timeout');
+                document.body.classList.add('loaded');
+            }
+        }, 2500);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set keyboard shortcut context
+            if (typeof setShortcutContext === 'function') setShortcutContext('devices');
+
+            const links = document.querySelectorAll('a[href]');
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('javascript:') ||
+                    href.startsWith('http://') || href.startsWith('https://') || href.includes('://')) {
+                    return;
+                }
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetUrl = this.href;
+                    document.body.style.pointerEvents = 'none';
+                    document.body.classList.remove('loaded');
+                    document.body.classList.add('fade-out');
+                    setTimeout(function() {
+                        window.location.href = targetUrl;
+                    }, 300);
+                });
+            });
+        });
+
+    </script>
+
+    <!-- Eel Bridge (auto-generated by Eel) -->
+    <script src="/eel.js"></script>
+
+    <!-- Common Utilities -->
+    <script src="js/common.js"></script>
+    <script src="js/glass-select.js"></script>
+
+    <!-- i18n (Internationalization) -->
+    <script src="js/i18n.js"></script>
+
+    <!-- Color Picker -->
+    <script src="js/color-picker.js"></script>
+
+    <!-- Device Testing Logic (with real Eel API calls) -->
+    <script src="js/devices.js"></script>
+
+    <!-- Manual Viewer (in-app browser) -->
+    <script src="js/manual-viewer.js"></script>
+
+    <!-- Load Navigation Component -->
+    <script src="js/load-navigation.js"></script>
+<script src="js/keyboard-shortcuts.js"></script>
+</body>
+</html>

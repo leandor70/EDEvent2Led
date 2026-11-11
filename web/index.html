@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title data-i18n="pages.home.page_title">ED:Event2Led</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="css/tailwind.min.css" rel="stylesheet">
+<link href="css/fonts.css" rel="stylesheet">
+<link href="css/sci-fi-theme.css" rel="stylesheet">
+<link href="css/sci-fi-forms.css" rel="stylesheet">
+<style>
+    /* ── Navigation cards ──────────────────────── */
+    .screen-card { transition: all 0.3s; cursor: pointer; }
+    .screen-card:hover {
+        border-color: var(--primary-accent);
+        box-shadow: 0 0 25px rgba(255,102,0,0.3);
+        transform: translateY(-4px);
+    }
+
+    /* ── Status dot ──────────────────────────────── */
+    .status-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+    }
+    .status-dot.green  { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.7); }
+    .status-dot.orange { background: #FF6600; box-shadow: 0 0 6px rgba(255,102,0,0.7); }
+    .status-dot.gray   { background: rgba(255,255,255,0.2); }
+
+    .status-dot.green.pulse {
+        animation: pulse-green 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-green {
+        0%, 100% { box-shadow: 0 0 4px rgba(34,197,94,0.5); }
+        50%       { box-shadow: 0 0 12px rgba(34,197,94,1); }
+    }
+
+    /* ── Title shimmer + glow ───────────────────── */
+
+    /* Glow arancione che respira — come una stella lontana */
+    .title-main {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        animation: title-breathe 6s ease-in-out infinite;
+    }
+
+    @keyframes title-breathe {
+        0%, 100% {
+            text-shadow:
+                0 0 25px rgba(255, 102, 0, 0.18),
+                0 0 55px rgba(255, 102, 0, 0.06);
+            filter: brightness(1);
+        }
+        50% {
+            text-shadow:
+                0 0 35px rgba(255, 102, 0, 0.40),
+                0 0 70px rgba(255, 102, 0, 0.15),
+                0 0 110px rgba(255, 102, 0, 0.05);
+            filter: brightness(1.06);
+        }
+    }
+
+    /* Riflesso luminoso obliquo che scorre da sx a dx ogni 8s */
+    .title-main::after {
+        content: '';
+        position: absolute;
+        top: -15%;
+        left: -80%;
+        width: 55%;
+        height: 130%;
+        background: linear-gradient(
+            to right,
+            transparent 0%,
+            rgba(255, 240, 220, 0.06) 35%,
+            rgba(255, 255, 255, 0.22) 50%,
+            rgba(255, 240, 220, 0.06) 65%,
+            transparent 100%
+        );
+        transform: skewX(-15deg);
+        animation: title-shimmer 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        pointer-events: none;
+    }
+
+    @keyframes title-shimmer {
+        0%      { left: -80%; opacity: 1; }   /* fuori sinistra */
+        15%     { left: 140%; opacity: 1; }   /* attraversato — ~1.2s */
+        15.01%  { left: 140%; opacity: 0; }   /* invisibile per la pausa */
+        99.99%  { left: -80%; opacity: 0; }   /* torna a sinistra senza vedersi */
+        100%    { left: -80%; opacity: 1; }   /* pronto a partire di nuovo */
+    }
+
+    /* Le linee laterali pulsano in sync con il glow del titolo */
+    .title-line {
+        animation: line-pulse 6s ease-in-out infinite;
+    }
+
+    @keyframes line-pulse {
+        0%, 100% { opacity: 0.50; }
+        50%      { opacity: 0.85; }
+    }
+
+    /* ── START / STOP button ────────────────────── */
+    #btn-monitor {
+        transition: all 0.25s;
+        letter-spacing: 0.18em;
+        cursor: pointer;
+    }
+    #btn-monitor:hover { transform: translateY(-2px); }
+    #btn-monitor:active { transform: translateY(0); }
+    #btn-monitor.state-idle {
+        border: 1px solid rgba(255,102,0,0.5);
+        background: rgba(255,102,0,0.08);
+        color: #FF6600;
+    }
+    #btn-monitor.state-idle:hover {
+        background: rgba(255,102,0,0.15);
+        box-shadow: 0 0 20px rgba(255,102,0,0.25);
+    }
+    #btn-monitor.state-running {
+        border: 1px solid rgba(34,197,94,0.5);
+        background: rgba(34,197,94,0.08);
+        color: #22c55e;
+    }
+    #btn-monitor.state-running:hover {
+        background: rgba(239,68,68,0.12);
+        border-color: rgba(239,68,68,0.5);
+        color: #f87171;
+    }
+    #btn-monitor.state-busy {
+        border: 1px solid rgba(255,255,255,0.15);
+        background: transparent;
+        color: rgba(255,255,255,0.3);
+        cursor: not-allowed;
+    }
+</style>
+</head>
+<body class="min-h-screen w-full relative">
+
+<!-- ── Background ─────────────────────────────────────────── -->
+<div class="fixed inset-0 z-0">
+    <img data-i18n-attr="alt:alt_text.background_image" alt="Spiral Galaxy Background"
+         class="w-full h-full object-cover opacity-25"
+         src="images/backgrounds/spiral-galaxy.jpg"/>
+    <div class="absolute inset-0 bg-gradient-to-b from-[#05070a]/40 via-[#05070a]/70 to-[#05070a]"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[700px] pointer-events-none opacity-20">
+        <svg class="w-full h-full stroke-[var(--primary-accent)] fill-none opacity-40" viewBox="0 0 100 100">
+            <polygon points="50,5 95,80 5,80"  stroke-width="0.1"></polygon>
+            <polygon points="50,15 85,75 15,75" stroke-width="0.1"></polygon>
+            <polygon points="50,30 70,70 30,70" stroke-width="0.1"></polygon>
+            <polygon points="50,45 60,65 40,65" stroke-width="0.1"></polygon>
+        </svg>
+    </div>
+</div>
+
+<!-- ── Content ─────────────────────────────────────────────── -->
+<div class="relative z-10 container mx-auto px-12 py-16">
+
+    <!-- Header -->
+    <header class="text-center mb-12">
+        <div class="flex items-center justify-center gap-4 mb-4">
+            <div class="title-line h-px w-32 bg-gradient-to-r from-transparent to-[var(--primary-accent)]"></div>
+            <h1 class="title-main orbitron text-6xl font-bold tracking-[0.3em] text-white">
+                ED<span class="text-[var(--primary-accent)]">:</span>EVENT<span class="text-[var(--primary-accent)]">2</span>LED
+            </h1>
+            <div class="title-line h-px w-32 bg-gradient-to-l from-transparent to-[var(--primary-accent)]"></div>
+        </div>
+        <p class="text-lg uppercase tracking-[0.4em] text-white/60 mb-2" data-i18n="pages.home.title">Elite Dangerous RGB Lighting Control</p>
+        <p class="text-sm text-white/55" data-i18n="pages.home.subtitle">Real-time Journal Monitoring · OpenRGB Integration · Multi-step Effect Sequencer</p>
+    </header>
+
+    <!-- ══════════════════════════════════════════════
+         MISSION CONTROL
+         ══════════════════════════════════════════════ -->
+    <section class="max-w-5xl mx-auto mb-14">
+
+        <!-- Status row — 3 cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+            <!-- OpenRGB Status -->
+            <div class="sci-fi-border carbon-pattern p-5">
+                <div class="text-xs uppercase tracking-widest text-white/40 mb-3" data-i18n="sections.openrgb.title">OpenRGB</div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="status-dot gray" id="dot-openrgb"></span>
+                    <span class="text-sm font-semibold" id="txt-openrgb" data-i18n="pages.home.checking">Checking...</span>
+                </div>
+                <div class="text-xs text-white/40" id="txt-devices">—</div>
+            </div>
+
+            <!-- Monitoring Status -->
+            <div class="sci-fi-border carbon-pattern p-5">
+                <div class="text-xs uppercase tracking-widest text-white/40 mb-3" data-i18n="pages.home.journal_monitor_title">Journal Monitor</div>
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="status-dot gray" id="dot-monitor"></span>
+                    <span class="text-sm font-semibold" id="txt-monitor" data-i18n="pages.home.inactive">Inactive</span>
+                </div>
+                <div class="text-xs text-white/40 truncate" id="txt-journal-file">—</div>
+            </div>
+
+            <!-- Last Event -->
+            <div class="sci-fi-border carbon-pattern p-5">
+                <div class="text-xs uppercase tracking-widest text-white/40 mb-3" data-i18n="pages.home.last_event_title">Last Event</div>
+                <div class="text-sm font-semibold text-white/80 mb-1 truncate" id="txt-last-event">—</div>
+                <div class="text-xs text-white/40 truncate" id="txt-last-effect" data-i18n="pages.home.no_effect_yet">No effect fired yet</div>
+            </div>
+
+        </div>
+
+        <!-- Big START / STOP button -->
+        <div class="flex flex-col items-center gap-3">
+            <button id="btn-monitor"
+                    class="state-idle sci-fi-border orbitron text-base font-bold px-16 py-4 uppercase"
+                    onclick="toggleMonitoring()">
+                <span id="btn-monitor-icon" class="material-symbols-outlined text-2xl mr-2 align-middle">play_arrow</span>
+                <span id="btn-monitor-label" data-i18n="buttons.start_monitoring">Start Monitoring</span>
+            </button>
+            <p class="text-xs text-white/45 tracking-wider" id="txt-monitor-hint" data-i18n="status_messages.start_hint">
+                Start to begin processing Elite Dangerous journal events
+            </p>
+        </div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+         NAVIGATION GRID
+         ══════════════════════════════════════════════ -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16">
+
+        <!-- Configuration -->
+        <a class="screen-card sci-fi-border carbon-pattern p-6 block" href="code.html">
+            <div class="flex items-center gap-4 mb-4">
+                <span class="material-symbols-outlined text-5xl text-[var(--primary-accent)]">settings</span>
+                <div>
+                    <h2 class="orbitron text-2xl font-bold text-white" data-i18n="navigation.configuration">Configuration</h2>
+                    <p class="text-xs text-white/60 uppercase tracking-wider" data-i18n="pages.configuration.subtitle">System Setup</p>
+                </div>
+            </div>
+            <p class="text-sm text-white/70 mb-4" data-i18n="pages.home.card_config_desc">OpenRGB connection, journal path, language, and interface preferences.</p>
+            <div class="flex gap-2">
+                <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.base">Base</span>
+                <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.forms">Forms</span>
+            </div>
+        </a>
+
+        <!-- Events -->
+        <a class="screen-card sci-fi-border carbon-pattern p-6 block" href="events.html">
+            <div class="flex items-center gap-4 mb-4">
+                <span class="material-symbols-outlined text-5xl text-[var(--primary-accent)]">bolt</span>
+                <div>
+                    <h2 class="orbitron text-2xl font-bold text-white" data-i18n="navigation.events">Event Mapping</h2>
+                    <p class="text-xs text-white/60 uppercase tracking-wider" data-i18n="pages.home.card_events_subtitle">Triggers</p>
+                </div>
+            </div>
+            <p class="text-sm text-white/70 mb-4" data-i18n="pages.home.card_events_desc">Assign lighting effects to Elite Dangerous events with priority and enable controls.</p>
+            <div class="flex gap-2">
+                <span class="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.table">Table</span>
+                <span class="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.core">Core</span>
+            </div>
+        </a>
+
+        <!-- Game Status -->
+        <a class="screen-card sci-fi-border carbon-pattern p-6 block" href="status.html">
+            <div class="flex items-center gap-4 mb-4">
+                <span class="material-symbols-outlined text-5xl text-[var(--primary-accent)]">sensors</span>
+                <div>
+                    <h2 class="orbitron text-2xl font-bold text-white" data-i18n="navigation.system_status">Game Status</h2>
+                    <p class="text-xs text-white/60 uppercase tracking-wider" data-i18n="pages.status.subtitle">Real-Time</p>
+                </div>
+            </div>
+            <p class="text-sm text-white/70 mb-4" data-i18n="pages.home.card_status_desc">Live ship status flags — shields, fuel, heat, interdiction and more, synced to LED effects.</p>
+            <div class="flex gap-2">
+                <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.live">Live</span>
+                <span class="text-xs bg-sky-500/20 text-sky-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.flags">Flags</span>
+            </div>
+        </a>
+
+        <!-- Devices -->
+        <a class="screen-card sci-fi-border carbon-pattern p-6 block" href="devices.html">
+            <div class="flex items-center gap-4 mb-4">
+                <span class="material-symbols-outlined text-5xl text-[var(--primary-accent)]">precision_manufacturing</span>
+                <div>
+                    <h2 class="orbitron text-2xl font-bold text-white" data-i18n="navigation.devices">Device Management</h2>
+                    <p class="text-xs text-white/60 uppercase tracking-wider" data-i18n="pages.home.card_devices_subtitle">Hardware</p>
+                </div>
+            </div>
+            <p class="text-sm text-white/70 mb-4" data-i18n="pages.home.card_devices_desc">Enable/disable RGB devices, configure on-disable behavior, and preview effects.</p>
+            <div class="flex gap-2">
+                <span class="text-xs bg-cyan-500/20 text-cyan-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.hardware">Hardware</span>
+                <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.devices">Devices</span>
+            </div>
+        </a>
+
+        <!-- Keyboard Designer -->
+        <a class="screen-card sci-fi-border carbon-pattern p-6 block" href="keyboard-designer.html">
+            <div class="flex items-center gap-4 mb-4">
+                <span class="material-symbols-outlined text-5xl text-[var(--primary-accent)]">keyboard</span>
+                <div>
+                    <h2 class="orbitron text-2xl font-bold text-white" data-i18n="navigation.keyboard_designer">Keyboard Designer</h2>
+                    <p class="text-xs text-white/60 uppercase tracking-wider" data-i18n="pages.home.card_keyboard_subtitle">2D Matrix</p>
+                </div>
+            </div>
+            <p class="text-sm text-white/70 mb-4" data-i18n="pages.home.card_keyboard_desc">2D matrix visualizer with LED mapping, live preview, and interactive key selection.</p>
+            <div class="flex gap-2">
+                <span class="text-xs bg-indigo-500/20 text-indigo-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.visual">Visual</span>
+                <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded uppercase tracking-wider" data-i18n="badges.advanced">Advanced</span>
+            </div>
+        </a>
+
+        <!-- Topology Editor -->
+        <a class="screen-card sci-fi-border carbon-pattern p-6 block" href="topology-editor.html">
+            <div class="flex items-center gap-4 mb-4">
+                <span class="material-symbols-outlined text-5xl text-[var(--primary-accent)]">hub</span>
+                <div>
+                    <h2 class="orbitron text-2xl font-bold text-white">Topology Editor</h2>
+                    <p class="text-xs text-white/60 uppercase tracking-wider">Device Layout</p>
+                </div>
+            </div>
+            <p class="text-sm text-white/70 mb-4">Define LED strip positions and device topology for spatial effects across multiple devices.</p>
+            <div class="flex gap-2">
+                <span class="text-xs bg-violet-500/20 text-violet-400 px-2 py-1 rounded uppercase tracking-wider">Layout</span>
+                <span class="text-xs bg-orange-500/20 text-orange-400 px-2 py-1 rounded uppercase tracking-wider">Advanced</span>
+            </div>
+        </a>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         ABOUT  (preserved from original)
+         ══════════════════════════════════════════════ -->
+    <div class="mt-4 max-w-4xl mx-auto sci-fi-border carbon-pattern p-8">
+        <h3 class="orbitron text-2xl font-bold text-white mb-2 tracking-widest uppercase" data-i18n="about.title">About ED:Event2Led</h3>
+        <div class="h-0.5 w-12 bg-[var(--primary-accent)] mb-8"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+            <!-- Left: What it is + Requirements -->
+            <div>
+                <p class="text-sm text-white/70 leading-relaxed mb-4" data-i18n="about.intro_p1">
+                    ED:Event2Led is a real-time RGB lighting control application for Elite Dangerous. It monitors the game's journal files and synchronizes your RGB hardware (keyboard, mouse, case lighting, etc.) with in-game events using OpenRGB.
+                </p>
+                <p class="text-sm text-white/70 leading-relaxed mb-8" data-i18n="about.intro_p2">
+                    From hyperspace jumps to docking procedures, combat alerts to fuel warnings, every Elite Dangerous event can trigger a custom lighting effect, creating an immersive ambient experience that extends beyond the screen.
+                </p>
+
+                <h4 class="text-sm uppercase tracking-widest text-[var(--primary-accent)] mb-3" data-i18n="about.requirements_title">System Requirements</h4>
+                <ul class="space-y-3 text-sm text-white/70">
+                    <li class="flex items-start gap-2">
+                        <span class="text-[var(--primary-accent)] shrink-0">›</span>
+                        <span><strong class="text-white" data-i18n="about.req_windows">Windows 10/11 (64-bit)</strong></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-[var(--primary-accent)] shrink-0">›</span>
+                        <span><strong class="text-white" data-i18n="about.req_openrgb">OpenRGB</strong> — <span data-i18n="about.req_openrgb_desc">RGB control server (open-source, available at openrgb.org)</span></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-[var(--primary-accent)] shrink-0">›</span>
+                        <span><strong class="text-white" data-i18n="about.req_ed">Elite Dangerous</strong> — <span data-i18n="about.req_ed_desc">Journal files enabled (default)</span></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-[var(--primary-accent)] shrink-0">›</span>
+                        <span><strong class="text-white" data-i18n="about.req_python">Python 3.11+</strong> — <span data-i18n="about.req_python_desc">Runtime environment</span></span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-[var(--primary-accent)] shrink-0">›</span>
+                        <span><strong class="text-white" data-i18n="about.req_hardware">RGB Hardware</strong> — <span data-i18n="about.req_hardware_desc">Keyboard, mouse, case lighting, etc. (supported by OpenRGB)</span></span>
+                    </li>
+                </ul>
+
+                <!-- Disclaimer -->
+                <div class="mt-8">
+                    <h4 class="text-sm uppercase tracking-widest text-amber-500/80 mb-3" data-i18n="about.disclaimer_title">Disclaimer</h4>
+                    <p class="text-xs text-white/40 leading-relaxed" data-i18n="about.disclaimer_p1">
+                        ED:Event2Led is an independent, unofficial tool and is not affiliated with, endorsed by, or supported by Frontier Developments plc. Elite Dangerous is a registered trademark of Frontier Developments. OpenRGB is a separate open-source project not affiliated with this tool.
+                    </p>
+                    <p class="text-xs text-white/40 leading-relaxed mt-3" data-i18n="about.disclaimer_p2">
+                        This software is provided as-is, without warranty of any kind. The author accepts no responsibility for hardware damage, game instability, data loss, or any other direct or indirect damages arising from its use. Use at your own risk.
+                    </p>
+                    <p class="text-xs text-amber-500/60 leading-relaxed mt-3 font-semibold" data-i18n="about.disclaimer_p3">
+                        WARNING: Flashing lights and dynamic visual stimuli may trigger physical reactions or epileptic seizures in susceptible individuals.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Quick Start + Privacy + Copyright -->
+            <div>
+                <h4 class="text-sm uppercase tracking-widest text-[var(--primary-accent)] mb-4" data-i18n="about.quick_start_title">Quick Start</h4>
+                <ol class="space-y-3 text-sm text-white/70 mb-8">
+                    <li class="flex items-start gap-3">
+                        <span class="orbitron text-[var(--primary-accent)] font-bold shrink-0 w-5">1.</span>
+                        <span><strong class="text-white" data-i18n="about.quick_start_step1_title">Configuration</strong> — <span data-i18n="about.quick_start_step1_desc">Connect to OpenRGB, set the Elite Dangerous journal path, and choose your language.</span></span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="orbitron text-[var(--primary-accent)] font-bold shrink-0 w-5">2.</span>
+                        <span><strong class="text-white" data-i18n="about.quick_start_step2_title">Device Management</strong> — <span data-i18n="about.quick_start_step2_desc">Enable the RGB devices you want to control and configure their behavior.</span></span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="orbitron text-[var(--primary-accent)] font-bold shrink-0 w-5">3.</span>
+                        <span><strong class="text-white" data-i18n="about.quick_start_step3_title">Effects Editor</strong> — <span data-i18n="about.quick_start_step3_desc">Create multi-step lighting sequences: choose colors, durations, and transition types.</span></span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="orbitron text-[var(--primary-accent)] font-bold shrink-0 w-5">4.</span>
+                        <span><strong class="text-white" data-i18n="about.quick_start_step4_title">Event Mapping</strong> — <span data-i18n="about.quick_start_step4_desc">Assign each effect to one or more Elite Dangerous events and set priority levels.</span></span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="orbitron text-[var(--primary-accent)] font-bold shrink-0 w-5">5.</span>
+                        <span><strong class="text-white" data-i18n="about.quick_start_step5_title">Start Monitoring</strong> — <span data-i18n="about.quick_start_step5_desc">Press the Start button on this page. ED:Event2Led will process journal events in real-time.</span></span>
+                    </li>
+                </ol>
+
+                <h4 class="text-sm uppercase tracking-widest text-[var(--primary-accent)] mb-3" data-i18n="about.privacy_title">Data & Privacy</h4>
+                <p class="text-sm text-white/70 leading-relaxed mb-8" data-i18n="about.privacy_p1">
+                    ED:Event2Led operates entirely locally. It reads Elite Dangerous journal files on your machine and communicates with OpenRGB over localhost only. No data is collected, transmitted, or stored externally. Configuration is saved in local JSON files in the config/ directory.
+                </p>
+
+                <h4 class="text-sm uppercase tracking-widest text-[var(--primary-accent)] mb-3" data-i18n="about.copyright_title">Copyright & License</h4>
+                <p class="text-xs text-white/60 leading-relaxed mb-2" data-i18n="about.copyright_p1">
+                    Copyright © 2026 Stefano Indraccolo.
+                </p>
+                <p class="text-xs text-white/40 leading-relaxed mb-5" data-i18n="about.copyright_p2">
+                    ED:Event2Led is source-available software, not open source. Its source code is published under the PolyForm Noncommercial License 1.0.0: you may read, run, modify and share it for any noncommercial purpose. Commercial use is not allowed.
+                </p>
+                <p class="text-xs text-white/40 leading-relaxed" data-i18n="about.copyright_p3">
+                    Using the app while streaming or recording your gameplay, including on monetized channels, is allowed. The name and icon identify the original project: a modified version must use a different name. Official builds are published only at github.com/leandor70/EDEvent2Led/releases.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-16 text-center">
+        <div class="sci-fi-border carbon-pattern inline-block px-8 py-4">
+            <div class="flex items-center gap-6 text-xs uppercase tracking-[0.2em] text-white/40">
+                <span>ED:Event2Led</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>&copy; 2026 Stefano Indraccolo</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>PolyForm Noncommercial 1.0.0</span>
+            </div>
+        </div>
+    </footer>
+
+</div><!-- /container -->
+
+
+<!-- ── Scripts ──────────────────────────────────────────────── -->
+<script>
+    // Fade-in on page load
+    window.addEventListener('load', function() {
+        requestAnimationFrame(function() { document.body.classList.add('loaded'); });
+    });
+    setTimeout(function() { document.body.classList.add('loaded'); }, 1500);
+
+    // Intercept navigation links for fade-to-black transition
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('a[href]').forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('#') || href.startsWith('javascript:') ||
+                href.startsWith('http://') || href.startsWith('https://') || href.includes('://')) return;
+
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetUrl = this.href;
+                document.body.style.pointerEvents = 'none';
+                document.body.classList.remove('loaded');
+                document.body.classList.add('fade-out');
+                setTimeout(function() { window.location.href = targetUrl; }, 300);
+            });
+        });
+    });
+</script>
+
+<script src="/eel.js"></script>
+<script src="js/common.js"></script>
+<script src="js/glass-select.js"></script>
+<script src="js/manual-viewer.js"></script>
+<script>
+// ── Dashboard logic ──────────────────────────────────────────
+let _statusInterval = null;
+let _isBusy = false;   // prevents double-click during API call
+
+// ── DOM shortcuts ────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+
+// ── Apply status snapshot to UI ─────────────────────────────
+function applyStatus(s) {
+    // OpenRGB card
+    const rgbOk = s.openrgb_connected;
+    $('dot-openrgb').className = 'status-dot ' + (rgbOk ? 'green' : 'gray');
+    $('txt-openrgb').textContent = rgbOk ? i18n.get('status_messages.connected') : i18n.get('status_messages.not_connected');
+    $('txt-openrgb').style.color = rgbOk ? '#22c55e' : 'rgba(255,255,255,0.4)';
+    $('txt-devices').textContent = rgbOk
+        ? i18n.interpolate(i18n.get('status_messages.devices_detected'), {count: s.devices_count})
+        : i18n.get('status_messages.openrgb_not_running');
+
+    // Monitoring card
+    const mon = s.is_monitoring;
+    $('dot-monitor').className = 'status-dot ' + (mon ? 'green pulse' : 'gray');
+    $('txt-monitor').textContent = mon ? i18n.get('status_messages.active') : i18n.get('status_messages.inactive');
+    $('txt-monitor').style.color = mon ? '#22c55e' : 'rgba(255,255,255,0.4)';
+    $('txt-journal-file').textContent = mon
+        ? (s.journal_file || i18n.get('status_messages.searching_journal'))
+        : (s.journal_directory ? s.journal_directory.replace(/\\/g, '/').split('/').slice(-3).join('/') : '—');
+
+    // Last event card
+    const ev = s.last_event;
+    if (ev && ev.name) {
+        $('txt-last-event').textContent = ev.name;
+        $('txt-last-event').style.color = '#e0e0e0';
+        $('txt-last-effect').textContent = ev.effect
+            ? '→ ' + ev.effect
+            : i18n.get('status_messages.no_effect_mapped');
+    }
+
+    // START / STOP button
+    if (!_isBusy) updateButton(mon);
+
+    // Mappings hint
+    $('txt-monitor-hint').textContent = mon
+        ? i18n.interpolate(i18n.get('status_messages.event_mappings_active'), {count: s.mappings_count})
+        : i18n.get('status_messages.start_hint');
+}
+
+function updateButton(isRunning) {
+    const btn   = $('btn-monitor');
+    const icon  = $('btn-monitor-icon');
+    const label = $('btn-monitor-label');
+    if (isRunning) {
+        btn.className   = 'state-running sci-fi-border orbitron text-base font-bold px-16 py-4 uppercase';
+        icon.textContent  = 'stop';
+        label.textContent = i18n.get('buttons.stop_monitoring');
+    } else {
+        btn.className   = 'state-idle sci-fi-border orbitron text-base font-bold px-16 py-4 uppercase';
+        icon.textContent  = 'play_arrow';
+        label.textContent = i18n.get('buttons.start_monitoring');
+    }
+}
+
+// ── Toggle monitoring ────────────────────────────────────────
+async function toggleMonitoring() {
+    if (_isBusy || typeof eel === 'undefined') return;
+    _isBusy = true;
+
+    const btn = $('btn-monitor');
+    const prevClass = btn.className;
+    btn.className = 'state-busy sci-fi-border orbitron text-base font-bold px-16 py-4 uppercase';
+    $('btn-monitor-label').textContent = i18n.get('common.please_wait');
+    $('btn-monitor-icon').textContent  = 'hourglass_empty';
+
+    try {
+        // Read current state from Python
+        const status = await eel.get_monitoring_status()();
+        let result;
+        if (status.is_monitoring) {
+            result = await eel.stop_monitoring()();
+        } else {
+            result = await eel.start_monitoring()();
+        }
+
+        if (!result.success) {
+            // Restore previous button state and show error
+            btn.className = prevClass;
+            alert('Error: ' + result.message);
+        }
+        // Status will be updated by next poll cycle
+    } catch(e) {
+        btn.className = prevClass;
+        console.error('[Monitor] Error:', e);
+    } finally {
+        _isBusy = false;
+    }
+}
+
+// ── Poll status every 2s ─────────────────────────────────────
+async function pollStatus() {
+    if (typeof eel === 'undefined') return;
+    try {
+        const s = await eel.get_monitoring_status()();
+        applyStatus(s);
+    } catch(e) {
+        // Connection lost — no visual update
+    }
+}
+
+// ── Boot ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+    // Set keyboard shortcut context
+    if (typeof setShortcutContext === 'function') setShortcutContext('home');
+
+    // Cancel any pending shutdown timer
+    if (typeof eel !== 'undefined') {
+        eel.cancel_shutdown()();
+        // First poll immediately, then every 2s
+        pollStatus();
+        _statusInterval = setInterval(pollStatus, 2000);
+    }
+    // Apply saved theme (no sidebar on home, so load-navigation.js won't do it)
+    if (typeof loadAndApplyTheme === 'function') loadAndApplyTheme();
+});
+
+// ── Performance: Stop polling when window loses focus ───────
+window.addEventListener('app-window-blurred', () => {
+    if (_statusInterval) {
+        clearInterval(_statusInterval);
+        _statusInterval = null;
+        console.log('[Index] Polling stopped (window blurred)');
+    }
+});
+
+window.addEventListener('app-window-focused', () => {
+    if (!_statusInterval && typeof eel !== 'undefined') {
+        pollStatus();  // Immediate poll on focus restore
+        _statusInterval = setInterval(pollStatus, 2000);
+        console.log('[Index] Polling resumed (window focused)');
+    }
+});
+
+// ── Cleanup: Stop polling when page unloads ─────────────────
+window.addEventListener('beforeunload', () => {
+    if (_statusInterval) {
+        clearInterval(_statusInterval);
+        _statusInterval = null;
+        console.log('[Index] Polling cleared (page unload)');
+    }
+});
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     WELCOME MODAL - Startup Info & Donations
+     ══════════════════════════════════════════════════════════════ -->
+<div id="welcome-modal" class="hidden fixed inset-0 flex items-center justify-center p-4" style="z-index: 10000;">
+    <!-- Glassmorphism overlay -->
+    <div class="absolute inset-0" style="background: rgba(0, 0, 0, 0.05); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);"></div>
+
+    <!-- Modal content with glassmorphism effect -->
+    <div class="relative max-w-4xl w-full max-h-[90vh] sci-fi-border carbon-pattern" style="background: rgba(13, 13, 13, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-width: 2px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 102, 0, 0.2); display: flex; flex-direction: column; overflow: hidden;">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between px-8 py-6 border-b border-white/10">
+            <div>
+                <div class="flex items-center gap-4 mb-2">
+                    <h2 data-i18n="welcome_modal.title" class="orbitron text-3xl font-bold text-white">Welcome to ED:Event2Led</h2>
+                    <span data-i18n="welcome_modal.version" class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 font-semibold">v0.9</span>
+                </div>
+                <p data-i18n="welcome_modal.description" class="text-sm text-white/50">Real-time RGB synchronization for Elite Dangerous events</p>
+            </div>
+            <button id="welcome-modal-close" class="text-white/60 hover:text-white transition-colors p-2">
+                <span class="material-symbols-outlined text-3xl">close</span>
+            </button>
+        </div>
+
+        <!-- Content (scrollable with hidden scrollbar) -->
+        <div class="flex-1 overflow-y-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
+            <div class="px-8 py-6 space-y-8">
+
+            <!-- How It Works Section -->
+            <div>
+                <h3 data-i18n="welcome_modal.how_it_works" class="orbitron text-lg font-bold text-[var(--primary-accent)] mb-4 uppercase tracking-wider">How It Works</h3>
+
+                <!-- SVG Diagram -->
+                <div class="bg-black/40 rounded-lg p-6 mb-4">
+                    <svg viewBox="0 0 800 280" class="w-full h-auto">
+                        <!-- Elite Dangerous -->
+                        <g transform="translate(50, 40)">
+                            <rect width="140" height="80" rx="8" fill="rgba(59, 130, 246, 0.15)" stroke="rgba(59, 130, 246, 0.6)" stroke-width="2"/>
+                            <text x="70" y="35" text-anchor="middle" fill="rgba(59, 130, 246, 1)" font-family="Orbitron" font-size="16" font-weight="bold">Elite</text>
+                            <text x="70" y="55" text-anchor="middle" fill="rgba(59, 130, 246, 1)" font-family="Orbitron" font-size="16" font-weight="bold">Dangerous</text>
+                            <text x="70" y="75" text-anchor="middle" fill="rgba(255, 255, 255, 0.4)" font-family="Rajdhani" font-size="11">Journal.log</text>
+                        </g>
+
+                        <!-- Arrow 1 -->
+                        <path d="M 200 80 L 260 80" stroke="rgba(255, 102, 0, 0.6)" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="rgba(255, 102, 0, 0.6)"/>
+                            </marker>
+                        </defs>
+
+                        <!-- ED:Event2Led -->
+                        <g transform="translate(260, 40)">
+                            <rect width="140" height="80" rx="8" fill="rgba(255, 102, 0, 0.15)" stroke="rgba(255, 102, 0, 0.8)" stroke-width="2"/>
+                            <text x="70" y="35" text-anchor="middle" fill="rgba(255, 102, 0, 1)" font-family="Orbitron" font-size="14" font-weight="bold">ED:Event2Led</text>
+                            <text x="70" y="75" text-anchor="middle" fill="rgba(255, 255, 255, 0.4)" font-family="Rajdhani" font-size="11">Real-time Monitor</text>
+                        </g>
+
+                        <!-- Arrow 2 -->
+                        <path d="M 410 80 L 470 80" stroke="rgba(255, 102, 0, 0.6)" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+                        <!-- OpenRGB -->
+                        <g transform="translate(470, 40)">
+                            <rect width="140" height="80" rx="8" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.6)" stroke-width="2"/>
+                            <text x="70" y="40" text-anchor="middle" fill="rgba(168, 85, 247, 1)" font-family="Orbitron" font-size="16" font-weight="bold">OpenRGB</text>
+                            <text x="70" y="75" text-anchor="middle" fill="rgba(255, 255, 255, 0.4)" font-family="Rajdhani" font-size="11">SDK Control</text>
+                        </g>
+
+                        <!-- Arrow 3 (branching) -->
+                        <path d="M 610 80 L 650 80 L 650 160 L 150 160" stroke="rgba(255, 102, 0, 0.6)" stroke-width="3" fill="none"/>
+                        <path d="M 220 160 L 220 200" stroke="rgba(255, 102, 0, 0.6)" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M 400 160 L 400 200" stroke="rgba(255, 102, 0, 0.6)" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                        <path d="M 580 160 L 580 200" stroke="rgba(255, 102, 0, 0.6)" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+                        <!-- RGB Devices -->
+                        <g transform="translate(160, 200)">
+                            <rect width="120" height="60" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="rgba(34, 197, 94, 0.6)" stroke-width="2"/>
+                            <text x="60" y="30" text-anchor="middle" fill="rgba(34, 197, 94, 1)" font-family="Orbitron" font-size="14" font-weight="bold">Keyboard</text>
+                            <text x="60" y="48" text-anchor="middle" fill="rgba(255, 255, 255, 0.4)" font-family="Rajdhani" font-size="10">⌨️ Matrix 2D</text>
+                        </g>
+
+                        <g transform="translate(340, 200)">
+                            <rect width="120" height="60" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="rgba(34, 197, 94, 0.6)" stroke-width="2"/>
+                            <text x="60" y="30" text-anchor="middle" fill="rgba(34, 197, 94, 1)" font-family="Orbitron" font-size="14" font-weight="bold">Mouse</text>
+                            <text x="60" y="48" text-anchor="middle" fill="rgba(255, 255, 255, 0.4)" font-family="Rajdhani" font-size="10">🖱️ RGB LEDs</text>
+                        </g>
+
+                        <g transform="translate(520, 200)">
+                            <rect width="120" height="60" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="rgba(34, 197, 94, 0.6)" stroke-width="2"/>
+                            <text x="60" y="30" text-anchor="middle" fill="rgba(34, 197, 94, 1)" font-family="Orbitron" font-size="14" font-weight="bold">Case LEDs</text>
+                            <text x="60" y="48" text-anchor="middle" fill="rgba(255, 255, 255, 0.4)" font-family="Rajdhani" font-size="10">💡 RGB Strips</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Support Development Section (HIGHLIGHTED) -->
+            <div class="relative rounded-xl overflow-hidden" style="background: linear-gradient(135deg, rgba(255, 183, 77, 0.08) 0%, rgba(255, 152, 0, 0.12) 100%); border: 2px solid rgba(255, 183, 77, 0.3); box-shadow: 0 0 20px rgba(255, 183, 77, 0.15);">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 opacity-60"></div>
+
+                <div class="px-6 py-6">
+                    <h3 data-i18n="welcome_modal.support_title" class="orbitron text-xl font-bold text-amber-400 mb-4 uppercase tracking-wider flex items-center gap-2">
+                        <span class="text-2xl">💰</span> Support Development
+                    </h3>
+
+                    <p data-i18n="welcome_modal.support_message" class="text-sm text-white/80 leading-relaxed mb-6">
+                        ED:Event2Led is developed and maintained for free in my spare time. I happily gift it to the wonderful Elite Dangerous community. If you appreciate the result, the fruit of thousands of hours of study and implementation, you can make a free donation. Your support helps me cover some costs (LED devices, study materials, etc.) and allows me to continue adding features, fixing bugs, and supporting this software. Even a small contribution is greatly appreciated!
+                    </p>
+
+                    <!-- Donation Buttons (ANIMATED PULSE) -->
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <a href="https://www.paypal.com/paypalme/stefanoindraccolo" target="_blank" rel="noopener noreferrer"
+                           class="donate-btn flex items-center gap-3 px-8 py-4 rounded-lg font-bold text-base transition-all">
+                            <span class="text-2xl">💳</span>
+                            <span data-i18n="welcome_modal.donate_paypal">Donate via PayPal</span>
+                        </a>
+                        <a href="https://ko-fi.com/stefanoindraccolo" target="_blank" rel="noopener noreferrer"
+                           class="donate-btn flex items-center gap-3 px-8 py-4 rounded-lg font-bold text-base transition-all">
+                            <span class="text-2xl">☕</span>
+                            <span data-i18n="welcome_modal.donate_kofi">Support on Ko-fi</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Useful Links -->
+            <div>
+                <h3 data-i18n="welcome_modal.links_title" class="orbitron text-base font-bold text-white/70 mb-3 uppercase tracking-wider">Useful Links</h3>
+                <div class="grid grid-cols-2 gap-3">
+                    <a href="https://github.com/YOUR_USERNAME/ED-Event2Led" target="_blank" rel="noopener noreferrer"
+                       class="flex items-center gap-2 px-4 py-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all text-sm text-white/70 hover:text-white">
+                        <span class="material-symbols-outlined text-lg">description</span>
+                        <span data-i18n="welcome_modal.link_documentation">Documentation</span>
+                    </a>
+                    <a href="https://github.com/YOUR_USERNAME/ED-Event2Led/issues" target="_blank" rel="noopener noreferrer"
+                       class="flex items-center gap-2 px-4 py-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all text-sm text-white/70 hover:text-white">
+                        <span class="material-symbols-outlined text-lg">bug_report</span>
+                        <span data-i18n="welcome_modal.link_report_bug">Report a Bug</span>
+                    </a>
+                    <a href="https://github.com/YOUR_USERNAME/ED-Event2Led/blob/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer"
+                       class="flex items-center gap-2 px-4 py-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all text-sm text-white/70 hover:text-white">
+                        <span class="material-symbols-outlined text-lg">history</span>
+                        <span data-i18n="welcome_modal.link_changelog">Changelog</span>
+                    </a>
+                    <button onclick="document.getElementById('about-section')?.scrollIntoView({behavior: 'smooth'}); document.getElementById('welcome-modal').classList.add('hidden');"
+                       class="flex items-center gap-2 px-4 py-2.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all text-sm text-white/70 hover:text-white text-left">
+                        <span class="material-symbols-outlined text-lg">rocket_launch</span>
+                        <span data-i18n="welcome_modal.link_quick_guide">Quick Start Guide</span>
+                    </button>
+                </div>
+            </div>
+            </div> <!-- Close inner content -->
+        </div> <!-- Close scrollable wrapper -->
+
+        <!-- Footer -->
+        <div class="flex items-center justify-between px-8 py-5 border-t border-white/10 bg-black/20">
+            <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" id="welcome-modal-dont-show" class="w-4 h-4 rounded border-white/20 bg-white/5 text-[var(--primary-accent)] focus:ring-2 focus:ring-[var(--primary-accent)] focus:ring-offset-0 cursor-pointer">
+                <span data-i18n="welcome_modal.dont_show_again" class="text-sm text-white/60 group-hover:text-white/80 transition-colors">Don't show this message again</span>
+            </label>
+            <button id="welcome-modal-start" class="px-8 py-3 rounded-lg orbitron font-bold text-base tracking-wider transition-all hover:scale-105"
+                    style="background: linear-gradient(135deg, rgba(255, 102, 0, 0.9) 0%, rgba(255, 152, 0, 0.9) 100%); color: #000; box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);">
+                <span data-i18n="welcome_modal.get_started">Get Started</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- Welcome Modal Styles & Animation -->
+<style>
+/* Hide scrollbar for Chrome, Safari and Opera */
+#welcome-modal .overflow-y-auto::-webkit-scrollbar {
+    display: none;
+}
+
+@keyframes pulse-gold {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 183, 77, 0.4), 0 0 40px rgba(255, 183, 77, 0.2), inset 0 0 15px rgba(255, 183, 77, 0.1);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(255, 183, 77, 0.6), 0 0 60px rgba(255, 183, 77, 0.3), inset 0 0 20px rgba(255, 183, 77, 0.15);
+        transform: scale(1.02);
+    }
+}
+
+.donate-btn {
+    background: linear-gradient(135deg, rgba(255, 183, 77, 0.9) 0%, rgba(255, 152, 0, 0.9) 100%);
+    color: #000;
+    border: 2px solid rgba(255, 183, 77, 0.5);
+    animation: pulse-gold 2s ease-in-out infinite;
+}
+
+.donate-btn:hover {
+    background: linear-gradient(135deg, rgba(255, 193, 87, 1) 0%, rgba(255, 162, 10, 1) 100%);
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 183, 77, 0.7), 0 0 70px rgba(255, 183, 77, 0.4);
+}
+
+#welcome-modal.show {
+    display: flex !important;
+}
+</style>
+
+<!-- Welcome Modal Logic -->
+<script>
+(function() {
+    const modal = document.getElementById('welcome-modal');
+    const closeBtn = document.getElementById('welcome-modal-close');
+    const startBtn = document.getElementById('welcome-modal-start');
+    const checkbox = document.getElementById('welcome-modal-dont-show');
+
+    // Close handlers
+    function closeModal() {
+        const dontShow = checkbox.checked;
+        modal.classList.remove('show');
+        modal.classList.add('hidden');
+
+        // Save preference if checkbox is checked
+        if (dontShow && typeof eel !== 'undefined') {
+            eel.set_show_welcome_modal(false)();
+        }
+    }
+
+    closeBtn?.addEventListener('click', closeModal);
+    startBtn?.addEventListener('click', closeModal);
+
+    // Close on backdrop click
+    modal?.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+    });
+
+    // ESC key to close
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+
+    // Show modal on first run (after i18n is loaded)
+    async function checkAndShowModal() {
+        // Check URL parameter first (for sidebar "Info & Donations" button)
+        const urlParams = new URLSearchParams(window.location.search);
+        const forceShow = urlParams.has('show_welcome');
+
+        if (forceShow) {
+            // Remove parameter from URL without reload
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+
+            // Show modal immediately
+            setTimeout(() => {
+                modal.classList.remove('hidden');
+                modal.classList.add('show');
+            }, 500);
+            return;
+        }
+
+        // Check preference for first-run modal
+        if (typeof eel !== 'undefined') {
+            try {
+                const shouldShow = await eel.get_show_welcome_modal()();
+                if (shouldShow) {
+                    // Wait for i18n to be ready
+                    setTimeout(() => {
+                        modal.classList.remove('hidden');
+                        modal.classList.add('show');
+                    }, 500);
+                }
+            } catch (e) {
+                console.error('[WelcomeModal] Error checking preference:', e);
+            }
+        }
+    }
+
+    // Initialize after page load
+    window.addEventListener('load', checkAndShowModal);
+})();
+</script>
+
+<!-- i18n -->
+<script src="js/i18n.js"></script>
+<script src="js/keyboard-shortcuts.js"></script>
+
+<!-- Initialize i18n -->
+<script>
+(async function() {
+    // Get current language from settings
+    if (typeof eel !== 'undefined') {
+        const settings = await eel.get_settings()();
+        const lang = settings?.language || 'en';
+        await i18n.init(lang);
+        i18n.apply(); // Apply translations to all data-i18n elements
+    }
+})();
+</script>
+
+</body></html>

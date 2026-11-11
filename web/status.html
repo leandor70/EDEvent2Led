@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ED:Event2Led Game Status</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link href="css/tailwind.min.css" rel="stylesheet">
+<link href="css/fonts.css" rel="stylesheet">
+<link href="css/sci-fi-theme.css" rel="stylesheet">
+<style>
+    body {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        background-color: #000;
+    }
+</style>
+<style>
+    @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 100 700;
+        src: url('fonts/MaterialSymbolsOutlined.woff2') format('woff2');
+        font-display: block;
+    }
+</style>
+<style >
+    body {
+        font-family: 'Rajdhani', sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        overflow: auto;
+    }
+
+    .sci-fi-border {
+        border: 1px solid var(--border-color);
+        position: relative;
+        background: linear-gradient(135deg, rgba(20,22,26,0.95) 0%, rgba(10,12,14,0.98) 100%);
+        box-shadow: 0 0 15px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,102,0,0.05);
+    }
+    .sci-fi-border::before {
+        content: '';
+        position: absolute;
+        top: -1px; left: -1px; width: 10px; height: 10px;
+        border-top: 2px solid var(--primary-accent);
+        border-left: 2px solid var(--primary-accent);
+    }
+    .sci-fi-border::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; right: -1px; width: 10px; height: 10px;
+        border-bottom: 2px solid var(--primary-accent);
+        border-right: 2px solid var(--primary-accent);
+    }
+    .carbon-pattern {
+        background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.02) 1px, transparent 0);
+        background-size: 4px 4px;
+    }
+    .btn-sci-fi {
+        background: linear-gradient(180deg, rgba(255,102,0,0.1) 0%, rgba(255,102,0,0.05) 100%);
+        border: 1px solid var(--border-color);
+        transition: all 0.2s;
+    }
+    .btn-sci-fi:hover {
+        background: rgba(255,102,0,0.2);
+        border-color: var(--primary-accent);
+    }
+    .sidebar-item {
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    .sidebar-item.active {
+        color: var(--primary-accent);
+        background: linear-gradient(90deg, rgba(255,102,0,0.15) 0%, transparent 100%);
+    }
+    .sidebar-item.active::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 20%; bottom: 20%;
+        width: 3px;
+        background-color: var(--primary-accent);
+        box-shadow: 0 0 8px var(--primary-accent);
+    }
+    .sidebar-item:hover:not(.active) {
+        background: rgba(255,255,255,0.05);
+        color: white;
+    }
+    /* ── Active flag card — pulsing border ───────────────────────── */
+    @keyframes flag-border-pulse {
+        0%, 100% {
+            border-color: var(--border-dim);
+            box-shadow:   var(--glow-dim);
+        }
+        50% {
+            border-color: var(--border-bright);
+            box-shadow:   var(--glow-bright);
+        }
+    }
+    .flag-card-active {
+        animation: flag-border-pulse 1.8s ease-in-out infinite;
+    }
+    /* Category filter buttons — same style as Events page */
+    .category-filter:not(.active) {
+        background-color: transparent !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+    .category-filter.active {
+        background-color: var(--primary-accent) !important;
+        color: white !important;
+        border-color: transparent !important;
+    }
+    /* Global scrollbar styling - applies to ALL scrollbars */
+    *::-webkit-scrollbar { width: 6px; }
+    *::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 3px;
+    }
+    *::-webkit-scrollbar-thumb {
+        background: rgba(255, 102, 0, 0.3);
+        border-radius: 3px;
+    }
+    *::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 102, 0, 0.5);
+    }
+
+    /* Specific overrides */
+    .flags-scroll::-webkit-scrollbar { width: 6px; }
+    .flags-scroll::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 3px;
+    }
+    .flags-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 102, 0, 0.3);
+        border-radius: 3px;
+    }
+    .flags-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 102, 0, 0.5);
+    }
+
+    /* ── Status modal ─────────────────────────────────────────────── */
+    #status-assign-modal .step-card {
+        background: rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,102,0,0.15);
+        border-radius: 8px;
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    #status-assign-modal .step-card:hover {
+        border-color: var(--primary-accent);
+        box-shadow: 0 0 20px rgba(255,102,0,0.2);
+    }
+    #status-assign-modal { display: none; }
+    #status-assign-modal:not(.hidden) { display: flex; }
+</style>
+</head>
+<body class="h-screen w-full relative flex">
+
+<!-- Background -->
+<div class="fixed inset-0 z-0">
+<img data-i18n-attr="alt:alt_text.background_image" alt="Spiral Galaxy Background" class="w-full h-full object-cover opacity-25"
+     src="images/backgrounds/spiral-galaxy.jpg"/>
+<div class="absolute inset-0 bg-gradient-to-b from-[#05070a]/40 via-[#05070a]/70 to-[#05070a]"></div>
+</div>
+
+<!-- Sidebar (loaded dynamically) -->
+<div id="sidebar-nav" data-active-page="status"></div>
+
+<!-- ── Main Content ─────────────────────────────────────────────────────────── -->
+<main class="relative z-10 flex-1 flex flex-col h-full overflow-hidden">
+
+    <!-- Page Header -->
+    <header class="w-full pt-12 pb-8 flex flex-col items-center">
+        <div class="flex items-center gap-4 mb-2">
+            <div class="h-px w-24 bg-gradient-to-r from-transparent to-[var(--primary-accent)] opacity-50"></div>
+            <h1 data-i18n="pages.status.title" class="orbitron text-4xl font-bold tracking-[0.3em] text-white">GAME STATUS</h1>
+            <div class="h-px w-24 bg-gradient-to-l from-transparent to-[var(--primary-accent)] opacity-50"></div>
+        </div>
+        <p data-i18n="pages.status.subtitle" class="text-sm uppercase tracking-[0.4em] text-white/60">Real-Time Ship Parameters</p>
+    </header>
+
+    <!-- Content Area -->
+    <div class="flex-1 px-12 pb-12 overflow-hidden flex flex-col">
+
+        <!-- ── Stats Bar ──────────────────────────────────────────────────── -->
+        <div class="grid grid-cols-4 gap-4 mb-6">
+
+            <!-- Monitoring Status -->
+            <div class="sci-fi-border carbon-pattern p-4">
+                <div data-i18n="status_page.monitoring_label" class="text-xs uppercase tracking-widest text-white/55 mb-3">Monitoring</div>
+                <div class="flex items-center gap-2.5 mb-1">
+                    <div id="monitoring-dot" class="w-3 h-3 rounded-full bg-white/20"></div>
+                    <span id="monitoring-text" class="orbitron text-sm tracking-wider text-white/40">—</span>
+                </div>
+                <div id="monitoring-sub" class="text-xs text-white/45">—</div>
+            </div>
+
+            <!-- Active Alerts Count -->
+            <div class="sci-fi-border carbon-pattern p-4 flex flex-col justify-between">
+                <div data-i18n="status_page.active_alerts_label" class="text-xs uppercase tracking-widest text-white/55 mb-2">Active Alerts</div>
+                <div class="flex items-end gap-2">
+                    <span id="stat-active-count" class="text-4xl font-bold orbitron text-white/20 tabular-nums">0</span>
+                    <span data-i18n="status_page.flags_triggered" class="text-xs text-white/50 mb-1">flags triggered</span>
+                </div>
+            </div>
+
+            <!-- Ship Flags Raw Hex -->
+            <div class="sci-fi-border carbon-pattern p-4">
+                <div data-i18n="status_page.ship_flags_label" class="text-xs uppercase tracking-widest text-white/55 mb-3">Ship Flags</div>
+                <div id="stat-flags-hex" class="font-mono text-lg text-[var(--primary-accent)] tracking-wider">0x00000000</div>
+                <div data-i18n="status_page.ship_flags_desc" class="text-xs text-white/45 mt-1 uppercase tracking-wider">Status.json — Flags</div>
+            </div>
+
+            <!-- Odyssey Flags Raw Hex -->
+            <div class="sci-fi-border carbon-pattern p-4">
+                <div data-i18n="status_page.odyssey_flags_label" class="text-xs uppercase tracking-widest text-white/55 mb-3">Odyssey Flags</div>
+                <div id="stat-flags2-hex" class="font-mono text-lg text-purple-400/70 tracking-wider">0x00000000</div>
+                <div data-i18n="status_page.odyssey_flags_desc" class="text-xs text-white/45 mt-1 uppercase tracking-wider">Status.json — Flags2</div>
+            </div>
+
+        </div>
+
+        <!-- ── Filter Bar (same style as Events page) ──────────────────────── -->
+        <div class="flex items-center gap-3 flex-wrap mb-5">
+
+            <!-- Section filter buttons -->
+            <div class="flex flex-wrap gap-1.5">
+                <button class="status-section-btn category-filter active px-3 py-1.5 text-xs uppercase tracking-wider bg-[var(--primary-accent)] text-white rounded"
+                        data-section="all" data-i18n="status_page.filter_all">All</button>
+                <button class="status-section-btn category-filter px-3 py-1.5 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5"
+                        data-section="ship" data-i18n="status_page.filter_ship">Ship</button>
+                <button class="status-section-btn category-filter px-3 py-1.5 text-xs uppercase tracking-wider border border-white/20 text-white/60 rounded hover:bg-white/5"
+                        data-section="odyssey" data-i18n="status_page.filter_odyssey">Odyssey</button>
+            </div>
+
+            <!-- Priority slider — same layout as Events importance filter -->
+            <div class="flex items-center gap-3 ml-auto shrink-0 border-l border-white/10 pl-3">
+                <span data-i18n="status_page.priority_label" class="text-xs uppercase tracking-wider text-white/55 whitespace-nowrap">Priority</span>
+                <input type="range" id="status-priority-filter" min="0" max="10" value="0" step="1"
+                       class="w-28 cursor-pointer accent-[var(--primary-accent)]" />
+                <span id="status-priority-label" data-i18n="status_page.priority_all"
+                      class="text-xs font-mono text-[var(--primary-accent)] w-6 text-center">All</span>
+            </div>
+
+        </div>
+
+        <!-- ── Flag Grids (scrollable) ────────────────────────────────────── -->
+        <div class="flags-scroll flex-1 overflow-y-auto space-y-8 pr-1">
+
+            <!-- Ship Systems -->
+            <section id="section-ship">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-[var(--primary-accent)] text-lg">rocket</span>
+                    <h2 data-i18n="status_page.ship_systems_title" class="orbitron text-xs tracking-[0.3em] text-white/60 uppercase">Ship Systems</h2>
+                    <div class="flex-1 h-px bg-white/10"></div>
+                    <span id="ship-active-count" class="text-xs text-white/50">0 active</span>
+                </div>
+                <!-- Cards injected by status.js -->
+                <div id="ship-flags-grid" class="grid grid-cols-4 gap-3">
+                    <div data-i18n="status_page.loading_ship" class="col-span-4 py-8 text-center text-white/25 text-sm italic">Loading ship flags...</div>
+                </div>
+            </section>
+
+            <!-- Odyssey / On Foot -->
+            <section id="section-odyssey" class="pb-4">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-purple-400 text-lg">directions_walk</span>
+                    <h2 data-i18n="status_page.odyssey_title" class="orbitron text-xs tracking-[0.3em] text-white/60 uppercase">Odyssey / On Foot</h2>
+                    <div class="flex-1 h-px bg-white/10"></div>
+                    <span id="odyssey-active-count" class="text-xs text-white/50">0 active</span>
+                </div>
+                <!-- Cards injected by status.js -->
+                <div id="odyssey-flags-grid" class="grid grid-cols-4 gap-3">
+                    <div data-i18n="status_page.loading_odyssey" class="col-span-4 py-8 text-center text-white/25 text-sm italic">Loading Odyssey flags...</div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ── Footer ────────────────────────────────────────────────────── -->
+        <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10 text-sm">
+            <span class="text-white/40">
+                <span data-i18n="common.last_updated">Last updated:</span> <span id="stat-last-update" class="text-white">—</span>
+            </span>
+            <span data-i18n="status_page.polling_interval" class="orbitron text-[10px] tracking-widest text-white/25 uppercase">Polling · 750ms</span>
+        </div>
+
+    </div>
+</main>
+
+<!-- Fade transition -->
+<script>
+    setTimeout(function() {
+        if (!document.body.classList.contains('loaded')) {
+            document.body.classList.add('loaded');
+        }
+    }, 2500);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set keyboard shortcut context
+        if (typeof setShortcutContext === 'function') setShortcutContext('status');
+
+        document.querySelectorAll('a[href]').forEach(link => {
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('#') || href.startsWith('javascript:') ||
+                href.startsWith('http://') || href.startsWith('https://') || href.includes('://')) return;
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetUrl = this.href;
+                document.body.style.pointerEvents = 'none';
+                document.body.classList.remove('loaded');
+                document.body.classList.add('fade-out');
+                setTimeout(() => { window.location.href = targetUrl; }, 300);
+            });
+        });
+    });
+</script>
+
+<!-- Status Effect Assignment Modal -->
+<div id="status-assign-modal" class="hidden fixed inset-0 z-50 items-center justify-center" style="padding:3vh 2vw;">
+    <div class="absolute inset-0 bg-black/75 backdrop-blur-sm" id="status-modal-backdrop"></div>
+    <div class="relative flex flex-col sci-fi-border overflow-hidden"
+         style="width:95vw;height:92vh;background:linear-gradient(135deg,rgba(8,10,14,0.99) 0%,rgba(4,6,8,1) 100%);">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between px-8 py-5 border-b flex-shrink-0" style="border-bottom-color:rgba(255,102,0,0.2);">
+            <div>
+                <div class="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-1">Configure Effect</div>
+                <h2 class="orbitron text-2xl text-white font-bold" id="status-modal-flag-name">—</h2>
+            </div>
+            <button id="status-modal-close"
+                    style="background:rgba(255,102,0,0.1);border:1px solid rgba(255,102,0,0.3);border-radius:6px;padding:8px;color:var(--primary-accent);">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+        </div>
+
+        <!-- Tab buttons — pulsantone style -->
+        <div class="flex gap-4 px-8 py-4 border-b flex-shrink-0" style="border-bottom-color:rgba(255,255,255,0.06);">
+
+            <!-- ON tab -->
+            <button id="tab-btn-on" onclick="switchStatusTab('on')" class="flex-1 relative transition-all duration-200">
+                <div id="tab-glow-on" class="absolute inset-0 blur-lg transition-opacity duration-200"
+                     style="background:rgba(34,197,94,0.35);opacity:0.6;"></div>
+                <div id="tab-inner-on" class="relative flex items-center gap-4 px-6 py-4 sci-fi-border transition-all"
+                     style="border-width:2px;border-color:rgba(34,197,94,0.75);background:rgba(34,197,94,0.09);">
+                    <span class="material-symbols-outlined text-3xl" style="color:rgba(34,197,94,0.9);">flash_on</span>
+                    <div class="text-left flex-1">
+                        <div class="orbitron text-lg font-black tracking-[0.35em] text-white">ON EFFECT</div>
+                        <div class="text-[10px] tracking-wider mt-0.5" style="color:rgba(34,197,94,0.6);">When flag activates</div>
+                    </div>
+                    <div id="tab-on-badge" class="text-[10px] px-2 py-1 rounded uppercase tracking-wider"
+                         style="background:rgba(34,197,94,0.12);color:rgba(34,197,94,0.7);">0 steps</div>
+                </div>
+            </button>
+
+            <!-- OFF tab -->
+            <button id="tab-btn-off" onclick="switchStatusTab('off')" class="flex-1 relative transition-all duration-200" style="opacity:0.38;">
+                <div id="tab-glow-off" class="absolute inset-0 blur-lg transition-opacity duration-200"
+                     style="background:rgba(239,68,68,0.35);opacity:0;"></div>
+                <div id="tab-inner-off" class="relative flex items-center gap-4 px-6 py-4 sci-fi-border transition-all"
+                     style="border-width:2px;border-color:rgba(239,68,68,0.25);background:rgba(239,68,68,0.03);">
+                    <span class="material-symbols-outlined text-3xl" style="color:rgba(239,68,68,0.5);">flash_off</span>
+                    <div class="text-left flex-1">
+                        <div class="orbitron text-lg font-black tracking-[0.35em] text-white/70">OFF EFFECT</div>
+                        <div class="text-[10px] tracking-wider mt-0.5" style="color:rgba(239,68,68,0.4);">When flag deactivates</div>
+                    </div>
+                    <div id="tab-off-badge" class="text-[10px] px-2 py-1 rounded uppercase tracking-wider"
+                         style="background:rgba(239,68,68,0.08);color:rgba(239,68,68,0.45);">none</div>
+                </div>
+            </button>
+
+        </div>
+
+        <!-- Editor panels (flex-1) -->
+
+        <!-- ON editor -->
+        <div id="status-editor-on" class="flex-1 overflow-y-auto">
+            <div class="sci-fi-border carbon-pattern p-6 min-h-full flex flex-col gap-5">
+                <div>
+                    <input id="status-effect-name-on" type="text"
+                        class="bg-transparent border-b-2 border-[var(--primary-accent)] text-xl orbitron font-bold text-white w-full pb-2 focus:outline-none"
+                        placeholder="Effect name"/>
+                </div>
+                <div>
+                    <div class="orbitron text-sm tracking-widest text-[var(--primary-accent)] uppercase mb-3">Color Timeline</div>
+                    <div class="sci-fi-border rounded-lg overflow-hidden">
+                        <canvas id="status-colorTimeline-on" class="w-full" height="120" style="display:block;"></canvas>
+                    </div>
+                    <div class="flex justify-between items-center mt-2 px-1">
+                        <span class="text-xs text-white/40 uppercase">0ms</span>
+                        <span id="status-totalDuration-on" class="text-[12px] orbitron font-bold text-[var(--primary-accent)]">Total: 0ms</span>
+                        <span id="status-endTime-on" class="text-xs text-white/40 uppercase">0ms</span>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div class="orbitron text-sm tracking-widest text-[var(--primary-accent)] uppercase mb-3">Effect Steps</div>
+                    <div id="status-steps-on" class="space-y-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OFF editor (hidden) -->
+        <div id="status-editor-off" class="hidden flex-1 overflow-y-auto">
+            <div class="sci-fi-border carbon-pattern p-6 min-h-full flex flex-col gap-5">
+                <div>
+                    <input id="status-effect-name-off" type="text"
+                        class="bg-transparent border-b-2 border-[var(--primary-accent)] text-xl orbitron font-bold text-white/70 w-full pb-2 focus:outline-none"
+                        placeholder="Effect name (optional — leave empty for no effect)"/>
+                </div>
+                <div>
+                    <div class="orbitron text-sm tracking-widest text-[var(--primary-accent)] uppercase mb-3">Color Timeline</div>
+                    <div class="sci-fi-border rounded-lg overflow-hidden">
+                        <canvas id="status-colorTimeline-off" class="w-full" height="120" style="display:block;"></canvas>
+                    </div>
+                    <div class="flex justify-between items-center mt-2 px-1">
+                        <span class="text-xs text-white/40 uppercase">0ms</span>
+                        <span id="status-totalDuration-off" class="text-[12px] orbitron font-bold text-[var(--primary-accent)]">Total: 0ms</span>
+                        <span id="status-endTime-off" class="text-xs text-white/40 uppercase">0ms</span>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <div class="orbitron text-sm tracking-widest text-[var(--primary-accent)] uppercase mb-3">Effect Steps</div>
+                    <div id="status-steps-off" class="space-y-3"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action bar -->
+        <div class="flex items-center gap-2 px-6 py-3 border-t border-white/10 flex-shrink-0 bg-black/20">
+            <button onclick="addStatusStep(_activeStatusSlot)"
+                class="flex items-center gap-1 px-3 py-1.5 rounded border border-white/20 text-white/55
+                       text-[11px] uppercase tracking-wider hover:bg-white/5 transition-colors">
+                <span class="material-symbols-outlined" style="font-size:13px;">add</span>Step
+            </button>
+            <button onclick="testStatusSlot(_activeStatusSlot)"
+                class="flex items-center gap-1 px-3 py-1.5 rounded border border-blue-500/30 text-blue-400/65
+                       text-[11px] uppercase tracking-wider hover:bg-blue-500/10 transition-colors">
+                <span class="material-symbols-outlined" style="font-size:13px;">play_arrow</span>Test
+            </button>
+            <button onclick="stopStatusEffect()"
+                class="flex items-center gap-1 px-3 py-1.5 rounded border border-white/12 text-white/35
+                       text-[11px] uppercase tracking-wider hover:bg-white/5 transition-colors">
+                <span class="material-symbols-outlined" style="font-size:13px;">stop</span>Stop
+            </button>
+            <div class="ml-auto flex items-center gap-2">
+                <button onclick="importStatusTemplate(_activeStatusSlot)"
+                    class="flex items-center gap-1 px-3 py-1.5 rounded border border-violet-500/30 text-violet-400/65
+                           text-[11px] uppercase tracking-wider hover:bg-violet-500/10 transition-colors">
+                    <span class="material-symbols-outlined" style="font-size:13px;">download</span>Template
+                </button>
+                <button onclick="setStatusSlotNone(_activeStatusSlot)"
+                    class="flex items-center gap-1 px-3 py-1.5 rounded border border-white/12 text-white/30
+                           text-[11px] uppercase tracking-wider hover:bg-white/5 transition-colors">
+                    <span class="material-symbols-outlined" style="font-size:13px;">block</span>None
+                </button>
+                <button id="status-modal-cancel"
+                    class="px-4 py-1.5 rounded border border-white/20 text-white/55
+                           text-[11px] uppercase tracking-wider hover:bg-white/5 transition-colors">Cancel</button>
+                <button id="status-modal-save"
+                    class="flex items-center gap-1.5 px-6 py-2 rounded orbitron font-bold text-[11px] uppercase tracking-wider transition-all"
+                    style="background:rgba(255,102,0,0.9);color:#000;box-shadow:0 0 15px rgba(255,102,0,0.3);">
+                    <span class="material-symbols-outlined" style="font-size:13px;">save</span>Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Eel Bridge -->
+<script src="/eel.js"></script>
+<!-- Common Utilities -->
+<script src="js/common.js"></script>
+<script src="js/glass-select.js"></script>
+<!-- i18n -->
+<script src="js/i18n.js"></script>
+<!-- Color Picker (needed by EffectEditorModule) -->
+<script src="js/color-picker.js"></script>
+<!-- Effect Editor Module -->
+<script src="js/effect-editor-module.js"></script>
+<!-- Game Status Logic -->
+<script src="js/status.js"></script>
+<!-- Manual Viewer (in-app browser) -->
+<script src="js/manual-viewer.js"></script>
+
+<!-- Navigation Sidebar -->
+<script src="js/load-navigation.js"></script>
+
+<script src="js/keyboard-shortcuts.js"></script>
+</body></html>
