@@ -625,6 +625,86 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
+ * UPDATE CHECK
+ * The backend asks GitHub for the latest release at startup (api/update_api.py).
+ * When a newer version exists, show one toast per browser session with a link to
+ * the release page and a "don't remind me" button for that version.
+ */
+
+const _UPDATE_TOAST_KEY = 'e2l_update_toast_shown';
+
+function _t(key, fallback, vars) {
+    const s = (window.i18n && window.i18n.isLoaded && window.i18n.isLoaded()) ? window.i18n.get(key, vars) : null;
+    if (s && s !== key) return s;
+    return vars ? fallback.replace(/\{\{(\w+)\}\}/g, (_, k) => vars[k] ?? '') : fallback;
+}
+
+function showUpdateToast(info) {
+    if (document.getElementById('update-toast')) return;
+    const url = /^https:\/\/github\.com\//.test(info.url || '') ? info.url : 'https://github.com/leandor70/EDEvent2Led/releases';
+    const latest = String(info.latest || '').replace(/^v/, '');
+    const current = String(info.current || '').replace(/^v/, '').split('-')[0];
+    const accent = 'var(--primary-accent, #3b82f6)';
+
+    console.log(`[Update] New version available: ${latest} (running ${current})`);
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.style.cssText = 'position:fixed; top:24px; right:24px; z-index:10000; display:flex; flex-direction:column; gap:12px; pointer-events:none;';
+        document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.id = 'update-toast';
+    toast.innerHTML = `
+        <div style="display:flex; gap:12px; align-items:flex-start; background:rgba(0,0,0,0.95);
+                    border:1px solid ${accent}; border-radius:8px; padding:12px 16px; min-width:280px;
+                    max-width:400px; box-shadow:0 10px 40px rgba(0,0,0,0.5); pointer-events:auto;
+                    animation:slideInRight 0.3s ease-out;">
+            <span class="material-symbols-outlined" style="color:${accent}; font-size:24px;">system_update</span>
+            <div style="flex:1; color:white; font-size:14px;">
+                <div style="font-weight:600; margin-bottom:4px;">${escapeHtml(_t('notifications.update_available', 'New version {{latest}} available', { latest }))}</div>
+                <div style="color:rgba(255,255,255,0.6); font-size:12px; margin-bottom:10px;">${escapeHtml(_t('notifications.update_current', 'You are running {{current}}', { current }))}</div>
+                <div style="display:flex; gap:12px; align-items:center;">
+                    <a href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer"
+                       style="color:${accent}; font-weight:600; text-decoration:underline;">${escapeHtml(_t('notifications.update_download', 'Open release page'))}</a>
+                    <button type="button" data-action="skip" style="background:none; border:none; padding:0; cursor:pointer;
+                            color:rgba(255,255,255,0.5); font-size:12px;">${escapeHtml(_t('notifications.update_skip', "Don't remind me for this version"))}</button>
+                </div>
+            </div>
+            <button type="button" data-action="close" style="background:none; border:none; color:rgba(255,255,255,0.5);
+                    cursor:pointer; padding:0; font-size:20px;">×</button>
+        </div>`;
+    const close = () => {
+        toast.style.animation = 'slideOutRight 0.3s ease-in';
+        setTimeout(() => toast.remove(), 300);
+    };
+    toast.querySelector('[data-action="close"]').addEventListener('click', close);
+    toast.querySelector('[data-action="skip"]').addEventListener('click', () => {
+        api('dismiss_update', info.latest);
+        close();
+    });
+    container.appendChild(toast);
+}
+
+async function _checkForUpdate(attempt = 0) {
+    const status = await api('get_update_status');
+    if (status.state === 'pending' && attempt < 15) {
+        setTimeout(() => _checkForUpdate(attempt + 1), 2000);
+        return;
+    }
+    if (status.state !== 'available') return;
+    try { sessionStorage.setItem(_UPDATE_TOAST_KEY, '1'); } catch (e) { /* storage blocked: may show again */ }
+    showUpdateToast(status);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    let shown = false;
+    try { shown = sessionStorage.getItem(_UPDATE_TOAST_KEY) === '1'; } catch (e) { /* ignore */ }
+    if (!shown) setTimeout(_checkForUpdate, 3000);   // after the page and i18n settle
+});
+
+/**
  * TIER 3: Connection Lost Modal
  */
 

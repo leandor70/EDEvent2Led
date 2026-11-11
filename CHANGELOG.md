@@ -5,7 +5,19 @@ All notable changes to ED:Event2Led will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.4.0] - 2026-11-11
+
+The source code of ED:Event2Led is now public, under the PolyForm Noncommercial
+License 1.0.0, and the app tells you when a new version is out.
+
+### Added
+
+- **New version notice.** At startup the app asks GitHub whether a newer release
+  exists. If it does, a notice shows the new version with a link to its release page,
+  once per session; "Don't remind me for this version" hides it until the next one.
+  Only the app name and version are sent. The check can be turned off in
+  Configuration → System Settings → Updates; the Data & Privacy text of the About
+  page now mentions it.
 
 ### Changed
 

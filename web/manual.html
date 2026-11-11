@@ -3019,16 +3019,27 @@ Total Entries: 142
                     <li>Glow effects</li>
                 </ul>
 
-                <h2>11.5 Performance & Advanced</h2>
+                <h2>11.5 Aggiornamenti</h2>
 
-                <h3>11.5.1 Effect Render Settings</h3>
+                <p>Nel pannello <strong>System Settings</strong> la casella <strong>Controlla nuove versioni all'avvio</strong> è attiva di default. A ogni avvio l'app chiede una volta a GitHub qual è l'ultima release pubblicata; se è più recente di quella in uso, in alto a destra compare un avviso con:</p>
+                <ul>
+                    <li><strong>Apri la pagina della release</strong>: apre in una nuova scheda la pagina GitHub della nuova versione, con le note di rilascio e lo zip da scaricare;</li>
+                    <li><strong>Non ricordarmelo per questa versione</strong>: l'avviso non torna per quella versione, ma tornerà per la successiva;</li>
+                    <li><strong>×</strong>: chiude l'avviso per questa sessione.</li>
+                </ul>
+                <p>L'avviso compare una sola volta per sessione, non a ogni cambio pagina. La richiesta invia solo il nome e la versione dell'app, nessun dato personale. Se non c'è connessione o GitHub non risponde, l'app prosegue senza segnalare nulla.</p>
+                <p>Togliendo la spunta il controllo non parte più; la scelta si salva subito, senza premere <strong>SAVE</strong>. Per aggiornare segui le istruzioni del file <code>README.txt</code> incluso nello zip: la cartella <code>config\</code> della versione precedente si copia nella nuova.</p>
+
+                <h2>11.6 Performance & Advanced</h2>
+
+                <h3>11.6.1 Effect Render Settings</h3>
 
                 <ul>
                     <li><strong>Target FPS:</strong> Frame rate rendering effetti (default 30fps, range 15-60)</li>
                     <li><strong>Batch Updates:</strong> Aggruppa update LED per ridurre carico OpenRGB (ON raccomandato)</li>
                 </ul>
 
-                <h3>11.5.2 Debug Mode</h3>
+                <h3>11.6.2 Debug Mode</h3>
 
                 <p>Abilita logging verboso per troubleshooting:</p>
 
@@ -3039,9 +3050,9 @@ Total Entries: 142
 
                 <p><strong>NOTA:</strong> Debug mode aumenta uso CPU. Disabilita dopo troubleshooting.</p>
 
-                <h2>11.6 Backup & Restore</h2>
+                <h2>11.7 Backup & Restore</h2>
 
-                <h3>11.6.1 Export Configuration</h3>
+                <h3>11.7.1 Export Configuration</h3>
 
                 <p>Il bottone <strong>"Export Configuration"</strong> crea un backup ZIP contenente:</p>
 
@@ -3061,7 +3072,7 @@ Total Entries: 142
                     <li>Per trasferire configurazione su altro PC</li>
                 </ul>
 
-                <h3>11.6.2 Import Configuration</h3>
+                <h3>11.7.2 Import Configuration</h3>
 
                 <p>Il bottone <strong>"Import Configuration"</strong> ripristina backup da file ZIP:</p>
 
@@ -3078,7 +3089,7 @@ Total Entries: 142
                     <p>Prima di importare, considera export configurazione corrente come backup. Import è irreversibile!</p>
                 </div>
 
-                <h2>11.7 Reset to Defaults</h2>
+                <h2>11.8 Reset to Defaults</h2>
 
                 <p>Il bottone <strong>"Reset to Defaults"</strong> ripristina ED:Event2Led allo stato iniziale:</p>
 
@@ -3100,7 +3111,7 @@ Total Entries: 142
                     <p>Prima di resettare, ESPORTA configurazione corrente con "Export Configuration". Non c'è modo di recuperare dati dopo reset!</p>
                 </div>
 
-                <h2>11.8 Troubleshooting Impostazioni</h2>
+                <h2>11.9 Troubleshooting Impostazioni</h2>
 
                 <h3>"Test Connessione" fallisce sempre</h3>
 
@@ -3747,6 +3758,12 @@ Total Entries: 142
 
                 <h3>Q: OpenRGB è obbligatorio?</h3>
                 <p><strong>A:</strong> Sì, ED:Event2Led usa OpenRGB SDK per controllare hardware RGB. Non esiste alternativa al momento.</p>
+
+                <h3>Q: Come so se è uscita una nuova versione?</h3>
+                <p><strong>A:</strong> All'avvio l'app controlla su GitHub e mostra un avviso con il link alla nuova release (vedi 11.5). Le release sono su <code>github.com/leandor70/EDEvent2Led/releases</code>.</p>
+
+                <h3>Q: Il codice sorgente è disponibile?</h3>
+                <p><strong>A:</strong> Sì, dalla versione 1.4.0 il codice è pubblico nello stesso repository, con licenza PolyForm Noncommercial 1.0.0 (source-available): puoi leggerlo, eseguirlo, modificarlo e condividerlo per scopi non commerciali. Le segnalazioni di bug sono benvenute come issue su GitHub.</p>
 
                 <h2>Compatibilità Hardware</h2>
 

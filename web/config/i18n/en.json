@@ -217,7 +217,10 @@
       "theme_elite": "Elite",
       "theme_violet": "Violet",
       "theme_cyan": "Cyan",
-      "theme_matrix": "Matrix"
+      "theme_matrix": "Matrix",
+      "updates_label": "Updates",
+      "updates_toggle": "Check for new versions at startup",
+      "updates_hint": "Asks GitHub once per start whether a newer release exists. No personal data is sent."
     },
     "openrgb": {
       "title": "OpenRGB Connection",
@@ -427,6 +430,10 @@
   },
   "notifications": {
     "settings_loaded": "Settings loaded",
+    "update_available": "New version {{latest}} available",
+    "update_current": "You are running {{current}}",
+    "update_download": "Open release page",
+    "update_skip": "Don't remind me for this version",
     "settings_saved": "Settings saved successfully!",
     "openrgb_connected": "OpenRGB OK! {{count}} device(s) found",
     "openrgb_failed": "Connection failed",
@@ -713,7 +720,7 @@
     "quick_start_step5_title": "Start Monitoring",
     "quick_start_step5_desc": "Press the Start button on this page. ED:Event2Led will process journal events in real-time.",
     "privacy_title": "Data & Privacy",
-    "privacy_p1": "ED:Event2Led operates entirely locally. It reads Elite Dangerous journal files on your machine and communicates with OpenRGB over localhost only. No data is collected, transmitted, or stored externally. Configuration is saved in local JSON files in the config/ directory.",
+    "privacy_p1": "ED:Event2Led operates locally. It reads Elite Dangerous journal files on your machine and communicates with OpenRGB over localhost. The only connection to the internet is an optional check for new versions: at startup the app asks GitHub for the latest release, sending only its name and version. You can turn it off in Settings. No other data is collected, transmitted, or stored externally. Configuration is saved in local JSON files in the config/ directory.",
     "copyright_title": "Copyright & License",
     "copyright_p1": "Copyright © 2026 Stefano Indraccolo.",
     "copyright_p2": "ED:Event2Led is source-available software, not open source. Its source code is published under the PolyForm Noncommercial License 1.0.0: you may read, run, modify and share it for any noncommercial purpose. Commercial use is not allowed.",

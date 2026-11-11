@@ -3021,16 +3021,27 @@ Total Entries: 142
                     <li>Glow effects</li>
                 </ul>
 
-                <h2>11.5 Performance &amp; Advanced</h2>
+                <h2>11.5 Updates</h2>
 
-                <h3>11.5.1 Effect Render Settings</h3>
+                <p>In the <strong>System Settings</strong> panel, the <strong>Check for new versions at startup</strong> box is on by default. At every start the app asks GitHub once for the latest published release; if it is newer than the one you are running, a notice appears at the top right with:</p>
+                <ul>
+                    <li><strong>Open release page</strong>: opens the GitHub page of the new version in a new tab, with its release notes and the zip to download;</li>
+                    <li><strong>Don't remind me for this version</strong>: the notice does not come back for that version, but it will for the next one;</li>
+                    <li><strong>×</strong>: closes the notice for this session.</li>
+                </ul>
+                <p>The notice appears once per session, not on every page change. The request sends only the app's name and version, no personal data. Without a connection, or if GitHub does not answer, the app carries on without reporting anything.</p>
+                <p>Unticking the box stops the check; the choice is saved at once, without pressing <strong>SAVE</strong>. To update, follow the <code>README.txt</code> included in the zip: copy the <code>config\</code> folder of the previous version into the new one.</p>
+
+                <h2>11.6 Performance &amp; Advanced</h2>
+
+                <h3>11.6.1 Effect Render Settings</h3>
 
                 <ul>
                     <li><strong>Target FPS:</strong> Effect rendering frame rate (default 30fps, range 15-60)</li>
                     <li><strong>Batch Updates:</strong> Groups LED updates to reduce OpenRGB load (ON recommended)</li>
                 </ul>
 
-                <h3>11.5.2 Debug Mode</h3>
+                <h3>11.6.2 Debug Mode</h3>
 
                 <p>Enables verbose logging for troubleshooting:</p>
 
@@ -3041,9 +3052,9 @@ Total Entries: 142
 
                 <p><strong>NOTE:</strong> Debug mode increases CPU usage. Disable it after troubleshooting.</p>
 
-                <h2>11.6 Backup &amp; Restore</h2>
+                <h2>11.7 Backup &amp; Restore</h2>
 
-                <h3>11.6.1 Export Configuration</h3>
+                <h3>11.7.1 Export Configuration</h3>
 
                 <p>The <strong>"Export Configuration"</strong> button creates a ZIP backup containing:</p>
 
@@ -3063,7 +3074,7 @@ Total Entries: 142
                     <li>To transfer your configuration to another PC</li>
                 </ul>
 
-                <h3>11.6.2 Import Configuration</h3>
+                <h3>11.7.2 Import Configuration</h3>
 
                 <p>The <strong>"Import Configuration"</strong> button restores a backup from a ZIP file:</p>
 
@@ -3080,7 +3091,7 @@ Total Entries: 142
                     <p>Before importing, consider exporting the current configuration as a backup. Import is irreversible!</p>
                 </div>
 
-                <h2>11.7 Reset to Defaults</h2>
+                <h2>11.8 Reset to Defaults</h2>
 
                 <p>The <strong>"Reset to Defaults"</strong> button restores ED:Event2Led to its initial state:</p>
 
@@ -3102,7 +3113,7 @@ Total Entries: 142
                     <p>Before resetting, EXPORT your current configuration with "Export Configuration". There is no way to recover data after a reset!</p>
                 </div>
 
-                <h2>11.8 Settings Troubleshooting</h2>
+                <h2>11.9 Settings Troubleshooting</h2>
 
                 <h3>"Test Connection" always fails</h3>
 
@@ -3749,6 +3760,12 @@ Total Entries: 142
 
                 <h3>Q: Is OpenRGB required?</h3>
                 <p><strong>A:</strong> Yes, ED:Event2Led uses the OpenRGB SDK to control RGB hardware. There is no alternative at this time.</p>
+
+                <h3>Q: How do I know a new version is out?</h3>
+                <p><strong>A:</strong> At startup the app checks GitHub and shows a notice with a link to the new release (see 11.5). Releases are at <code>github.com/leandor70/EDEvent2Led/releases</code>.</p>
+
+                <h3>Q: Is the source code available?</h3>
+                <p><strong>A:</strong> Yes. Since version 1.4.0 the code is public in the same repository, under the PolyForm Noncommercial License 1.0.0 (source-available): you may read, run, modify and share it for noncommercial purposes. Bug reports are welcome as GitHub issues.</p>
 
                 <h2>Hardware Compatibility</h2>
 

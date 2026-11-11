@@ -217,7 +217,10 @@
       "theme_elite": "Elite",
       "theme_violet": "Violeta",
       "theme_cyan": "Cian",
-      "theme_matrix": "Matrix"
+      "theme_matrix": "Matrix",
+      "updates_label": "Actualizaciones",
+      "updates_toggle": "Buscar nuevas versiones al iniciar",
+      "updates_hint": "Consulta a GitHub una vez por inicio si existe una versión más reciente. No se envían datos personales."
     },
     "openrgb": {
       "title": "Conexión OpenRGB",
@@ -427,6 +430,10 @@
   },
   "notifications": {
     "settings_loaded": "Configuración cargada",
+    "update_available": "Nueva versión {{latest}} disponible",
+    "update_current": "Está usando la {{current}}",
+    "update_download": "Abrir la página de la versión",
+    "update_skip": "No recordar para esta versión",
     "settings_saved": "¡Configuración guardada exitosamente!",
     "openrgb_connected": "¡OpenRGB OK! {{count}} dispositivo(s) encontrado(s)",
     "openrgb_failed": "Conexión fallida",
@@ -713,7 +720,7 @@
     "quick_start_step5_title": "Iniciar Monitoreo",
     "quick_start_step5_desc": "Presione el boton Iniciar en esta pagina. ED:Event2Led procesara eventos del journal en tiempo real.",
     "privacy_title": "Datos y Privacidad",
-    "privacy_p1": "ED:Event2Led opera enteramente en local. Lee archivos journal de Elite Dangerous en su maquina y se comunica con OpenRGB solo sobre localhost. No se recopilan, transmiten ni almacenan datos externamente. La configuracion se guarda en archivos JSON locales en el directorio config/.",
+    "privacy_p1": "ED:Event2Led funciona en local. Lee los archivos journal de Elite Dangerous en su equipo y se comunica con OpenRGB a través de localhost. La única conexión a internet es una comprobación opcional de nuevas versiones: al iniciar, la aplicación consulta a GitHub la última versión publicada, enviando solo su nombre y su versión. Puede desactivarla en Configuración. No se recopilan, transmiten ni almacenan externamente otros datos. La configuración se guarda en archivos JSON locales en el directorio config/.",
     "copyright_title": "Copyright y Licencia",
     "copyright_p1": "Copyright © 2026 Stefano Indraccolo.",
     "copyright_p2": "ED:Event2Led es software de código disponible (source-available), no de código abierto. Su código fuente se publica bajo la licencia PolyForm Noncommercial 1.0.0: puede leerlo, ejecutarlo, modificarlo y compartirlo para cualquier fin no comercial. No se permite el uso comercial.",

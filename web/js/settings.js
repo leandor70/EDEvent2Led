@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     setupOpenRGBSection();
     setupJournalSection();
     setupSaveButton();
+    setupUpdateToggle();
 
     console.log('[Settings] Initialization complete');
 });
@@ -69,6 +70,24 @@ async function loadGitInfo() {
     } catch (e) {
         console.warn('[Settings] Failed to load git info:', e);
     }
+}
+
+// ========================================
+// UPDATE CHECK TOGGLE (saved immediately)
+// ========================================
+
+async function setupUpdateToggle() {
+    const toggle = document.getElementById('check-updates-toggle');
+    if (!toggle) return;
+    const enabled = await api('get_check_updates');
+    toggle.checked = enabled !== false;
+    toggle.addEventListener('change', async () => {
+        const result = await api('set_check_updates', toggle.checked);
+        if (result.success === false) {
+            toggle.checked = !toggle.checked;
+            showNotification(window.i18n.get('notifications.failed_save_settings') || 'Failed to save settings', 'error');
+        }
+    });
 }
 
 // ========================================

@@ -217,7 +217,10 @@
       "theme_elite": "Elite",
       "theme_violet": "Violett",
       "theme_cyan": "Cyan",
-      "theme_matrix": "Matrix"
+      "theme_matrix": "Matrix",
+      "updates_label": "Updates",
+      "updates_toggle": "Beim Start nach neuen Versionen suchen",
+      "updates_hint": "Fragt GitHub einmal pro Start, ob eine neuere Version existiert. Es werden keine persönlichen Daten gesendet."
     },
     "openrgb": {
       "title": "OpenRGB-Verbindung",
@@ -427,6 +430,10 @@
   },
   "notifications": {
     "settings_loaded": "Einstellungen geladen",
+    "update_available": "Neue Version {{latest}} verfügbar",
+    "update_current": "Sie verwenden {{current}}",
+    "update_download": "Release-Seite öffnen",
+    "update_skip": "Für diese Version nicht mehr erinnern",
     "settings_saved": "Einstellungen erfolgreich gespeichert!",
     "openrgb_connected": "OpenRGB OK! {{count}} Gerät(e) gefunden",
     "openrgb_failed": "Verbindung fehlgeschlagen",
@@ -713,7 +720,7 @@
     "quick_start_step5_title": "Uberwachung starten",
     "quick_start_step5_desc": "Drucken Sie die Start-Schaltflache auf dieser Seite. ED:Event2Led verarbeitet Journal-Ereignisse in Echtzeit.",
     "privacy_title": "Daten & Datenschutz",
-    "privacy_p1": "ED:Event2Led arbeitet vollstandig lokal. Es liest Elite Dangerous-Journal-Dateien auf Ihrem Computer und kommuniziert nur uber localhost mit OpenRGB. Es werden keine Daten gesammelt, ubertragen oder extern gespeichert. Die Konfiguration wird in lokalen JSON-Dateien im Verzeichnis config/ gespeichert.",
+    "privacy_p1": "ED:Event2Led arbeitet lokal. Es liest Elite Dangerous-Journal-Dateien auf Ihrem Computer und kommuniziert über localhost mit OpenRGB. Die einzige Internetverbindung ist eine optionale Suche nach neuen Versionen: Beim Start fragt die App GitHub nach der neuesten Version und sendet dabei nur ihren Namen und ihre Version. Sie können dies in den Einstellungen abschalten. Es werden keine weiteren Daten gesammelt, übertragen oder extern gespeichert. Die Konfiguration wird in lokalen JSON-Dateien im Verzeichnis config/ gespeichert.",
     "copyright_title": "Copyright & Lizenz",
     "copyright_p1": "Copyright © 2026 Stefano Indraccolo.",
     "copyright_p2": "ED:Event2Led ist Source-available-Software, keine Open-Source-Software. Der Quellcode wird unter der PolyForm Noncommercial License 1.0.0 veröffentlicht: Sie dürfen ihn für jeden nichtkommerziellen Zweck lesen, ausführen, ändern und weitergeben. Kommerzielle Nutzung ist nicht erlaubt.",

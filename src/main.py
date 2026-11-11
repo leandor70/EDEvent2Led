@@ -228,8 +228,10 @@ def _do_init(settings):
         from api.status_monitor_api import init_status_monitor_api
         from api.topology_api    import init_topology_api
         from api.ambilight_api   import init_ambilight_api
+        from api.update_api      import init_update_api
 
         init_settings_api(settings, visual_library)
+        init_update_api(settings)   # background check for a newer GitHub release
         init_effects_api(visual_library, effect_manager)
         init_events_api(event_processor, visual_library)
         init_devices_api(effect_manager, client if effect_manager else None)

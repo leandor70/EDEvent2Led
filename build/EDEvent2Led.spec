@@ -65,6 +65,7 @@ hidden_imports = [
     'api.logs_api',
     'api.profiles_api',
     'api.topology_api',
+    'api.update_api',
     'core',
     'core.base_effects',
     'core.visual_effect_library',
