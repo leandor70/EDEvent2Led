@@ -81,6 +81,39 @@ def _set_windows_timer_resolution():
 # Helpers
 # ---------------------------------------------------------------------------
 
+# Default keyboard "rest colour" (Elite orange). The user can change it in the
+# Keyboard Default panel (keyboard_presets.json -> rest_color).
+_KEYBOARD_REST_DEFAULT_RGB = (255, 102, 0)
+
+
+def _load_keyboard_rest_color() -> tuple:
+    """Colour a keyboard returns to when keyboard_default has no preset to apply:
+    the chosen preset was never saved, or OpenRGB exposes the keyboard without a
+    key matrix (no per-key layout to restore). Also the default of 'fill' mode.
+    """
+    import json as _json
+    from pathlib import Path as _Path
+    try:
+        data = _json.loads(_Path('config/keyboard_presets.json').read_text(encoding='utf-8'))
+        rgb = data.get('rest_color')
+        if (isinstance(rgb, (list, tuple)) and len(rgb) == 3
+                and all(isinstance(c, int) and 0 <= c <= 255 for c in rgb)):
+            return tuple(rgb)
+    except Exception:
+        pass
+    return _KEYBOARD_REST_DEFAULT_RGB
+
+
+def _is_keyboard_device(device_controller) -> bool:
+    """A keyboard either has a key matrix, or OpenRGB says its type is KEYBOARD.
+    Uses the type OpenRGB declares, never the device name."""
+    topology = device_controller.topology
+    if topology.topology_type == TopologyType.MATRIX:
+        return True
+    from utils.openrgb_client import DeviceType
+    return getattr(topology.device, 'type', None) == DeviceType.KEYBOARD
+
+
 def _load_keyboard_preset_colors(preset_id: str) -> dict:
     """Load led_colors for a keyboard preset from keyboard_presets.json.
 
@@ -848,17 +881,15 @@ class VisualEffectRenderer:
             post_b = active.visual_effect.post_behavior.value
             post_color = (active.visual_effect.post_behavior_data or {}).get("color")
 
-            # If this MATRIX device ran a keyboard_default step, that step IS
-            # already the intended final state (preset restored). Skip the
-            # effect-level post-behavior so it doesn't overwrite the preset.
+            # If this keyboard ran a keyboard_default step, that step IS already
+            # the intended final state (preset or rest colour). Skip the
+            # effect-level post-behavior so it doesn't overwrite it.
             _has_kbd_default = any(
                 s.effect_type == BaseEffectType.KEYBOARD_DEFAULT
                 for s in active.visual_effect.steps
             )
-            _is_matrix = (
-                active.device_controller.topology.topology_type == TopologyType.MATRIX
-            )
-            _skip_post_behavior = _is_matrix and _has_kbd_default
+            _is_keyboard = _is_keyboard_device(active.device_controller)
+            _skip_post_behavior = _is_keyboard and _has_kbd_default
 
             log_led(dev_name, "sequence_complete",
                     f"post_behavior={post_b}  "
@@ -1216,7 +1247,7 @@ class VisualEffectRenderer:
             if preset_id == 'fill':
                 # Solid fill: use params.colors[0] as the uniform colour.
                 # target_colors covers every valid LED in the matrix.
-                fill_rgb = tuple(params.colors[0]) if params.colors else (255, 102, 0)
+                fill_rgb = tuple(params.colors[0]) if params.colors else _load_keyboard_rest_color()
                 target_colors = {
                     led_idx: fill_rgb
                     for led_idx in matrix.led_to_coord.keys()
@@ -1224,6 +1255,17 @@ class VisualEffectRenderer:
             else:
                 # Load a saved preset (P1 / P2 / P3) from keyboard_presets.json
                 target_colors = _load_keyboard_preset_colors(preset_id)
+                if not target_colors:
+                    # Preset never saved (fresh install: the release ships the
+                    # presets empty). KeyboardPresetEffect fades every LED missing
+                    # from the preset to black, so an empty preset would switch the
+                    # keyboard off after every mapped event. Fall back to the solid
+                    # rest colour until the user saves a preset.
+                    rest_rgb = _load_keyboard_rest_color()
+                    target_colors = {
+                        led_idx: rest_rgb
+                        for led_idx in matrix.led_to_coord.keys()
+                    }
 
             effect = KeyboardPresetEffect(matrix, params.duration_ms or 800, target_colors)
 
@@ -1243,13 +1285,22 @@ class VisualEffectRenderer:
         colors = params.colors
         primary_color = colors[0] if colors else (255, 255, 255)
 
-        # KEYBOARD_DEFAULT is a keyboard-only concept (restore preset via
-        # KeyboardPresetEffect on MATRIX devices).  On LINEAR/strip/mouse devices
-        # there is no preset to restore, so this step is a no-op: returning None
-        # causes _start_step() to skip it immediately and let the post-behavior
-        # (configured per-effect in the editor) define the final device color.
+        # KEYBOARD_DEFAULT is a keyboard-only concept: "return the keyboard to its
+        # resting state".
+        # - Strips, mice, RAM...: no-op. Returning None makes _start_step() skip it
+        #   and the effect's post-behavior defines the final colour (unchanged).
+        # - A keyboard that OpenRGB exposes WITHOUT a key matrix: there is no
+        #   per-key preset to restore. Skipping the step left the keyboard on the
+        #   effect's last frame (e.g. Under Attack red) until the next event; it
+        #   now fades to one colour: the fill colour, or the user's rest colour.
         if effect_type == BaseEffectType.KEYBOARD_DEFAULT:
-            return None
+            if not _is_keyboard_device(device_controller):
+                return None
+            if (params.direction or '1') == 'fill' and colors:
+                rest_rgb = tuple(colors[0])
+            else:
+                rest_rgb = _load_keyboard_rest_color()
+            return FadeEffect1D(linear, params.duration_ms or 800, end_color=rest_rgb)
 
         if effect_type == BaseEffectType.STATIC_TRANSITION:
             # FadeEffect1D reads per-LED start colors from linear.device.colors internally.

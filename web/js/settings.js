@@ -201,17 +201,50 @@ async function populateOpenRGB(host, port) {
     statusSpan.className = 'text-sm text-yellow-400 uppercase';
     statusIndicator.className = 'w-2 h-2 rounded-full bg-yellow-400 animate-pulse';
 
-    const status = await api('get_openrgb_status');
+    // Read-only diagnosis: which OpenRGB answers, or why none does
+    const diagnosis = await api('diagnose_openrgb', true);
+    renderOpenRGBDiagnosis(diagnosis);
+}
 
-    if (status && status.reachable) {
-        statusSpan.textContent = window.i18n.get('status_strings.server_reachable') || 'Status: Server Reachable';
-        statusSpan.className = 'text-sm text-green-400 uppercase';
-        statusIndicator.className = 'w-2 h-2 rounded-full bg-green-400';
-    } else {
+/**
+ * Show the diagnosis in the OpenRGB section: status line + details
+ * (server in use, who owns the port, hint, multiple-instance warning).
+ * Returns the described diagnosis (see describeOpenRGBDiagnosis in common.js).
+ */
+function renderOpenRGBDiagnosis(diagnosis) {
+    const statusSpan = document.getElementById('openrgb-status');
+    const statusIndicator = document.getElementById('openrgb-status-indicator');
+    const panel = document.getElementById('openrgb-diag');
+    const info = describeOpenRGBDiagnosis(diagnosis);
+
+    if (!info.title) {
+        // No diagnosis (backend error): keep the old wording
         statusSpan.textContent = window.i18n.get('status_strings.disconnected') || 'Status: Disconnected';
         statusSpan.className = 'text-sm text-red-400 uppercase';
         statusIndicator.className = 'w-2 h-2 rounded-full bg-red-400';
+        panel.classList.add('hidden');
+        return info;
     }
+
+    // Green = OpenRGB answers; amber = answers but more than one OpenRGB runs; red = not usable
+    const color = !info.ok ? 'red' : (info.warning ? 'amber' : 'green');
+    statusSpan.textContent = info.title;
+    statusSpan.className = `text-sm text-${color}-400 uppercase`;
+    statusIndicator.className = `w-2 h-2 rounded-full bg-${color}-400`;
+
+    const set = (id, text) => {
+        const el = document.getElementById(id);
+        el.textContent = text || '';
+        el.classList.toggle('hidden', !text);
+    };
+    set('openrgb-diag-inuse', info.inUse);
+    set('openrgb-diag-owner', info.owner);
+    set('openrgb-diag-path', info.path);
+    set('openrgb-diag-hint', info.hint);
+    set('openrgb-diag-warning', info.warning);
+    set('openrgb-diag-note', info.note);
+    panel.classList.remove('hidden');
+    return info;
 }
 
 function populateJournalPath(path) {
@@ -327,21 +360,26 @@ async function testOpenRGB() {
 
     const result = await api('test_openrgb_connection');
 
+    // The backend attaches a diagnosis in both cases (owner of the port,
+    // multiple OpenRGB instances, or why the connection failed).
+    const info = renderOpenRGBDiagnosis(result?.diagnosis);
+
     if (result && result.connected) {
         // Success
-        statusSpan.textContent = window.i18n.interpolate('status_strings.connected_devices', {count: result.device_count}) || `Status: Connected (${result.device_count} device(s))`;
-        statusSpan.className = 'text-sm text-green-400 uppercase';
-        statusIndicator.className = 'w-2 h-2 rounded-full bg-green-400 glow-orange';
-
+        if (!info.title) {
+            statusSpan.textContent = window.i18n.interpolate('status_strings.connected_devices', {count: result.device_count}) || `Status: Connected (${result.device_count} device(s))`;
+            statusSpan.className = 'text-sm text-green-400 uppercase';
+            statusIndicator.className = 'w-2 h-2 rounded-full bg-green-400 glow-orange';
+        }
         showNotification(window.i18n.interpolate('notifications.openrgb_ok_count', {count: result.device_count}) || `OpenRGB OK! ${result.device_count} device(s) found`, 'success');
+        if (info.warning) showNotification(info.warning, 'warning', 10000);
         console.log('[Settings] OpenRGB connected:', result);
     } else {
-        // Failure
-        statusSpan.textContent = window.i18n.get('status_strings.disconnected') || 'Status: Disconnected';
-        statusSpan.className = 'text-sm text-red-400 uppercase';
-        statusIndicator.className = 'w-2 h-2 rounded-full bg-red-400';
-
-        showNotification(result?.message || window.i18n.get('notifications.openrgb_failed') || 'Connection failed', 'error');
+        // Failure: say WHY (translated), not the raw socket error
+        const message = info.title
+            ? `${info.title}. ${info.hint}`
+            : (result?.message || window.i18n.get('notifications.openrgb_failed') || 'Connection failed');
+        showNotification(message, 'error', 8000);
         console.error('[Settings] OpenRGB connection failed:', result);
     }
 

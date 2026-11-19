@@ -625,6 +625,36 @@ async function loadPreset(id) {
     showNotification(window.i18n.interpolate('notifications.preset_loaded', {id, count: n}) || `Preset ${id} loaded (${n} LEDs)`, 'success');
 }
 
+// ── Rest color ───────────────────────────────────────────────────────────────
+// The colour the keyboard returns to when keyboard_default has no preset to
+// apply (empty preset, or a keyboard OpenRGB exposes without a key matrix).
+// Saved as soon as the user picks it (the picker fires 'change' on close).
+
+const REST_COLOR_DEFAULT = '#ff6600';   // Elite orange, same default as the backend
+
+async function _wireRestColor() {
+    const input = $('rest-color-input');
+    const label = $('rest-color-hex');
+    if (!input) return;
+    const show = hex => { input.value = hex; if (label) label.textContent = hex.toUpperCase(); };
+
+    const r = await api('get_keyboard_presets');
+    // input[type=color] needs lowercase #rrggbb; rgbToHex/hexToRgb come from common.js
+    if (Array.isArray(r?.rest_color)) show(rgbToHex(...r.rest_color).toLowerCase());
+
+    const save = async hex => {
+        const res = await api('set_keyboard_rest_color', hexToRgb(hex));
+        if (res?.success) {
+            showNotification(window.i18n.get('keyboard_rest_color.rest_color_saved') || 'Rest color saved', 'success');
+        } else {
+            showNotification(res?.error || window.i18n.get('notifications.save_failed') || 'Save failed', 'error');
+        }
+    };
+    input.addEventListener('input', () => { if (label) label.textContent = input.value.toUpperCase(); });
+    input.addEventListener('change', () => save(input.value));
+    $('btn-rest-color-reset')?.addEventListener('click', () => { show(REST_COLOR_DEFAULT); save(REST_COLOR_DEFAULT); });
+}
+
 async function savePreset() {
     if (!activePresetId) {
         showNotification(window.i18n.get('notifications.no_preset_selected') || 'Select a preset slot first (P1 / P2 / P3)', 'warning');
@@ -1193,6 +1223,8 @@ function wireButtons() {
         btn.addEventListener('click', () => loadPreset(btn.dataset.preset));
     });
     $('btn-save-preset')?.addEventListener('click', savePreset);
+
+    _wireRestColor();
 
     // Sidebar Quick Actions
     $('btn-toggle-preview')?.addEventListener('click', toggleLivePreview);

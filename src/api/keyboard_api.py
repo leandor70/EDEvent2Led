@@ -439,10 +439,12 @@ def get_keyboard_presets():
             pid: {'name': p['name'], 'has_data': bool(p.get('led_colors'))}
             for pid, p in data.get('presets', {}).items()
         }
+        from core.visual_effect_renderer import _load_keyboard_rest_color
         return {
             'success': True,
             'active_preset': data.get('active_preset', '1'),
             'lock_keyboard': data.get('lock_keyboard', False),
+            'rest_color': list(_load_keyboard_rest_color()),   # [r, g, b]
             'presets': presets_meta,
         }
     except Exception as e:
@@ -519,6 +521,36 @@ def load_keyboard_preset(preset_id: str):
                 break  # Apply to first keyboard found
 
         return {'success': True, 'led_colors': led_colors, 'applied_leds': applied}
+    except Exception as e:
+        return {'success': False, 'error': str(e)}
+
+
+@eel.expose
+def set_keyboard_rest_color(rest_color):
+    """
+    Set the keyboard rest colour (Keyboard Designer > Color Presets).
+
+    The colour a keyboard returns to when keyboard_default has no preset to
+    apply: the chosen preset was never saved, or OpenRGB exposes the keyboard
+    without a key matrix. Read by visual_effect_renderer._load_keyboard_rest_color().
+
+    Args:
+        rest_color: [r, g, b], each 0-255
+
+    Returns:
+        dict: {'success': bool, 'rest_color': [r, g, b]}
+    """
+    try:
+        rgb = [int(c) for c in rest_color]
+        if len(rgb) != 3 or not all(0 <= c <= 255 for c in rgb):
+            return {'success': False, 'error': f'Invalid rest_color: {rest_color}'}
+        data = _load_presets_data()
+        data['rest_color'] = rgb
+        _save_presets_data(data)
+        print(f'[OK] Keyboard rest colour: {rgb}')
+        return {'success': True, 'rest_color': rgb}
+    except (TypeError, ValueError) as e:
+        return {'success': False, 'error': f'Invalid rest_color: {e}'}
     except Exception as e:
         return {'success': False, 'error': str(e)}
 

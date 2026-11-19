@@ -5,6 +5,75 @@ All notable changes to ED:Event2Led will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-11-19
+
+The preconfigured event mappings are now really included in the package, the app
+explains what is wrong when it cannot reach OpenRGB, and the two issues reported on
+GitHub are fixed.
+
+### Added
+
+- **OpenRGB diagnosis.** Configuration → OpenRGB now says which OpenRGB the app uses
+  and, when it cannot connect, why: OpenRGB not running, running with its SDK server
+  off, listening on another port, or the port taken by another program (named, with
+  its process ID). It shows the server in use, whether the program on the port is a
+  Windows service, and warns when more than one OpenRGB is running: two instances
+  fight over the SDK port and over the same hardware. The Home card and the startup
+  log give the same diagnosis. The app only reads: it never starts or stops OpenRGB.
+- **Keyboard rest color.** Keyboard Designer → Color Presets has a new "Rest color":
+  the color the keyboard returns to at the end of an effect when there is no preset to
+  apply. It is used when the selected preset is empty, and on keyboards that OpenRGB
+  shows without a key layout: these used to keep the last color of the effect (for
+  example the red of Under Attack) until the next event. Default: Elite orange. LED
+  strips, mice and other devices are not affected.
+
+### Changed
+
+- **Effects library cleaned up.** The library now holds the effects the preconfigured
+  events and Game Status flags actually play: 11 unused or duplicate effects were
+  removed, five were updated to match what their event plays (FSD Hyperspace Jump,
+  Under Attack, FSDTarget, Repair, LeaveBody), the two "FSD Charging" effects are now
+  "FSD Charging – Cycle" and "FSD Charging – Wave", the wave used by Shields Up/Down is
+  now "Shields Up/Down Effect", and the effects of Liftoff, Undocked, NavRoute and
+  ShieldState were added. Your own mappings are not affected: each mapping keeps its
+  own copy of its effect.
+- **Interface styles brought up to date.** The interface stylesheet had not been
+  regenerated since March, so many styles added later had no effect. It is now
+  rebuilt at every release. Visible results: the Events list has a fixed width that
+  keeps event descriptions whole, windows have their intended spacing, and dimmed
+  texts and accent-colored borders now look as designed and follow the chosen theme.
+
+### Fixed
+
+- **Default event → effect mappings are now included in the release.** The Windows
+  package shipped with an empty `event_mappings.json`, so a fresh install had no event
+  mapped to any effect. The preconfigured mappings (with their priorities and color
+  sequences) and the default Game Status mappings (`status_mappings.json`) are now
+  included. The build now fails if either file is empty.
+- **Game Status: the Template list no longer stays on the page** (issue #1). It opened
+  behind the effect window, so clicking Template seemed to do nothing; after closing the
+  window the list remained on top of the Game Status page. It now opens in front of the
+  effect window, scrolls inside its own box, and closes together with the window.
+- **Game Status showed translation keys instead of text** (issue #1), such as
+  "status_strings.flag_inactive" or "status_page.active_count": the page never loaded
+  the interface language. It now does, in all five languages.
+- **Copy from Library shows which event you are choosing an effect for** (issue #2).
+  The window header names the event and its description, so similar events such as the
+  Under Attack variants are no longer mixed up, and the page behind it is only dimmed,
+  not blurred. The note at the bottom of the window is now translated.
+- **The app now connects by itself when OpenRGB is started after it.** If OpenRGB was
+  not running when the app started, game events played no effect until a hardware page
+  was opened. The app now checks quietly every few seconds and connects as soon as
+  OpenRGB answers.
+- **The keyboard no longer goes dark when no keyboard preset is saved.** Effects that
+  end by restoring the keyboard preset faded every key to black when the active preset
+  had never been saved, as on a fresh install. The keyboard now turns to the rest color
+  (Elite orange unless you change it) until you save a preset in the Keyboard Designer.
+- **The keyboard shortcuts window (F1) is readable again.** It opened behind the page
+  content, mixed with it; it now opens on top of everything, including open windows.
+- **Effect descriptions.** Ten preconfigured effects still had the placeholder
+  description "Quick-created effect (needs refinement)"; they now describe their event.
+
 ## [1.4.0] - 2026-11-11
 
 The source code of ED:Event2Led is now public, under the PolyForm Noncommercial

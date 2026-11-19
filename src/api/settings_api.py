@@ -155,6 +155,110 @@ def get_openrgb_status():
     return {"reachable": reachable, "host": host, "port": port}
 
 
+_DIAG_CACHE_TTL_S = 10.0
+_diag_cache = {"time": 0.0, "key": None, "result": None}
+
+
+def _current_diagnosis(force: bool = False) -> dict:
+    """Diagnosis of the configured OpenRGB server; cached for _DIAG_CACHE_TTL_S
+    so the Home page can ask on every poll."""
+    from utils.openrgb_diagnostics import diagnose
+
+    host = _settings.get_openrgb_host()
+    port = int(_settings.get_openrgb_port())
+    now = time.monotonic()
+    cached = _diag_cache["result"]
+    if (not force and cached is not None and _diag_cache["key"] == (host, port)
+            and now - _diag_cache["time"] < _DIAG_CACHE_TTL_S):
+        return cached
+    result = diagnose(host, port)
+    _diag_cache.update(time=now, key=(host, port), result=result)
+    return result
+
+
+@eel.expose
+def diagnose_openrgb(force: bool = True):
+    """Read-only diagnosis of the configured OpenRGB server (codes + data,
+    the UI translates). Never starts, stops or changes OpenRGB.
+    See utils/openrgb_diagnostics.py for the codes."""
+    if not _settings:
+        return {"code": "error", "error": "Settings not initialized"}
+    try:
+        return _current_diagnosis(force=bool(force))
+    except Exception as e:
+        print(f"[ERROR] OpenRGB diagnosis failed: {e}")
+        return {"code": "error", "error": str(e)}
+
+
+# ── Quiet connect watcher ─────────────────────────────────────────────────────
+# Tier 2/3 (try_ensure_openrgb) handle a connection that was there and dropped:
+# after ~16 s of failed retries they show the "connection lost" modal. Before
+# that, a user who starts OpenRGB AFTER the app was never connected at all:
+# nothing retried (game events only print "effect_manager is None", the UI poll
+# reacts only to connected -> disconnected), so effects never played until a
+# hardware page was opened. This watcher probes quietly while there is no
+# manager and connects as soon as OpenRGB answers. No toast, no modal, never
+# starts OpenRGB.
+
+_WATCH_INTERVAL_S = 5.0
+_watcher_started = False
+
+
+def _quiet_connect_once() -> bool:
+    """One silent attempt; True if connected now. Skips while Tier 2 runs."""
+    global _reconnect_in_progress
+    import api.keyboard_api as _kbd
+
+    if _kbd._manager is not None:
+        return True
+    if not _settings or _reconnect_in_progress:
+        return False
+    host = _settings.get_openrgb_host()
+    port = _settings.get_openrgb_port()
+    if not _ping_openrgb(host, port):
+        return False
+    _reconnect_in_progress = True
+    try:
+        from utils.openrgb_client import OpenRGBClient
+        from utils.openrgb_diagnostics import summary_line
+
+        client = OpenRGBClient(host, port)
+        _initialize_hardware(client)
+        diag = _current_diagnosis(force=True)
+        line = summary_line(diag)
+        print(f"[OK] OpenRGB found after startup: {line}")
+        try:
+            from utils.log_buffer import log_entry
+            log_entry('info', 'OPENRGB', f"Connected: {line}")
+        except Exception:
+            pass
+        return True
+    except Exception as exc:
+        print(f"[WARN] OpenRGB answered but the connection failed: {exc}")
+        return False
+    finally:
+        _reconnect_in_progress = False
+
+
+def start_openrgb_watcher() -> None:
+    """Start the quiet connect watcher (once). Called by main.py after init."""
+    global _watcher_started
+    if _watcher_started:
+        return
+    _watcher_started = True
+
+    def _loop():
+        while True:
+            try:
+                _quiet_connect_once()
+            except Exception as exc:
+                print(f"[WARN] OpenRGB watcher: {exc}")
+            time.sleep(_WATCH_INTERVAL_S)
+
+    import threading
+    threading.Thread(target=_loop, daemon=True, name="openrgb-watcher").start()
+
+
 @eel.expose
 def test_openrgb_connection():
     """Test OpenRGB connection.
@@ -183,13 +287,21 @@ def test_openrgb_connection():
             "connected": True,
             "device_count": device_count,
             "message": f"Connected! Found {device_count} device(s).",
+            "diagnosis": diagnose_openrgb(force=True),
         }
     except Exception as e:
         print(f"[ERROR] OpenRGB connection failed: {e}")
+        diagnosis = diagnose_openrgb(force=True)
+        try:
+            from utils.openrgb_diagnostics import summary_line
+            print(f"       Diagnosis: {summary_line(diagnosis)}")
+        except Exception:
+            pass
         return {
             "connected": False,
             "device_count": 0,
             "message": f"Connection failed: {str(e)}",
+            "diagnosis": diagnosis,   # the UI shows this, translated
         }
 
 

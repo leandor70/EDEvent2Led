@@ -23,12 +23,17 @@
 
 .PARAMETER Clean
     If specified, cleans the dist/ folder before building
+
+.PARAMETER SkipCssBuild
+    Do not regenerate web/css/tailwind.min.css (only when Node is not available
+    and you know the CSS is current)
 #>
 
 param(
     [string]$Version = "",
     [switch]$Zip,
-    [switch]$Clean
+    [switch]$Clean,
+    [switch]$SkipCssBuild
 )
 
 Set-StrictMode -Version Latest
@@ -73,6 +78,38 @@ VERSION    = '$Version'
 BUILD_DATE = '$buildDate'
 "@ | Set-Content $versionPySrc -Encoding UTF8
 Write-Ok "Version baked: v$Version  ($buildDate) -> src\_version.py"
+
+# ── Tailwind CSS ─────────────────────────────────────────────────────────────
+# web/css/tailwind.min.css is PRECOMPILED: a class missing from it silently does
+# nothing (GitHub issue #1: a picker without z-index opened under its window).
+# It was generated once in March 2026 and never again, so every class added
+# later was missing. Regenerate it on every build from web/*.html + web/js/**.
+
+if ($SkipCssBuild) {
+    Write-Warn "CSS build skipped (-SkipCssBuild): web/css/tailwind.min.css shipped as is"
+} else {
+    Write-Step "Building Tailwind CSS..."
+    $twCli = Join-Path $ProjectRoot "node_modules\tailwindcss\lib\cli.js"
+    if (-not (Get-Command node -ErrorAction SilentlyContinue) -or -not (Test-Path $twCli)) {
+        Write-Err "Node.js or the Tailwind build tools are missing (run 'npm install' in the project root)."
+        Write-Err "Use -SkipCssBuild only if web/css/tailwind.min.css is already current."
+        exit 1
+    }
+    $cssOut = "web/css/tailwind.min.css"
+    $before = (Get-FileHash (Join-Path $ProjectRoot $cssOut)).Hash
+    Push-Location $ProjectRoot
+    try {
+        node $twCli -c tailwind.config.js -i web/css/input.css -o $cssOut --minify 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) { Write-Err "Tailwind build failed"; exit 1 }
+    } finally {
+        Pop-Location
+    }
+    if ((Get-FileHash (Join-Path $ProjectRoot $cssOut)).Hash -ne $before) {
+        Write-Warn "web/css/tailwind.min.css was out of date and has been regenerated: commit it"
+    } else {
+        Write-Ok "Tailwind CSS up to date"
+    }
+}
 
 # ── Python/PyInstaller check ──────────────────────────────────────────────────
 
@@ -151,15 +188,34 @@ if (Test-Path $ConfigDest) {
 }
 New-Item $ConfigDest -ItemType Directory | Out-Null
 
-# Copy all config files except settings (will be created fresh)
-$configFiles = @(
+# Allowlist: only machine-independent defaults are shipped.
+# NOT shipped (hardware/machine-specific, regenerated on the user's PC):
+#   settings.json (created fresh below), device_config.json,
+#   device_topologies.json, ambilight_config.json, *.bak.json
+#
+# Required files: the release is broken without them, so a missing one
+# fails the build instead of being skipped silently.
+$requiredConfigFiles = @(
     "visual_effects.json",
-    "event_mappings.json",
+    "event_mappings.json",    # default event -> effect mappings (v3, effects inline)
+    "status_mappings.json",   # default Status.json flag -> effect mappings
     "color_schemes.json",
-    "keyboard_presets.json",
     "event_catalog.json"
 )
-foreach ($f in $configFiles) {
+# Optional: gitignored, present only on a dev machine; sanitized below.
+$optionalConfigFiles = @(
+    "keyboard_presets.json"
+)
+foreach ($f in $requiredConfigFiles) {
+    $src = Join-Path $ConfigSource $f
+    if (-not (Test-Path $src)) {
+        Write-Err "Required config file missing: config\$f"
+        exit 1
+    }
+    Copy-Item $src $ConfigDest -Force
+    Write-Ok "Copied: $f"
+}
+foreach ($f in $optionalConfigFiles) {
     $src = Join-Path $ConfigSource $f
     if (Test-Path $src) {
         Copy-Item $src $ConfigDest -Force
@@ -178,6 +234,8 @@ if (Test-Path $presetsPath) {
     }
     $p.active_preset = "1"
     $p.lock_keyboard  = $false
+    # Default rest colour (Elite orange), not the one chosen on the dev machine
+    $p | Add-Member -NotePropertyName rest_color -NotePropertyValue @(255, 102, 0) -Force
     $p | ConvertTo-Json -Depth 10 | Set-Content $presetsPath
     Write-Ok "Sanitized: keyboard_presets.json (led_colors cleared)"
 }
@@ -194,11 +252,23 @@ $settingsPath = Join-Path $ConfigDest "settings.json"
 } | ConvertTo-Json | Set-Content $settingsPath
 Write-Ok "Created: settings.json (sanitized)"
 
-# Create empty mappings
-@{
-    version   = 2
-    mappings  = @{}
-} | ConvertTo-Json | Set-Content (Join-Path $ConfigDest "event_mappings.json")
+# Guard: the shipped default mappings must not be empty (a release once went
+# out with an empty event_mappings.json because this script overwrote it).
+foreach ($f in "event_mappings.json", "status_mappings.json") {
+    $count = 0
+    try {
+        $json = Get-Content (Join-Path $ConfigDest $f) -Raw -Encoding UTF8 | ConvertFrom-Json
+        $count = @($json.mappings.PSObject.Properties).Count
+    } catch {
+        Write-Err "Cannot parse config\$f in package: $_"
+        exit 1
+    }
+    if ($count -eq 0) {
+        Write-Err "config\$f in package has no mappings - refusing to build an empty release"
+        exit 1
+    }
+    Write-Ok "Verified: $f ($count mappings)"
+}
 
 # ── Create README.txt ────────────────────────────────────────────────────────
 

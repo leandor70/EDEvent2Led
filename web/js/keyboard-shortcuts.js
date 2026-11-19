@@ -186,7 +186,10 @@ function showKeyboardShortcutsHelp() {
         modal.id = 'shortcuts-help-modal';
         modal.className = 'fixed inset-0 z-[10000] flex items-center justify-center bg-black/80';
         modal.innerHTML = `
-            <div class="sci-fi-border carbon-pattern p-8 max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <!-- Border/corners outside, scrolling inside: the .sci-fi-border corners sit at
+                 -1px and made a scrolling box overflow by 1px, showing two scrollbars -->
+            <div class="sci-fi-border carbon-pattern max-w-3xl w-full mx-4">
+              <div class="p-8 max-h-[90vh] overflow-y-auto">
                 <h2 class="orbitron text-2xl mb-6 text-[var(--primary-accent)]">⌨️ Keyboard Shortcuts</h2>
 
                 <div class="mb-6">
@@ -229,6 +232,7 @@ function showKeyboardShortcutsHelp() {
                         class="btn-sci-fi px-6 py-2 w-full text-sm uppercase">
                     Close (Esc)
                 </button>
+              </div>
             </div>
         `;
         document.body.appendChild(modal);

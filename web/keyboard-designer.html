@@ -840,7 +840,7 @@
                            hover:bg-white/5 transition-colors"
                     data-preset="1">P1</button>
             <button class="preset-load-btn group px-2 py-2 border-l border-white/10
-                           hover:bg-[var(--primary-accent)]/20 hover:border-[var(--primary-accent)]/30
+                           hover:bg-primary-accent/20 hover:border-primary-accent/30
                            transition-all flex items-center"
                     data-preset="1" data-i18n-attr="title:keyboard_designer_sections.load_preset_from_disk" title="Load preset from disk">
                 <span class="material-symbols-outlined text-[13px] text-white/35
@@ -853,7 +853,7 @@
                            hover:bg-white/5 transition-colors"
                     data-preset="2">P2</button>
             <button class="preset-load-btn group px-2 py-2 border-l border-white/10
-                           hover:bg-[var(--primary-accent)]/20 hover:border-[var(--primary-accent)]/30
+                           hover:bg-primary-accent/20 hover:border-primary-accent/30
                            transition-all flex items-center"
                     data-preset="2" data-i18n-attr="title:keyboard_designer_sections.load_preset_from_disk" title="Load preset from disk">
                 <span class="material-symbols-outlined text-[13px] text-white/35
@@ -866,7 +866,7 @@
                            hover:bg-white/5 transition-colors"
                     data-preset="3">P3</button>
             <button class="preset-load-btn group px-2 py-2 border-l border-white/10
-                           hover:bg-[var(--primary-accent)]/20 hover:border-[var(--primary-accent)]/30
+                           hover:bg-primary-accent/20 hover:border-primary-accent/30
                            transition-all flex items-center"
                     data-preset="3" data-i18n-attr="title:keyboard_designer_sections.load_preset_from_disk" title="Load preset from disk">
                 <span class="material-symbols-outlined text-[13px] text-white/35
@@ -879,6 +879,21 @@
         <span class="orbitron tracking-wider" data-i18n="keyboard_designer_sections.save_preset">SAVE PRESET</span>
     </button>
     <div id="preset-status" class="text-[11px] text-white/30 mt-2 text-center" data-i18n="keyboard_designer_sections.preset_no_selection">No preset selected</div>
+
+    <!-- Rest color: what the keyboard returns to when there is no preset to apply
+         (empty preset, or a keyboard OpenRGB exposes without a key matrix). Saved on change. -->
+    <div class="mt-4 pt-3 border-t border-white/10">
+        <div class="orbitron text-xs tracking-[0.2em] text-white/50 uppercase mb-2" data-i18n="keyboard_rest_color.rest_color_label">Rest color</div>
+        <div class="flex items-center gap-2">
+            <input id="rest-color-input" type="color" value="#ff6600"
+                   class="w-10 h-8 rounded border border-white/20 bg-transparent cursor-pointer"/>
+            <span id="rest-color-hex" class="font-mono text-xs text-white/60">#FF6600</span>
+            <button id="btn-rest-color-reset" type="button"
+                    class="ml-auto px-2 py-1 rounded border border-white/20 text-[11px] text-white/60 hover:text-white hover:border-white/40 transition-colors"
+                    data-i18n="keyboard_rest_color.rest_color_reset">Elite orange</button>
+        </div>
+        <div class="text-[10px] text-white/40 mt-2 leading-relaxed" data-i18n="keyboard_rest_color.rest_color_hint">The keyboard turns this color when there is no preset to apply: the selected preset is empty, or OpenRGB shows your keyboard without a key layout.</div>
+    </div>
 </div>
 
 <!-- ③ SELECTED KEY — compact, context-driven -->

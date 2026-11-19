@@ -195,8 +195,8 @@ class EffectPicker {
     _cardClass(selected) {
         const base = 'picker-card cursor-pointer rounded p-2.5 transition-all duration-150';
         return selected
-            ? `${base} border-2 border-[var(--primary-accent)] bg-[var(--primary-accent)]/10 shadow-lg`
-            : `${base} border border-white/10 bg-black/40 hover:border-[var(--primary-accent)]/40 hover:bg-white/5 hover:shadow-md`;
+            ? `${base} border-2 border-[var(--primary-accent)] bg-primary-accent/10 shadow-lg`
+            : `${base} border border-white/10 bg-black/40 hover:border-primary-accent/40 hover:bg-white/5 hover:shadow-md`;
     }
 
     _renderPagination() {

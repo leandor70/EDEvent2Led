@@ -695,6 +695,20 @@ async function openTemplateModal() {
         _allTemplates = result?.templates || [];
     }
     renderTemplateList(_allTemplates);
+
+    // Show which event the effect is for: the page behind is dimmed and similar
+    // events (UnderAttack_Front / _Rear...) are easy to mix up (GitHub issue #2)
+    const evEl = document.getElementById('template-modal-event');
+    const descEl = document.getElementById('template-modal-event-desc');
+    const def = availableEvents.find(e => e.name === selectedEventName);
+    if (evEl) evEl.textContent = selectedEventName || '';
+    if (descEl) {
+        const desc = def?.description || '';
+        descEl.textContent = desc;
+        descEl.title = desc;                       // full text on hover
+        descEl.style.display = desc ? '' : 'none'; // the class sets -webkit-box
+    }
+
     document.getElementById('template-modal')?.classList.remove('hidden');
     document.getElementById('template-search')?.focus();
 }

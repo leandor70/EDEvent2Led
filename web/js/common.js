@@ -318,6 +318,10 @@ const THEME_COLORS = {
 function applyThemeColors(theme) {
     const colors = THEME_COLORS[theme] || THEME_COLORS['elite'];
     document.documentElement.style.setProperty('--primary-accent', colors.primary);
+    // Same color as "R G B" channels: used by the Tailwind primary-accent/NN classes
+    const hex = colors.primary.replace('#', '');
+    document.documentElement.style.setProperty('--primary-accent-rgb',
+        [0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16)).join(' '));
     document.documentElement.style.setProperty('--border-color',   colors.border);
     document.querySelectorAll('.sci-fi-border').forEach(el => {
         el.style.boxShadow = `0 0 15px rgba(0,0,0,0.5), inset 0 0 20px ${colors.glow}`;
@@ -491,6 +495,50 @@ function getCurrentPageChapterId() {
  */
 function openManualForCurrentPage() {
     openManual(getCurrentPageChapterId());
+}
+
+// ── OpenRGB diagnosis (read-only, from diagnose_openrgb) ────────
+
+/**
+ * Turn the diagnosis returned by the backend (codes + data) into translated text.
+ * Used by the Configuration page and the Home card, so both say the same thing.
+ *
+ * @param {Object} d - result of diagnose_openrgb()
+ * @returns {{ok: boolean, title: string, hint: string, inUse: string,
+ *            owner: string, path: string, warning: string, note: string}}
+ */
+function describeOpenRGBDiagnosis(d) {
+    const t = (key, vars) => window.i18n.interpolate('openrgb_diag.' + key, vars || {});
+    const out = { ok: false, title: '', hint: '', inUse: '', owner: '', path: '', warning: '', note: '' };
+    if (!d || !d.code) return out;
+
+    const code = d.code;
+    const owner = d.owner || null;
+    const name = (owner && owner.name) || t('unknown_program');
+    const vars = {
+        host: d.host, port: d.port, name: name,
+        count: d.device_count == null ? '?' : d.device_count,
+        ports: (d.other_ports || []).join(', ')
+    };
+
+    out.ok = code === 'connected';
+    out.title = t('codes.' + code + '.title', vars);
+    out.hint = t('codes.' + code + '.hint', vars);
+    if (d.host !== undefined) out.inUse = t('in_use', vars);
+
+    if (owner) {
+        const ov = { port: d.port, name: name, pid: owner.pid, service: owner.service };
+        out.owner = owner.service ? t('owner_service', ov) : t('owner_process', ov);
+        out.path = owner.path || '';
+    }
+    if ((d.warnings || []).includes('multiple_instances')) {
+        const procs = d.openrgb_processes || [];
+        out.warning = t('multiple_instances', {
+            count: procs.length, pids: procs.map(p => p.pid).join(', ')
+        });
+    }
+    if (d.local === false) out.note = t('remote_note');
+    return out;
 }
 
 // ── OpenRGB Reconnection UI (Tier 2 + Tier 3) ──────────────────

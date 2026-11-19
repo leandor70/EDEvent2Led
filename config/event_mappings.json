@@ -801,8 +801,8 @@
       "priority": 8,
       "enabled": true,
       "effect": {
-        "name": "ShieldState Effect",
-        "description": "Effect for ShieldState event",
+        "name": "Shields Up/Down Effect",
+        "description": "Effect for ShieldsUp and ShieldsDown events",
         "steps": [
           {
             "step_id": "step_0",
@@ -894,8 +894,8 @@
       "priority": 5,
       "enabled": true,
       "effect": {
-        "name": "ShieldState Effect",
-        "description": "Effect for ShieldState event",
+        "name": "Shields Up/Down Effect",
+        "description": "Effect for ShieldsUp and ShieldsDown events",
         "steps": [
           {
             "step_id": "step_0",
@@ -2047,7 +2047,7 @@
       "enabled": true,
       "effect": {
         "name": "DockingGranted Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for DockingGranted event",
         "steps": [
           {
             "step_id": "step_0",
@@ -2136,7 +2136,7 @@
       "enabled": true,
       "effect": {
         "name": "CockpitBreached Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for CockpitBreached event",
         "steps": [
           {
             "step_id": "step_0",
@@ -2225,7 +2225,7 @@
       "enabled": true,
       "effect": {
         "name": "ShieldState Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for ShieldState event",
         "steps": [
           {
             "step_id": "step_0",
@@ -2368,7 +2368,7 @@
       "enabled": true,
       "effect": {
         "name": "HullDamage Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for HullDamage event",
         "steps": [
           {
             "step_id": "step_0",
@@ -2472,7 +2472,7 @@
       "enabled": true,
       "effect": {
         "name": "ApproachBody Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for ApproachBody event",
         "steps": [
           {
             "step_id": "step_0",
@@ -2630,7 +2630,7 @@
       "enabled": true,
       "effect": {
         "name": "FSDTarget Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for FSDTarget event",
         "steps": [
           {
             "step_id": "step_0",
@@ -2671,7 +2671,7 @@
       "enabled": true,
       "effect": {
         "name": "DiscoveryScan Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for DiscoveryScan event",
         "steps": [
           {
             "step_id": "step_0",
@@ -2760,7 +2760,7 @@
       "enabled": true,
       "effect": {
         "name": "Scan Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for Scan event",
         "steps": [
           {
             "step_id": "step_0",
@@ -2849,7 +2849,7 @@
       "enabled": true,
       "effect": {
         "name": "RefuelAll Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for RefuelAll event",
         "steps": [
           {
             "step_id": "step_0",
@@ -2897,7 +2897,7 @@
       "enabled": true,
       "effect": {
         "name": "Repair Effect",
-        "description": "Quick-created effect (needs refinement)",
+        "description": "Effect for Repair event",
         "steps": [
           {
             "step_id": "step_0",

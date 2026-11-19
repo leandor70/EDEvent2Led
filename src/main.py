@@ -185,6 +185,17 @@ def _do_init(settings):
         except Exception as e:
             print(f"       OpenRGB not available: {e}")
 
+        # Read-only diagnosis: which OpenRGB answered (or why none did), and
+        # whether more than one OpenRGB runs. Never starts or stops OpenRGB.
+        openrgb_diag_line = ""
+        try:
+            from utils.openrgb_diagnostics import diagnose, summary_line
+            openrgb_diag = diagnose(settings.get_openrgb_host(), settings.get_openrgb_port())
+            openrgb_diag_line = summary_line(openrgb_diag)
+            print(f"       {openrgb_diag_line}")
+        except Exception as e:
+            print(f"       OpenRGB diagnosis failed: {e}")
+
         # ── Step 3: Event processor ────────────────────────────────────────
         _set_step(3, 'Initializing event processor...')
         from journal.event_processor import EventProcessor
@@ -260,7 +271,15 @@ def _do_init(settings):
         else:
             log_entry('warning', 'OPENRGB',
                       f"OpenRGB not available at {settings.get_openrgb_host()}:{settings.get_openrgb_port()}")
+        if openrgb_diag_line:
+            level = 'warning' if ('WARNING' in openrgb_diag_line or not effect_manager) else 'info'
+            log_entry(level, 'OPENRGB', openrgb_diag_line)
         log_entry('info', 'SYSTEM', f"Event mappings: {len(event_processor.mappings)} loaded")
+
+        # Connect on our own as soon as OpenRGB answers, if it was not there
+        # at startup (quiet: no toast, no modal; never starts OpenRGB).
+        from api.settings_api import start_openrgb_watcher
+        start_openrgb_watcher()
 
         # ── Step 5: Ready ──────────────────────────────────────────────────
         _set_step(5, 'Ready!')

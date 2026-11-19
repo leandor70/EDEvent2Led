@@ -201,7 +201,7 @@ function createEffectCard(effect) {
     const isSpecial = effect.id === 'keyboard_default';
     const isQuickCreated = effect.is_quick_created === true;
 
-    card.className = 'effect-card p-3 bg-black/40 border border-white/10 rounded cursor-pointer hover:border-[var(--primary-accent)]/50';
+    card.className = 'effect-card p-3 bg-black/40 border border-white/10 rounded cursor-pointer hover:border-primary-accent/50';
     card.dataset.effectId = effect.id;
 
     const stepsCount = effect.steps ? effect.steps.length : 0;
@@ -235,10 +235,10 @@ function createEffectCard(effect) {
         : window.i18n.get('common.add_keyboard_default') || 'Add Keyboard Default as final step';
 
     const actionButtons = isSpecial
-        ? `<button class="btn-test-effect p-1.5 hover:bg-[var(--primary-accent)]/20 rounded" title="Test Effect">
+        ? `<button class="btn-test-effect p-1.5 hover:bg-primary-accent/20 rounded" title="Test Effect">
                <span class="material-symbols-outlined text-base text-[var(--primary-accent)]">play_arrow</span>
            </button>`
-        : `<button class="btn-test-effect p-1.5 hover:bg-[var(--primary-accent)]/20 rounded" title="Test Effect">
+        : `<button class="btn-test-effect p-1.5 hover:bg-primary-accent/20 rounded" title="Test Effect">
                <span class="material-symbols-outlined text-base text-[var(--primary-accent)]">play_arrow</span>
            </button>
            <button class="${kdButtonClass}" title="${kdTitle}" ${hasKeyboardAsLastStep ? 'disabled' : ''}>

@@ -493,6 +493,8 @@ function applyStatus(s) {
     $('txt-devices').textContent = rgbOk
         ? i18n.interpolate(i18n.get('status_messages.devices_detected'), {count: s.devices_count})
         : i18n.get('status_messages.openrgb_not_running');
+    $('txt-devices').title = '';
+    refreshHomeDiagnosis(rgbOk);
 
     // Monitoring card
     const mon = s.is_monitoring;
@@ -573,6 +575,42 @@ async function toggleMonitoring() {
 }
 
 // ── Poll status every 2s ─────────────────────────────────────
+// ── OpenRGB diagnosis on the Home card ──────────────────────
+// Disconnected: say WHY (SDK server off, OpenRGB not running, port taken...).
+// Connected: warn when more than one OpenRGB process runs.
+// The status poll runs every 2 s; the diagnosis is asked at most every 10 s
+// (the backend caches it for 10 s as well).
+let _homeDiag = null;
+let _homeDiagAt = 0;
+let _homeDiagBusy = false;
+
+async function refreshHomeDiagnosis(rgbOk) {
+    if (!_homeDiagBusy && Date.now() - _homeDiagAt >= 10000) {
+        _homeDiagBusy = true;
+        try {
+            _homeDiag = await eel.diagnose_openrgb(false)();
+            _homeDiagAt = Date.now();
+        } catch (e) {
+            _homeDiag = null;
+        } finally {
+            _homeDiagBusy = false;
+        }
+    }
+    const info = describeOpenRGBDiagnosis(_homeDiag);
+    if (!info.title) return;
+    const el = $('txt-devices');
+    if (!rgbOk && !info.ok) {
+        el.textContent = info.title;
+        el.title = info.hint;              // full suggestion on hover
+    } else if (rgbOk && info.warning) {
+        el.textContent = el.textContent + ' — ' + info.warning;
+        el.style.color = '#f59e0b';
+        $('dot-openrgb').className = 'status-dot orange';
+        return;
+    }
+    el.style.color = '';
+}
+
 async function pollStatus() {
     if (typeof eel === 'undefined') return;
     try {

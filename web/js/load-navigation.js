@@ -115,8 +115,8 @@
               data-i18n-attr="title:navigation.export_tooltip" title="Export current profile to JSON">
               <div class="absolute inset-0 bg-[var(--primary-accent)] blur-sm opacity-0 group-hover:opacity-20 transition-opacity rounded"></div>
               <div class="relative flex items-center justify-center gap-1.5 py-2 sci-fi-border border border-white/10
-                          group-hover:border-[var(--primary-accent)]/50 transition-colors rounded">
-                <span class="material-symbols-outlined text-[15px] text-[var(--primary-accent)]/70 group-hover:text-[var(--primary-accent)]">download</span>
+                          group-hover:border-primary-accent/50 transition-colors rounded">
+                <span class="material-symbols-outlined text-[15px] text-primary-accent/70 group-hover:text-[var(--primary-accent)]">download</span>
                 <span class="orbitron text-[9px] tracking-[0.15em] text-white/50 group-hover:text-white/80 uppercase" data-i18n="navigation.export">Export</span>
               </div>
             </button>

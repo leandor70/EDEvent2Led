@@ -323,15 +323,24 @@
 <div class="w-2 h-2 rounded-full bg-[var(--primary-accent)] glow-orange" id="openrgb-status-indicator"></div>
 <span class="text-sm text-[var(--primary-accent)] uppercase" id="openrgb-status">Status: Disconnected</span>
 </div>
+<!-- Read-only diagnosis (filled by settings.js from diagnose_openrgb) -->
+<div id="openrgb-diag" class="hidden mt-3 space-y-1 text-xs">
+<div id="openrgb-diag-inuse" class="text-white/60 font-mono"></div>
+<div id="openrgb-diag-owner" class="text-white/60"></div>
+<div id="openrgb-diag-path" class="text-white/40 font-mono" style="word-break: break-all;"></div>
+<div id="openrgb-diag-hint" class="text-white/80 leading-relaxed"></div>
+<div id="openrgb-diag-warning" class="hidden text-amber-400 leading-relaxed"></div>
+<div id="openrgb-diag-note" class="text-white/40"></div>
+</div>
 </div>
 <div class="space-y-4">
 <div>
 <label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.openrgb.host_label">Server IP:</label>
-<input id="openrgb-host" class="w-full bg-black/60 border border-[var(--primary-accent)]/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none" type="text" value="127.0.0.1"/>
+<input id="openrgb-host" class="w-full bg-black/60 border border-primary-accent/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none" type="text" value="127.0.0.1"/>
 </div>
 <div>
 <label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.openrgb.port_label">Server Port:</label>
-<input id="openrgb-port" class="w-full bg-black/60 border border-[var(--primary-accent)]/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none" type="number" value="6742"/>
+<input id="openrgb-port" class="w-full bg-black/60 border border-primary-accent/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none" type="number" value="6742"/>
 </div>
 </div>
 <button id="test-connection-btn" class="w-full btn-sci-fi p-4 flex items-center justify-center gap-3 group">
@@ -352,7 +361,7 @@
 <div class="space-y-4">
 <div>
 <label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.game_integration.journal_path_label">Journal Path:</label>
-<input id="journal-path" class="w-full bg-black/60 border border-[var(--primary-accent)]/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none overflow-hidden whitespace-nowrap text-ellipsis placeholder-white/30" type="text" value="" placeholder="C:\Users\...\Saved Games\Frontier Developments\Elite Dangerous"/>
+<input id="journal-path" class="w-full bg-black/60 border border-primary-accent/50 text-white rounded p-2 focus:ring-1 focus:ring-[var(--primary-accent)] outline-none overflow-hidden whitespace-nowrap text-ellipsis placeholder-white/30" type="text" value="" placeholder="C:\Users\...\Saved Games\Frontier Developments\Elite Dangerous"/>
 </div>
 <div>
 <label class="block text-xs uppercase tracking-widest text-white/60 mb-3" data-i18n="sections.game_integration.browse_label">Browse Directory:</label>
@@ -372,7 +381,7 @@
 <div class="mt-12 flex justify-center pb-20 px-12">
 <button id="save-btn" class="relative group w-full max-w-5xl">
 <div class="absolute inset-0 bg-[var(--primary-accent)] blur-md opacity-20 group-hover:opacity-40 transition-opacity"></div>
-<div class="relative flex items-center justify-center gap-6 px-24 py-6 sci-fi-border border-2 border-[var(--primary-accent)]/60 bg-black/80">
+<div class="relative flex items-center justify-center gap-6 px-24 py-6 sci-fi-border border-2 border-primary-accent/60 bg-black/80">
 <span class="material-symbols-outlined text-3xl text-[var(--primary-accent)]">save</span>
 <span class="orbitron text-2xl font-black tracking-[0.6em] text-white group-hover:text-[var(--primary-accent)] transition-colors" data-i18n="buttons.save">SAVE</span>
 <div class="absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-12 bg-[var(--primary-accent)] opacity-20"></div>

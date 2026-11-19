@@ -478,7 +478,7 @@ class EffectEditorModule {
         const self = this;   // captured for closures
 
         const card = document.createElement('div');
-        card.className = 'step-card p-4 bg-black/60 border border-[var(--primary-accent)]/30 rounded';
+        card.className = 'step-card p-4 bg-black/60 border border-primary-accent/30 rounded';
         card.dataset.stepIndex = index;
 
         const effectType = step.effect_type;
@@ -518,7 +518,7 @@ class EffectEditorModule {
                     </div>
                     <div class="flex items-center gap-3 mb-2">
                         <input class="duration-slider flex-1" type="range" min="100" max="10000" step="100" value="${duration}" />
-                        <input class="step-duration w-20 bg-black/60 border border-[var(--primary-accent)]/50 text-white text-center rounded p-2 text-sm" type="number" min="100" max="10000" step="100" value="${duration}" />
+                        <input class="step-duration w-20 bg-black/60 border border-primary-accent/50 text-white text-center rounded p-2 text-sm" type="number" min="100" max="10000" step="100" value="${duration}" />
                     </div>
                     <div class="flex gap-2">
                         <button class="preset-btn px-3 py-1 text-xs uppercase tracking-wider rounded" data-duration="250">250ms</button>
@@ -1017,7 +1017,7 @@ class EffectEditorModule {
             html += `
                 <div class="color-picker-wrapper">
                     <label class="block text-xs text-white/55 uppercase mb-2">${label}</label>
-                    <button class="step-color-btn w-full h-12 rounded cursor-pointer border-2 border-[var(--primary-accent)]/50 hover:border-[var(--primary-accent)] transition-all"
+                    <button class="step-color-btn w-full h-12 rounded cursor-pointer border-2 border-primary-accent/50 hover:border-[var(--primary-accent)] transition-all"
                             style="background: ${colorHex};"
                             data-color="${colorHex}" data-color-index="${i}"
                             title="Click to change color"></button>
@@ -1092,7 +1092,7 @@ class EffectEditorModule {
                 <input type="hidden" class="param-direction" value="${currentPreset}" />
                 <div class="kbd-fill-picker flex items-center gap-2 ${isFill ? '' : 'hidden'}">
                     <label class="text-xs text-white/55 flex-shrink-0">Color:</label>
-                    <button type="button" class="kbd-fill-color-btn w-7 h-5 rounded border border-white/20 hover:border-[var(--primary-accent)]/60 flex-shrink-0" style="background:${fillHex}"></button>
+                    <button type="button" class="kbd-fill-color-btn w-7 h-5 rounded border border-white/20 hover:border-primary-accent/60 flex-shrink-0" style="background:${fillHex}"></button>
                     <input type="hidden" class="kbd-fill-color-val" value="${fillHex}" />
                     <span class="text-xs text-white/55 font-mono kbd-fill-hex-label">${fillHex.toUpperCase()}</span>
                 </div>
@@ -1138,7 +1138,7 @@ class EffectEditorModule {
                 </div>
                 <div class="flex items-center gap-3">
                     <input class="param-speed-slider flex-1" type="range" min="${cfg.min}" max="${cfg.max}" step="${cfg.step || 0.1}" value="${currentSpeed}" />
-                    <input class="param-speed w-20 bg-black/60 border border-[var(--primary-accent)]/50 text-white text-center rounded p-2 text-sm" type="number" min="${cfg.min}" max="${cfg.max}" step="${cfg.step || 0.1}" value="${currentSpeed}" />
+                    <input class="param-speed w-20 bg-black/60 border border-primary-accent/50 text-white text-center rounded p-2 text-sm" type="number" min="${cfg.min}" max="${cfg.max}" step="${cfg.step || 0.1}" value="${currentSpeed}" />
                 </div>
             </div>`;
         }
@@ -1155,7 +1155,7 @@ class EffectEditorModule {
                 </div>
                 <div class="flex items-center gap-3">
                     <input class="param-num-loops-slider duration-slider flex-1" type="range" min="${cfg.min ?? 1}" max="${cfg.max ?? 50}" step="1" value="${currentLoops}" />
-                    <input class="param-num-loops w-20 bg-black/60 border border-[var(--primary-accent)]/50 text-white text-center rounded p-2 text-sm" type="number" min="${cfg.min ?? 1}" max="${cfg.max ?? 50}" value="${currentLoops}" />
+                    <input class="param-num-loops w-20 bg-black/60 border border-primary-accent/50 text-white text-center rounded p-2 text-sm" type="number" min="${cfg.min ?? 1}" max="${cfg.max ?? 50}" value="${currentLoops}" />
                 </div>
             </div>`;
         }
@@ -1170,7 +1170,7 @@ class EffectEditorModule {
                     <label class="block text-xs text-white/55 uppercase mb-1">${cfg.label}</label>
                     <div class="flex items-center gap-3">
                         <input class="param-extra-slider flex-1" type="range" min="${cfg.min}" max="${cfg.max}" step="${step}" value="${current}" data-param="${key}" />
-                        <input class="param-extra w-20 bg-black/60 border border-[var(--primary-accent)]/50 text-white text-center rounded p-2 text-sm" type="number" min="${cfg.min}" max="${cfg.max}" step="${step}" value="${current}" data-param="${key}" />
+                        <input class="param-extra w-20 bg-black/60 border border-primary-accent/50 text-white text-center rounded p-2 text-sm" type="number" min="${cfg.min}" max="${cfg.max}" step="${step}" value="${current}" data-param="${key}" />
                     </div>
                 </div>`;
             }).join('');

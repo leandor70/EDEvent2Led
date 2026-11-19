@@ -639,7 +639,9 @@
     "select_event_desc": "Click any event in the left panel to view or edit its effect",
     "no_effect_assigned": "This event triggers no RGB lighting effect",
     "keyboard_default_preset": "Keyboard Default Preset",
-    "copy_from_library": "Copy from Library"
+    "copy_from_library": "Copy from Library",
+    "template_for_event": "Effect for event:",
+    "template_replaces_note": "Copying from library replaces the current effect steps"
   },
   "keyboard_designer_sections": {
     "subtitle": "Load keybindings → color keys by category &nbsp;·&nbsp; Click a key → assign color &nbsp;·&nbsp; Save to P1 / P2 / P3",
@@ -875,5 +877,53 @@
     "all_filter": "All",
     "no_flags_defined": "No flags defined",
     "connect_to_see_status": "Connect to the application to see live game status"
+  },
+  "openrgb_diag": {
+    "in_use": "Server in use: {{host}}:{{port}}",
+    "owner_process": "Port {{port}}: {{name}} (PID {{pid}})",
+    "owner_service": "Port {{port}}: {{name}} (PID {{pid}}), Windows service \"{{service}}\"",
+    "unknown_program": "unknown program",
+    "remote_note": "Remote host: processes on that computer cannot be checked from here.",
+    "multiple_instances": "{{count}} OpenRGB processes are running (PID {{pids}}). Only one can own the SDK port, and two instances fight over the same hardware: keep just one, or connect the second OpenRGB window as a client (Settings > SDK Client).",
+    "codes": {
+      "connected": {
+        "title": "OpenRGB found ({{count}} device(s))",
+        "hint": "ED:Event2Led uses the OpenRGB SDK server that is already running."
+      },
+      "openrgb_no_sdk": {
+        "title": "OpenRGB is running, SDK server off",
+        "hint": "In OpenRGB open Settings > SDK Server and press \"Start Server\" (port {{port}}). ED:Event2Led connects by itself as soon as it answers."
+      },
+      "openrgb_other_port": {
+        "title": "OpenRGB is listening on another port",
+        "hint": "OpenRGB uses port {{ports}}. Set the same port here and save, or change it in OpenRGB (Settings > SDK Server)."
+      },
+      "not_running": {
+        "title": "OpenRGB is not running",
+        "hint": "Start OpenRGB and enable its SDK server (Settings > SDK Server > \"Start Server\"). ED:Event2Led connects by itself as soon as it answers."
+      },
+      "port_busy_other": {
+        "title": "Port {{port}} is used by another program",
+        "hint": "{{name}} is not OpenRGB. Close it, or use another port both in OpenRGB (Settings > SDK Server) and here."
+      },
+      "no_reply": {
+        "title": "No answer on port {{port}}",
+        "hint": "A program is listening but does not answer like OpenRGB. If it is OpenRGB, restart it."
+      },
+      "remote_unreachable": {
+        "title": "{{host}}:{{port}} is not reachable",
+        "hint": "Check that OpenRGB runs on that computer with the SDK server on, and that its firewall lets port {{port}} through."
+      },
+      "error": {
+        "title": "Diagnosis failed",
+        "hint": "See the Logs page for details."
+      }
+    }
+  },
+  "keyboard_rest_color": {
+    "rest_color_label": "Rest color",
+    "rest_color_reset": "Elite orange",
+    "rest_color_hint": "The keyboard turns this color when there is no preset to apply: the selected preset is empty, or OpenRGB shows your keyboard without a key layout.",
+    "rest_color_saved": "Rest color saved"
   }
 }

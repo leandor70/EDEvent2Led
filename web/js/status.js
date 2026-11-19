@@ -129,6 +129,15 @@ let _statusTemplates = [];
 // ── Boot ─────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Load the UI language: this page never did, so every i18n.get() returned
+    // its raw key ("status_strings.flag_inactive", GitHub issue #1 screenshot).
+    try {
+        const settings = await api('get_settings');
+        if (window.i18n) await window.i18n.init(settings?.language || 'en');
+    } catch (e) {
+        console.error('[Status] i18n init failed:', e);
+    }
+
     // Init both editor modules — timelineCanvasId:null delegates to page-level renderColorTimeline()
     _moduleOn = new EffectEditorModule({
         stepsContainerId: 'status-steps-on',
@@ -585,7 +594,13 @@ function _wireModal() {
 
     if (!modal) return;
 
-    const close = () => { modal.classList.add('hidden'); _currentFlagName = null; };
+    const close = () => {
+        // The template picker belongs to this modal: close it with the modal,
+        // or it stays on the page after Cancel/X (GitHub issue #1).
+        document.getElementById('_status-template-overlay')?.remove();
+        modal.classList.add('hidden');
+        _currentFlagName = null;
+    };
     backdrop?.addEventListener('click', close);
     btnClose?.addEventListener('click',  close);
     btnCancel?.addEventListener('click', close);
@@ -725,22 +740,28 @@ function _showStatusTemplateModal(slot) {
     const existing = document.getElementById('_status-template-overlay');
     if (existing) existing.remove();
 
+    // Sizes and z-index as inline styles: tailwind.min.css is precompiled and has
+    // no arbitrary values (z-[10002], w-[90%], max-h-[70vh] did not exist), so the
+    // picker opened UNDER the assignment modal (z-50), unbounded, and stayed on
+    // the page after the modal was closed (GitHub issue #1).
     const overlay = document.createElement('div');
     overlay.id = '_status-template-overlay';
-    overlay.className = 'fixed inset-0 z-[10002] flex items-center justify-center';
+    overlay.className = 'fixed inset-0 flex items-center justify-center';
+    overlay.style.zIndex = '10002';
     overlay.innerHTML = `
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="_stmpl-bg"></div>
-        <div class="relative z-[10003] w-[90%] max-w-[520px] max-h-[70vh] flex flex-col"
-             style="background:rgba(5,7,10,0.97);border:1px solid rgba(255,102,0,0.3);border-radius:10px;">
+        <div class="relative flex flex-col"
+             style="z-index:10003;width:90%;max-width:520px;max-height:70vh;
+                    background:rgba(5,7,10,0.97);border:1px solid rgba(255,102,0,0.3);border-radius:10px;">
             <div class="flex items-center justify-between px-5 py-3 border-b border-white/10 flex-shrink-0">
                 <span class="orbitron text-sm text-white tracking-wider">Template → ${escapeHtml(slot.toUpperCase())}</span>
                 <button id="_stmpl-close" class="text-white/40 hover:text-white">
                     <span class="material-symbols-outlined" style="font-size:18px;">close</span>
                 </button>
             </div>
-            <div class="flex-1 overflow-y-auto p-3 space-y-2">
+            <div class="flex-1 overflow-y-auto p-3 flex flex-col gap-2" style="min-height:0;">
                 ${_statusTemplates.map((t, i) => `
-                    <div class="_stmpl-item cursor-pointer p-2 rounded border border-white/8
+                    <div class="_stmpl-item cursor-pointer p-2 rounded border border-white/10
                                  hover:bg-[rgba(255,102,0,0.08)] hover:border-[rgba(255,102,0,0.3)] transition-colors"
                          data-index="${i}">
                         <div class="text-sm" style="color:rgba(255,255,255,0.8);">${escapeHtml(t._template_name || t.name || 'Unnamed')}</div>
