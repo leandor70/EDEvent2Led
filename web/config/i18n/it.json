@@ -234,6 +234,8 @@
       "title": "Integrazione Gioco",
       "journal_path_label": "Percorso Journal:",
       "browse_label": "Sfoglia Directory:",
+      "auto_monitoring_toggle": "Avvia il monitoraggio automaticamente all'apertura",
+      "auto_monitoring_hint": "All'avvio dell'app il monitoraggio del journal parte da solo, senza premere Avvia nella Home. Vale dal prossimo avvio.",
       "status_verified": "Stato: Verificato",
       "status_not_verified": "Stato: Non Verificato",
       "file_count": "{{count}} file"

@@ -234,6 +234,8 @@
       "title": "Intégration Jeu",
       "journal_path_label": "Chemin Journal:",
       "browse_label": "Parcourir Répertoire:",
+      "auto_monitoring_toggle": "Démarrer la surveillance automatiquement à l'ouverture",
+      "auto_monitoring_hint": "Au démarrage de l'app, la surveillance du journal commence seule, sans cliquer sur Démarrer dans l'accueil. S'applique dès le prochain démarrage.",
       "status_verified": "État: Vérifié",
       "status_not_verified": "État: Non Vérifié",
       "file_count": "{{count}} fichier(s)"

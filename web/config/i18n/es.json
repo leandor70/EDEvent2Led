@@ -234,6 +234,8 @@
       "title": "Integración del Juego",
       "journal_path_label": "Ruta del Diario:",
       "browse_label": "Examinar Directorio:",
+      "auto_monitoring_toggle": "Iniciar la monitorización automáticamente al abrir",
+      "auto_monitoring_hint": "Al iniciar la app, la monitorización del journal empieza sola, sin pulsar Iniciar en Inicio. Se aplica desde el próximo inicio.",
       "status_verified": "Estado: Verificado",
       "status_not_verified": "Estado: No Verificado",
       "file_count": "{{count}} archivo(s)"

@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     setupJournalSection();
     setupSaveButton();
     setupUpdateToggle();
+    setupAutoMonitoringToggle();
 
     console.log('[Settings] Initialization complete');
 });
@@ -84,6 +85,23 @@ async function setupUpdateToggle() {
     toggle.addEventListener('change', async () => {
         const result = await api('set_check_updates', toggle.checked);
         if (result.success === false) {
+            toggle.checked = !toggle.checked;
+            showNotification(window.i18n.get('notifications.failed_save_settings') || 'Failed to save settings', 'error');
+        }
+    });
+}
+
+// ========================================
+// AUTO-START MONITORING TOGGLE (saved immediately)
+// ========================================
+
+async function setupAutoMonitoringToggle() {
+    const toggle = document.getElementById('auto-start-monitoring-toggle');
+    if (!toggle) return;
+    toggle.checked = (await api('get_auto_start_monitoring')) === true;
+    toggle.addEventListener('change', async () => {
+        const result = await api('set_auto_start_monitoring', toggle.checked);
+        if (!result || result.success === false) {
             toggle.checked = !toggle.checked;
             showNotification(window.i18n.get('notifications.failed_save_settings') || 'Failed to save settings', 'error');
         }

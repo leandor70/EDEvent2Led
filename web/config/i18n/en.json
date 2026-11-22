@@ -234,6 +234,8 @@
       "title": "Game Integration",
       "journal_path_label": "Journal Path:",
       "browse_label": "Browse Directory:",
+      "auto_monitoring_toggle": "Start monitoring automatically at launch",
+      "auto_monitoring_hint": "When the app starts, journal monitoring begins without pressing Start on Home. Applies from the next launch.",
       "status_verified": "Status: Verified",
       "status_not_verified": "Status: Not Verified",
       "file_count": "{{count}} file(s)"

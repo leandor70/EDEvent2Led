@@ -281,6 +281,10 @@ def _do_init(settings):
         from api.settings_api import start_openrgb_watcher
         start_openrgb_watcher()
 
+        # Optional: begin journal monitoring without waiting for a click on Home.
+        from api.monitoring_api import auto_start_if_enabled
+        auto_start_if_enabled()
+
         # ── Step 5: Ready ──────────────────────────────────────────────────
         _set_step(5, 'Ready!')
         _init_status['ready'] = True

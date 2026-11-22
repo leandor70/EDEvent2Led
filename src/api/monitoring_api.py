@@ -85,8 +85,8 @@ def start_monitoring():
     Start watching the Elite Dangerous journal directory.
 
     Creates a JournalReader pointed at the configured journal path,
-    initialises it (reads the latest journal file from the beginning),
-    and starts the watchdog observer thread.
+    initialises it (positions at the END of the latest journal file, so past
+    events are not replayed), and starts the watchdog observer thread.
 
     Returns:
         dict: { success, message, journal_directory }
@@ -149,6 +149,40 @@ def stop_monitoring():
     except Exception as e:
         print(f"[ERROR] stop_monitoring: {e}")
         return {'success': False, 'message': f'Error: {e}'}
+
+
+@eel.expose
+def get_auto_start_monitoring():
+    """Return whether monitoring starts automatically at app launch."""
+    return _settings.get_auto_start_monitoring() if _settings else False
+
+
+@eel.expose
+def set_auto_start_monitoring(enabled: bool):
+    """Persist the 'start monitoring at launch' preference (takes effect on next start)."""
+    if not _settings:
+        return {'success': False}
+    _settings.set_auto_start_monitoring(enabled)
+    return {'success': True}
+
+
+def auto_start_if_enabled():
+    """
+    Called once by main.py at the end of initialisation.
+
+    Starts monitoring when the user enabled the option. A failure (for example
+    a missing journal directory) is written to the Logs page instead of being
+    silent, and leaves the app running with monitoring stopped.
+    """
+    if not _settings or not _settings.get_auto_start_monitoring():
+        return
+    from utils.log_buffer import log_entry
+    result = start_monitoring()
+    if result.get('success'):
+        log_entry('info', 'SYSTEM', 'Monitoring started automatically at launch')
+    else:
+        log_entry('warning', 'SYSTEM',
+                  f"Automatic monitoring start failed: {result.get('message')}")
 
 
 @eel.expose

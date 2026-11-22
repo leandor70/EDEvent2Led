@@ -79,6 +79,15 @@ class Settings:
         self.settings['web_port'] = int(port)
         self._save_settings()
 
+    def get_auto_start_monitoring(self) -> bool:
+        """Get whether journal monitoring starts automatically at app launch (default: False)."""
+        return bool(self.settings.get('auto_start_monitoring', False))
+
+    def set_auto_start_monitoring(self, enabled: bool):
+        """Set whether journal monitoring starts automatically at app launch."""
+        self.settings['auto_start_monitoring'] = bool(enabled)
+        self._save_settings()
+
     def get_show_welcome_modal(self) -> bool:
         """Get whether to show the welcome modal on startup (default: True)."""
         return self.settings.get('show_welcome_modal', True)

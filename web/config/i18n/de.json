@@ -234,6 +234,8 @@
       "title": "Spiel-Integration",
       "journal_path_label": "Journal-Pfad:",
       "browse_label": "Verzeichnis durchsuchen:",
+      "auto_monitoring_toggle": "Überwachung beim Start automatisch starten",
+      "auto_monitoring_hint": "Beim Start der App beginnt die Journal-Überwachung automatisch, ohne auf der Startseite auf Start zu klicken. Gilt ab dem nächsten Start.",
       "status_verified": "Status: Verifiziert",
       "status_not_verified": "Status: Nicht verifiziert",
       "file_count": "{{count}} Datei(en)"

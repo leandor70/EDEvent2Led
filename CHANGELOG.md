@@ -5,6 +5,21 @@ All notable changes to ED:Event2Led will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2026-11-22
+
+Journal monitoring can now start by itself when the app opens.
+
+### Added
+
+- **Automatic monitoring at launch.** Configuration → Game Integration has a new
+  option, "Start monitoring automatically at launch" (off by default). When it is on,
+  journal monitoring begins as soon as the app has started, without pressing Start on
+  Home. Monitoring begins at the end of the latest journal, so events from earlier
+  sessions are not replayed as lighting effects, and if Elite Dangerous is not running
+  yet it picks up the new journal when the game starts. If it cannot start (for example
+  the journal folder does not exist), the reason is written to the Logs page and the
+  app keeps running with monitoring stopped.
+
 ## [1.5.0] - 2026-11-19
 
 The preconfigured event mappings are now really included in the package, the app
